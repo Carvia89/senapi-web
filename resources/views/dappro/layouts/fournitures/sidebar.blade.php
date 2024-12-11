@@ -1,10 +1,13 @@
 @php
     $user = auth()->user();
     $nom = $user->name;
+    $prenom = $user->prenom;
 
     // Initialiser la variable photo
     $photo = asset('dappro_dash_assets/assets/images/user-profile_.jpg'); // Chemin par défaut si pas de photo
-/*
+    $userBureaux = [3, 9]; // ID des bureaux de la DAPPRO
+
+    /*
     // Récupérer les informations selon le rôle de l'utilisateur
     if ($user->role === 'Elève') {
         $identity = App\Models\Eleve::find($user->user_reference_id); // Récupérer les informations de l'élève
@@ -28,7 +31,7 @@
             <div class="main-menu-header">
                 <img class="img-80 img-radius" src="{{ $photo }}" alt="User-Profile-Image">
                 <div class="user-details">
-                    <span id="more-details">{{ $nom }}<i class="fa fa-caret-down"></i></span>
+                    <span id="more-details">{{ $prenom }} {{ $nom }}<i class="fa fa-caret-down"></i></span>
                 </div>
             </div>
             <div class="main-menu-content">
@@ -50,7 +53,7 @@
                     <div class="form-group form-primary">
                         <input type="text" name="footer-email" class="form-control">
                         <span class="form-bar"></span>
-                        <label class="float-label"><i class="fa fa-search m-r-10"></i>Retrouvez un élève</label>
+                        <label class="float-label"><i class="fa fa-search m-r-10"></i>Recherche</label>
                     </div>
                 </form>
             </div>
@@ -148,20 +151,20 @@
                     </a>
                 </li>
             </ul>
-        @elseif (auth()->user()->role == 'User' && auth()->user()->bureau_id == 3)
-            <div class="pcoded-navigation-label">Espace Financier</div>
+        @elseif (in_array($user->bureau_id, $userBureaux) && $user->role == 'User')
+            <div class="pcoded-navigation-label">Bureau Fournitures</div>
             <ul class="pcoded-item pcoded-left-item">
                 <li class="{{ request()->routeIs('admin.bureau.*') ? 'active' : '' }}">
                     <a href="{{ route('admin.bureau.index') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-calculator"></i></span>
-                        <span class="pcoded-mtext">Fixation Totalité Frais</span>
+                        <span class="pcoded-mtext">Fournisseurs</span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>
                 <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
                     <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-credit-card"></i></span>
-                        <span class="pcoded-mtext">Paiement Frais </span>
+                        <span class="pcoded-mtext">Stock Début </span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>
@@ -171,21 +174,96 @@
                             request()->routeIs('dashboard.direction3') ? 'active' : '' }} pcoded-trigger">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
-                            <span class="pcoded-mtext">Rapports</span>
+                            <span class="pcoded-mtext">Mouvement de Stock</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                         <ul class="pcoded-submenu">
                             <li class="{{ request()->routeIs('dashboard.direction1') ? 'active' : '' }}">
                                 <a href="{{ route('dashboard.direction1') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                    <span class="pcoded-mtext">Effectif des Elèves</span>
+                                    <span class="pcoded-mtext">Panier</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
                             <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
                                 <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                    <span class="pcoded-mtext">Paiement Frais</span>
+                                    <span class="pcoded-mtext">Approvisionnement</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
+                                <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Livraison</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="pcoded-item pcoded-left-item">
+                    <li class="pcoded-hasmenu {{ request()->routeIs('dashboard.direction3') ||
+                            request()->routeIs('dashboard.direction3') ||
+                            request()->routeIs('dashboard.direction3') ? 'active' : '' }} pcoded-trigger">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
+                            <span class="pcoded-mtext">Promotion</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="{{ request()->routeIs('dashboard.direction1') ? 'active' : '' }}">
+                                <a href="{{ route('dashboard.direction1') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Niveaux</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
+                                <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Options</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
+                                <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Classes</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="pcoded-item pcoded-left-item">
+                    <li class="pcoded-hasmenu {{ request()->routeIs('dashboard.direction3') ||
+                            request()->routeIs('dashboard.direction3') ||
+                            request()->routeIs('dashboard.direction3') ? 'active' : '' }} pcoded-trigger">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
+                            <span class="pcoded-mtext">Reporting</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="{{ request()->routeIs('dashboard.direction1') ? 'active' : '' }}">
+                                <a href="{{ route('dashboard.direction1') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Fiche de stock</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
+                                <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Sit. Gén. Bulletins</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
+                                <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Sit. Gén. Humanités</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>

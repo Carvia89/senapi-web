@@ -19,30 +19,19 @@
                                                     <i class="fas fa-users text-c-purple f-24"></i>
                                                 </div>
                                                 <div id="userCount" class="col-8 p-l-0">
-                                                    <h5 id="userCountValue">0</h5> <!-- Ajout d'un ID pour le h5 -->
-                                                    <p class="text-muted m-b-0">Connectés</p>
+                                                    <h5 id="userCountValue">{{ $usersCount }}</h5>
+                                                    <p class="text-muted m-b-0">Utilisateurs</p>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <script>
-                                            async function fetchConnectedUsers() {
-                                                const response = await fetch('/connected_users');
-                                                const data = await response.json();
-                                                document.getElementById('userCountValue').textContent = data.count; // Mise à jour du h5
-                                            }
-
-                                            setInterval(fetchConnectedUsers, 5000); // Met à jour toutes les 5 secondes
-                                            fetchConnectedUsers(); // Appel initial
-                                        </script>
                                         <div class="col-sm-6 p-b-20 p-t-20">
                                             <div class="row align-items-center text-center">
                                                 <div class="col-4 p-r-0">
-                                                    <i class="fas fa-graduation-cap text-c-green f-24"></i>
+                                                    <i class="fas fa-building text-c-green f-24"></i>
                                                 </div>
                                                 <div class="col-8 p-l-0">
-                                                    <h5>0</h5>
-                                                    <p class="text-muted m-b-0"> Eff. Elèves</p>
+                                                    <h5>{{ $directionsCount }}</h5>
+                                                    <p class="text-muted m-b-0"> Directions</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -51,22 +40,22 @@
                                         <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
                                             <div class="row align-items-center text-center">
                                                 <div class="col-4 p-r-0">
-                                                    <i class="fas fa-male text-c-red f-24"></i>
+                                                    <i class="fas fa-building text-c-blue f-24"></i>
                                                 </div>
                                                 <div class="col-8 p-l-0">
-                                                    <h5>0</h5>
-                                                    <p class="text-muted m-b-0">Garçons</p>
+                                                    <h5>{{ $divisionsCount }}</h5>
+                                                    <p class="text-muted m-b-0">Division</p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-6 p-b-20 p-t-20">
                                             <div class="row align-items-center text-center">
                                                 <div class="col-4 p-r-0">
-                                                    <i class="fas fa-female text-c-blue f-24"></i>
+                                                    <i class="fas fa-building text-c-red f-24"></i>
                                                 </div>
                                                 <div class="col-8 p-l-0">
-                                                    <h5>0</h5>
-                                                    <p class="text-muted m-b-0">Filles</p>
+                                                    <h5>{{ $bureauxCount }}</h5>
+                                                    <p class="text-muted m-b-0"> Bureaux</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -81,22 +70,22 @@
                                         <div class="col-sm-6 b-r-default p-b-20 p-t-20">
                                             <div class="row align-items-center text-center">
                                                 <div class="col-4 p-r-0">
-                                                    <i class="fas fa-user text-c-purple f-24"></i>
+                                                    <i class="fas fa-graduation-cap text-c-green f-24"></i>
                                                 </div>
                                                 <div class="col-8 p-l-0">
-                                                    <h5>0</h5>
-                                                    <p class="text-muted m-b-0">Enseignants</p>
+                                                    <h5>00</h5>
+                                                    <p class="text-muted m-b-0"> Niveaux</p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-6 p-b-20 p-t-20">
                                             <div class="row align-items-center text-center">
                                                 <div class="col-4 p-r-0">
-                                                    <i class="fas fa-users text-c-green f-24"></i>
+                                                    <i class="fas fa-cogs text-c-blue f-24"></i>
                                                 </div>
                                                 <div class="col-8 p-l-0">
-                                                    <h5>0</h5>
-                                                    <p class="text-muted m-b-0">Parents</p>
+                                                    <h5>00</h5>
+                                                    <p class="text-muted m-b-0">Options</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -105,22 +94,22 @@
                                         <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
                                             <div class="row align-items-center text-center">
                                                 <div class="col-4 p-r-0">
-                                                    <i class="fas fa-book text-c-red f-24"></i>
+                                                    <i class="fas fa-building text-c-red f-24"></i>
                                                 </div>
                                                 <div class="col-8 p-l-0">
-                                                    <h5>0</h5>
-                                                    <p class="text-muted m-b-0">Cours</p>
+                                                    <h5>00</h5>
+                                                    <p class="text-muted m-b-0">Classes</p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-6 p-b-20 p-t-20">
                                             <div class="row align-items-center text-center">
                                                 <div class="col-4 p-r-0">
-                                                    <i class="fas fa-building text-c-blue f-24"></i>
+                                                    <i class="fas fa-truck text-c-blue f-24"></i>
                                                 </div>
                                                 <div class="col-8 p-l-0">
-                                                    <h5>0</h5>
-                                                    <p class="text-muted m-b-0">Classes</p>
+                                                    <h5>00</h5>
+                                                    <p class="text-muted m-b-0">Fournisseurs</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -136,8 +125,8 @@
                                             <i class="fas fa-money-bill-alt mat-icon f-24"></i>
                                         </div>
                                         <div class="col-9 cst-cont">
-                                            <h5>00 USD</h5>
-                                            <p class="m-b-0">Cumul Frais Scolaires Payés</p>
+                                            <h5>00 bulletins</h5>
+                                            <p class="m-b-0">Solde Actuel des Bulletins Scolaires</p>
                                         </div>
                                     </div>
                                 </div>
@@ -149,8 +138,8 @@
                                             <i class="fas fa-money-bill-alt mat-icon f-24"></i>
                                         </div>
                                         <div class="col-9 cst-cont">
-                                            <h5>00 USD</h5>
-                                            <p class="m-b-0">Frais en attente de paiement</p>
+                                            <h5>00 bulletins</h5>
+                                            <p class="m-b-0">Stock des Bulltetins Livrés</p>
                                         </div>
                                     </div>
                                 </div>
@@ -166,7 +155,7 @@
                         <div class="col-xl-6 col-md-12">
                             <div class="card table-card">
                                 <div class="card-header">
-                                    <h5>Frais scolaires récemment payés</h5>
+                                    <h5>Situation Actuelle des Bulletins Scolaires</h5>
                                     <div class="card-header-right">
                                         <ul class="list-unstyled card-option">
                                             <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -195,22 +184,22 @@
                                 <div class="col-md-6">
                                     <div class="card text-center order-visitor-card">
                                         <div class="card-block">
-                                            <h6 class="m-b-0">Paiement Frais</h6>
+                                            <h6 class="m-b-0">Total Préliminaire</h6>
                                             <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-down m-r-15 text-c-red"></i>
                                                 00
                                             </h4>
-                                            <p class="m-b-0">Nbre d'élèves sans paiement</p>
+                                            <p class="m-b-0">Solde actuel</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="card text-center order-visitor-card">
                                         <div class="card-block">
-                                            <h6 class="m-b-0">Paiement Frais</h6>
+                                            <h6 class="m-b-0">Total Elémentaire</h6>
                                             <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-up m-r-15 text-c-green"></i>
                                                 00
                                             </h4>
-                                            <p class="m-b-0">Nbre d'élèves avec paiement</p>
+                                            <p class="m-b-0">Solde actuel</p>
                                         </div>
                                     </div>
                                 </div>
@@ -219,7 +208,7 @@
                                         <div class="card-block">
                                             <div class="text-left">
                                                 <h4>00</h4>
-                                                <p class="m-0">Elèves sans paiement</p>
+                                                <p class="m-0">Bulletins Livrés</p>
                                             </div>
                                             <span class="label bg-c-red value-badges">00 %</span>
                                         </div>
@@ -230,7 +219,7 @@
                                         <div class="card-block">
                                             <div class="text-left">
                                                 <h4>00</h4>
-                                                <p class="m-0">Elèves ayant soldé</p>
+                                                <p class="m-0">Bulletins Reçus</p>
                                             </div>
                                             <span class="label bg-c-green value-badges">00 %</span>
                                         </div>
@@ -239,22 +228,22 @@
                                 <div class="col-md-6">
                                     <div class="card text-center order-visitor-card">
                                         <div class="card-block">
-                                            <h6 class="m-b-0">Effectif finalistes /Humanités</h6>
+                                            <h6 class="m-b-0">Total Bulletins 7è</h6>
                                             <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-up m-r-15 text-c-green"></i>
                                                 00
                                             </h4>
-                                            <p class="m-b-0">00% de toute l'école</p>
+                                            <p class="m-b-0">00% du solde actuel</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="card text-center order-visitor-card">
                                         <div class="card-block">
-                                            <h6 class="m-b-0">Effectif finalistes /Primaires</h6>
+                                            <h6 class="m-b-0">Total Bulletins 8è</h6>
                                             <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-up m-r-15 text-c-green"></i>
                                                 00
                                             </h4>
-                                            <p class="m-b-0">00% de toute l'école</p>
+                                            <p class="m-b-0">00% du solde actuel</p>
                                         </div>
                                     </div>
                                 </div>
@@ -270,32 +259,32 @@
                                 <div class="card-block">
                                     <div class="row">
                                         <div class="col-xl-3 col-md-6">
-                                            <h6>Effectif Maternel</h6>
-                                            <h5 class="m-b-30 f-w-700">00 élèves, Soit <span class="text-c-green m-l-10">
+                                            <h6>Total Terminal</h6>
+                                            <h5 class="m-b-30 f-w-700">00 bulletins, Soit <span class="text-c-green m-l-10">
                                                 00%</span></h5>
                                             <div class="progress">
                                                 <div class="progress-bar bg-c-red" style="width:00%"></div>
                                             </div>
                                         </div>
                                         <div class="col-xl-3 col-md-6">
-                                            <h6>Effectif Niveau Moyen</h6>
-                                            <h5 class="m-b-30 f-w-700">00 élèves, Soit <span class="text-c-red m-l-10">
+                                            <h6>Total Niveau Moyen</h6>
+                                            <h5 class="m-b-30 f-w-700">00 bulletins, Soit <span class="text-c-red m-l-10">
                                                 00%</span></h5>
                                             <div class="progress">
                                                 <div class="progress-bar bg-c-blue" style="00%"></div>
                                             </div>
                                         </div>
                                         <div class="col-xl-3 col-md-6">
-                                            <h6>Effectif Ensg. de Base</h6>
-                                            <h5 class="m-b-30 f-w-700">00 élèves, Soit <span class="text-c-green m-l-10">
+                                            <h6>Total Ensg. de Base</h6>
+                                            <h5 class="m-b-30 f-w-700">00 bulletins, Soit <span class="text-c-green m-l-10">
                                                 00%</span></h5>
                                             <div class="progress">
                                                 <div class="progress-bar bg-c-green" style="00%"></div>
                                             </div>
                                         </div>
                                         <div class="col-xl-3 col-md-6">
-                                            <h6>Effectif Humanités</h6>
-                                            <h5 class="m-b-30 f-w-700">00 élèves, Soit <span class="text-c-green m-l-10">
+                                            <h6>Total Humanités</h6>
+                                            <h5 class="m-b-30 f-w-700">00 bulletins, Soit <span class="text-c-green m-l-10">
                                                 00%</span></h5>
                                             <div class="progress">
                                                 <div class="progress-bar bg-c-yellow" style="00%"></div>

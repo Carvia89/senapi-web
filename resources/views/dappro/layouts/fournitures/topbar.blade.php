@@ -40,6 +40,7 @@
             @php
                 $user = auth()->user();
                 $nom = $user->name;
+                $prenom = $user->prenom;
 
                 // Initialiser la variable photo
                 $photo = asset('dappro_dash_assets/assets/images/user-profile_.jpg'); // Chemin par défaut si pas de photo
@@ -71,7 +72,7 @@
                 </li>
             </ul>
             <ul class="nav-right">
-                @if (auth()->user()->role == 'Tuteur')
+                @if (auth()->user()->role == 'User')
                 <li class="header-notification">
                     <a href="#!" class="waves-effect waves-light">
                         <i class="ti-bell"></i>
@@ -128,7 +129,7 @@
                 <li class="user-profile header-notification">
                     <a href="#!" class="waves-effect waves-light">
                         <img src="{{ $photo }}" class="img-radius" alt="User-Profile-Image">
-                        <span>{{ $nom }}</span>
+                        <span>{{ $prenom }} {{ $nom }}</span>
                         <i class="ti-angle-down"></i>
                     </a>
                     <ul class="show-notification profile-notification">

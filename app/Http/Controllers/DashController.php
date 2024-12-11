@@ -6,11 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Bureau;
 use App\Models\CatgArticle;
+use App\Models\Direction;
+use App\Models\Division;
 use App\Models\Fournisseur;
 use App\Models\InStock;
 use App\Models\Inventaire;
 use App\Models\OutStock;
 use App\Models\UnitArticle;
+use App\Models\User;
 
 class DashController extends Controller
 {
@@ -66,7 +69,19 @@ class DashController extends Controller
 */
     public function indexFourniture()
     {
-        return view('dashboard.fourniture');
+        $directionsCount = Direction::count();  //Compter le nombre de direction
+        $usersCount = User::count();       //Compter le nombre d'utlisateurs
+        $divisionsCount = Division::count();       //Compter le nombre de divisions
+        $bureauxCount = Bureau::count();       //Compter le nombre de bureaux
+
+        return view('dashboard.fourniture',
+            compact(
+                'directionsCount',
+                'usersCount',
+                'divisionsCount',
+                'bureauxCount'
+            )
+        );
     }
 
 }

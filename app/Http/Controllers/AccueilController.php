@@ -103,48 +103,45 @@ class AccueilController extends Controller
     public function loginUser(Request $request)
     {
 
-            // Validation des données
-            $request->validate([
-                'direction_id' => 'required|exists:directions,id',
-                'bureau_id' => 'required|exists:bureaus,id',
-                'email' => 'required|email',
-                'password' => 'required|string',
-            ]);
+        // Validation des données
+        $request->validate([
+            'direction_id' => 'required|exists:directions,id',
+            'bureau_id' => 'required|exists:bureaus,id',
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
 
-            // Vérifiez si le bureau appartient à la direction
-            $bureau = Bureau::with('division')->find($request->bureau_id);
-            if ($bureau->division->direction_id != $request->direction_id) {
-                return back()->withErrors(['bureau_id' => 'Ce bureau n\'appartient pas à la direction sélectionnée.']);
+        // Vérifiez si le bureau appartient à la direction
+        $bureau = Bureau::with('division')->find($request->bureau_id);
+        if ($bureau->division->direction_id != $request->direction_id) {
+            return back()->withErrors(['bureau_id' => 'Ce bureau n\'appartient pas à la direction sélectionnée.']);
+        }
+
+        // Authentification de l'utilisateur
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            // Authentification réussie
+
+            // Vérifiez que l'utilisateur appartient au bureau sélectionné
+            if ($user->bureau_id != $bureau->id) {
+                return back()->withErrors(['bureau_id' => 'Vous n\'appartenez pas à ce bureau.']);
             }
 
-            // Authentification de l'utilisateur
-            $user = User::where('email', $request->email)->first();
+            // Redirection en fonction du bureau et du rôle de l'utilisateur
+            $userBureaux = [3, 9]; // ID des bureaux de la DAPPRO
 
-            if ($user && Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-                // Authentification réussie
-
-                // Vérifiez que l'utilisateur appartient au bureau sélectionné
-                if ($user->bureau_id != $bureau->id) {
-                    return back()->withErrors(['bureau_id' => 'Vous n\'appartenez pas à ce bureau.']);
-                }
-
-                // Redirection en fonction du bureau et du rôle de l'utilisateur
-                if ($user->bureau_id == 3 && $user->role == 'User') {
-                    return redirect()->route('dashboard.bureau')->with('success', 'Bienvenue sur votre tableau de bord');
-                } elseif ($user->bureau_id == 2 && $user->role == 'Admin') {
-                    return redirect()->route('dashboard.admin')->with('success', 'Bienvenue Admin');
-                }
-                // Ajoutez d'autres conditions ici selon vos besoins
-                // Exemple supplémentaire
-                elseif ($user->bureau_id == 3 && $user->role == 'user') {
-                    return redirect()->route('dashboard3')->with('success', 'Bienvenue sur votre tableau de bord 3');
-                }
-
-                // Redirection par défaut si aucune condition ne correspond
-                return redirect()->route('dashboard')->with('success', 'Bienvenue sur votre tableau de bord');
+            if (in_array($user->bureau_id, $userBureaux) && $user->role == 'User') {
+                return redirect()->route('dashboard.bureau')->with('success', 'Bienvenue sur votre tableau de bord');
+            } elseif ($user->bureau_id == 2 && $user->role == 'Admin') {
+                return redirect()->route('dashboard.admin')->with('success', 'Bienvenue Admin');
             }
 
-            // Si l'authentification échoue
-            return back()->withErrors(['email' => 'Identifiants incorrects.']);
+            // Redirection par défaut si aucune condition ne correspond
+            return redirect()->route('dashboard')->with('success', 'Bienvenue sur votre tableau de bord');
+        }
+
+        // Si l'authentification échoue
+        return back()->withErrors(['email' => 'Identifiants incorrects.']);
     }
 }
