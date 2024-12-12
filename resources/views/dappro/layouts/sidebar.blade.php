@@ -58,6 +58,33 @@
         </ul>
       </li><!-- End Components Nav -->
 
+      <li class="nav-item">
+        <a class="nav-link collapsed {{ Request::is('admin/*') ? 'active' : '' }}" data-bs-target="#components-nav4" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Bureau Fournitures</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav4" class="nav-content collapse {{ Request::is('admin/*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{ route('admin.Niveau.create') }}" class="{{ Request::routeIs('admin.Niveau.*') ? 'active' : '' }}">
+              <i class="bi bi-circle"></i><span>Niveaux Scolaires</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('admin.Cycle.create') }}" class="{{ Request::routeIs('admin.Cycle.*') ? 'active' : '' }}">
+              <i class="bi bi-circle"></i><span>Cycle Bulletins</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('admin.Option.create') }}" class="{{ Request::routeIs('admin.Option.*') ? 'active' : '' }}">
+              <i class="bi bi-circle"></i><span>Options Bulletins</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('admin.Kelasi.create') }}" class="{{ Request::routeIs('admin.Kelasi.*') ? 'active' : '' }}">
+              <i class="bi bi-circle"></i><span>Classes Bulletins</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Components Nav -->
       @endif
 
       @if(auth()->user()->role == 'User')

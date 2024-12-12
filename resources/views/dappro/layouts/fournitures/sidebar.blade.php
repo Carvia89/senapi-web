@@ -154,16 +154,16 @@
         @elseif (in_array($user->bureau_id, $userBureaux) && $user->role == 'User')
             <div class="pcoded-navigation-label">Bureau Fournitures</div>
             <ul class="pcoded-item pcoded-left-item">
-                <li class="{{ request()->routeIs('admin.bureau.*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.bureau.index') }}" class="waves-effect waves-dark">
-                        <span class="pcoded-micon"><i class="fas fa-calculator"></i></span>
+                <li class="{{ request()->routeIs('admin.fourn-founisseurs') ? 'active' : '' }}">
+                    <a href="{{ route('admin.fourn-founisseurs') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="fas fa-truck"></i></span>
                         <span class="pcoded-mtext">Fournisseurs</span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>
                 <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
                     <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
-                        <span class="pcoded-micon"><i class="fas fa-credit-card"></i></span>
+                        <span class="pcoded-micon"><i class="fas fa-shopping-cart"></i></span>
                         <span class="pcoded-mtext">Stock Début </span>
                         <span class="pcoded-mcaret"></span>
                     </a>
@@ -203,31 +203,39 @@
                     </li>
                 </ul>
                 <ul class="pcoded-item pcoded-left-item">
-                    <li class="pcoded-hasmenu {{ request()->routeIs('dashboard.direction3') ||
-                            request()->routeIs('dashboard.direction3') ||
-                            request()->routeIs('dashboard.direction3') ? 'active' : '' }} pcoded-trigger">
+                    <li class="pcoded-hasmenu {{ request()->routeIs('admin.niveauxScol') ||
+                            request()->routeIs('admin.cycleScol') ||
+                            request()->routeIs('admin.optionBul') ||
+                            request()->routeIs('admin.kelasi') ? 'active' : '' }} pcoded-trigger">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
                             <span class="pcoded-mtext">Promotion</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                         <ul class="pcoded-submenu">
-                            <li class="{{ request()->routeIs('dashboard.direction1') ? 'active' : '' }}">
-                                <a href="{{ route('dashboard.direction1') }}" class="waves-effect waves-dark">
+                            <li class="{{ request()->routeIs('admin.niveauxScol') ? 'active' : '' }}">
+                                <a href="{{ route('admin.niveauxScol') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext">Niveaux</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
-                            <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
-                                <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                            <li class="{{ request()->routeIs('admin.cycleScol') ? 'active' : '' }}">
+                                <a href="{{ route('admin.cycleScol') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Cycles</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('admin.optionBul') ? 'active' : '' }}">
+                                <a href="{{ route('admin.optionBul') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext">Options</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
-                            <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
-                                <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                            <li class="{{ request()->routeIs('admin.kelasi') ? 'active' : '' }}">
+                                <a href="{{ route('admin.kelasi') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext">Classes</span>
                                     <span class="pcoded-mcaret"></span>

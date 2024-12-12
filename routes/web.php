@@ -6,8 +6,12 @@ use App\Http\Controllers\Admin\
     ArticleController,
     BureauController,
     CatArticleController,
+    CycleController,
     DirectionController,
     DivisionController,
+    KelasiController,
+    NiveauController,
+    OptionController,
     UArticleController,
     UserController,
 };
@@ -46,6 +50,20 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('direction', DirectionController::class)->except(['show']);
         Route::resource('bureau', BureauController::class)->except(['show']);
         Route::resource('division', DivisionController::class)->except(['show']);
+
+        //Bureau Fournitures PARTIE ADMIN
+        Route::resource('Niveau', NiveauController::class)->except(['show']);
+        Route::resource('Cycle', CycleController::class)->except(['show']);
+        Route::resource('Kelasi', KelasiController::class)->except(['show']);
+        Route::resource('Option', OptionController::class)->except(['show']);
+
+        //Bureau Fournitures PARTIE USER
+        Route::get('/fournisseur-fournitures', [FournController::class, 'showFournisseur'])->name('fourn-founisseurs');
+        Route::get('/niveaux-scolaires', [NiveauController::class, 'showNiveau'])->name('niveauxScol');
+        Route::get('/cycles-scolaires', [CycleController::class, 'showCycle'])->name('cycleScol');
+        Route::get('/classes-bulletins', [KelasiController::class, 'showKelasi'])->name('kelasi');
+        Route::get('/options-bulletins', [OptionController::class, 'showOption'])->name('optionBul');
+
     });
 
     //Tableau de Bord pour la DANTIC

@@ -73,7 +73,7 @@
                                                     <i class="fas fa-graduation-cap text-c-green f-24"></i>
                                                 </div>
                                                 <div class="col-8 p-l-0">
-                                                    <h5>00</h5>
+                                                    <h5>{{ $niveauxCount }}</h5>
                                                     <p class="text-muted m-b-0"> Niveaux</p>
                                                 </div>
                                             </div>
@@ -97,7 +97,7 @@
                                                     <i class="fas fa-building text-c-red f-24"></i>
                                                 </div>
                                                 <div class="col-8 p-l-0">
-                                                    <h5>00</h5>
+                                                    <h5>{{ $kelasiCount }}</h5>
                                                     <p class="text-muted m-b-0">Classes</p>
                                                 </div>
                                             </div>
@@ -108,7 +108,7 @@
                                                     <i class="fas fa-truck text-c-blue f-24"></i>
                                                 </div>
                                                 <div class="col-8 p-l-0">
-                                                    <h5>00</h5>
+                                                    <h5>{{ $fournisseurCount }}</h5>
                                                     <p class="text-muted m-b-0">Fournisseurs</p>
                                                 </div>
                                             </div>

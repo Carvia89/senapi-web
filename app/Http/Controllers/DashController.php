@@ -11,6 +11,8 @@ use App\Models\Division;
 use App\Models\Fournisseur;
 use App\Models\InStock;
 use App\Models\Inventaire;
+use App\Models\Kelasi;
+use App\Models\Niveau;
 use App\Models\OutStock;
 use App\Models\UnitArticle;
 use App\Models\User;
@@ -69,17 +71,23 @@ class DashController extends Controller
 */
     public function indexFourniture()
     {
-        $directionsCount = Direction::count();  //Compter le nombre de direction
-        $usersCount = User::count();       //Compter le nombre d'utlisateurs
-        $divisionsCount = Division::count();       //Compter le nombre de divisions
-        $bureauxCount = Bureau::count();       //Compter le nombre de bureaux
+        $directionsCount = Direction::count();          //Compter le nombre de direction
+        $usersCount = User::count();                    //Compter le nombre d'utlisateurs
+        $divisionsCount = Division::count();            //Compter le nombre de divisions
+        $bureauxCount = Bureau::count();                //Compter le nombre de bureaux
+        $niveauxCount = Niveau::count();                //Compter le nombre de niveaux
+        $kelasiCount = Kelasi::count();                 //Compter le nombre de classes
+        $fournisseurCount = Fournisseur::count();       //Compter le nombre de fournisseurs
 
         return view('dashboard.fourniture',
             compact(
                 'directionsCount',
                 'usersCount',
                 'divisionsCount',
-                'bureauxCount'
+                'bureauxCount',
+                'niveauxCount',
+                'kelasiCount',
+                'fournisseurCount'
             )
         );
     }

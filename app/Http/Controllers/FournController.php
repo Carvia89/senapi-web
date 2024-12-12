@@ -73,4 +73,14 @@ class FournController extends Controller
         $fournisseur->delete();
         return to_route('admin.fournisseur.index');
     }
+
+    public function showFournisseur()
+    {
+        $fournisseurs = Fournisseur::orderBy('created_at', 'desc')->paginate(5);
+        return view('dappro.bur-fournitures.fournisseurs.index',
+            compact(
+                'fournisseurs'
+            )
+        );
+    }
 }
