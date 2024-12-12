@@ -32,6 +32,6 @@ class AppServiceProvider extends ServiceProvider
         OutStock::observe(OutStockObserver::class);
 
         //Gestion de la pagination utilisant Bootstrap
-        Paginator::useBootstrapFive();
+        Paginator::useBootstrapFour();
     }
 }

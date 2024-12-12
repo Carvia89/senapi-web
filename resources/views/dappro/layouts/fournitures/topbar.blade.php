@@ -30,7 +30,7 @@
                 // Vérifiez le rôle de l'utilisateur
                 var userRole = "{{ auth()->user()->role }}"; // Récupère le rôle de l'utilisateur depuis le backend
 
-                if (userRole === 'Admin' || userRole === 'Financier') {
+                if (userRole === 'User' || userRole === 'Admin') {
                     window.location.href = "{{ route('dashboard.bureau') }}"; // Redirige vers le dashboard
                 }
             });

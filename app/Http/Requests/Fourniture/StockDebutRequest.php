@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Fourniture;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class OptionRequest extends FormRequest
+class StockDebutRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class OptionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'designation' => ['required', 'min:3'],
-            'niveau_id' => ['required', 'exists:niveaux,id'],
-            'cycle_id' => ['nullable', 'exists:cycles,id'],
+            'option_id' => ['required', 'exists:options,id'],
+            'classe_id' => ['required', 'exists:kelasis,id'],
+            'stock_debut' => ['required', 'min:1']
         ];
     }
 }

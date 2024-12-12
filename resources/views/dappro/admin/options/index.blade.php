@@ -46,7 +46,7 @@
                                 <td scope="row">{{ $option->id }}</td>
                                 <td>{{ $option->designation }}</td>
                                 <td>{{ $option->niveau->designation }}</td>
-                                <td>{{ $option->cycle->designation }}</td>
+                                <td>{{ $option->cycle->designation ?? 'Aucun' }}</td>
                                 <td>
                                     <div class="d-flex gap-2 w-100 justify-content-end">
                                         <a href="{{ route('admin.Option.edit', $option) }}" title="Editer" class="btn btn-primary"><i class="bi bi-pencil color-muted m-r-5"></i></a>

@@ -28,6 +28,7 @@ use App\Http\Controllers\
     PDFController,
     ReportController,
 };
+use App\Http\Controllers\Fourniture\StockDebutController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -63,6 +64,8 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/cycles-scolaires', [CycleController::class, 'showCycle'])->name('cycleScol');
         Route::get('/classes-bulletins', [KelasiController::class, 'showKelasi'])->name('kelasi');
         Route::get('/options-bulletins', [OptionController::class, 'showOption'])->name('optionBul');
+        Route::resource('stockDebut-Fourniture', StockDebutController::class)->except(['show']);
+
 
     });
 

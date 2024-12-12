@@ -84,7 +84,7 @@
                                                     <i class="fas fa-cogs text-c-blue f-24"></i>
                                                 </div>
                                                 <div class="col-8 p-l-0">
-                                                    <h5>00</h5>
+                                                    <h5>{{ $optionCount }}</h5>
                                                     <p class="text-muted m-b-0">Options</p>
                                                 </div>
                                             </div>

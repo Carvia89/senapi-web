@@ -13,6 +13,7 @@ use App\Models\InStock;
 use App\Models\Inventaire;
 use App\Models\Kelasi;
 use App\Models\Niveau;
+use App\Models\Option;
 use App\Models\OutStock;
 use App\Models\UnitArticle;
 use App\Models\User;
@@ -78,6 +79,7 @@ class DashController extends Controller
         $niveauxCount = Niveau::count();                //Compter le nombre de niveaux
         $kelasiCount = Kelasi::count();                 //Compter le nombre de classes
         $fournisseurCount = Fournisseur::count();       //Compter le nombre de fournisseurs
+        $optionCount = Option::count();       //Compter le nombre d'options
 
         return view('dashboard.fourniture',
             compact(
@@ -87,7 +89,8 @@ class DashController extends Controller
                 'bureauxCount',
                 'niveauxCount',
                 'kelasiCount',
-                'fournisseurCount'
+                'fournisseurCount',
+                'optionCount'
             )
         );
     }

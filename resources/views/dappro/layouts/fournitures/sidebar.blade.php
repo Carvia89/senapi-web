@@ -161,8 +161,8 @@
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
-                    <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                <li class="{{ request()->routeIs('admin.stockDebut-Fourniture.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.stockDebut-Fourniture.create') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-shopping-cart"></i></span>
                         <span class="pcoded-mtext">Stock Début </span>
                         <span class="pcoded-mcaret"></span>
