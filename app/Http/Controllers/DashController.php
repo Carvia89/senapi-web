@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Bureau;
 use App\Models\CatgArticle;
+use App\Models\ClientVente;
+use App\Models\CommandeVente;
 use App\Models\Direction;
 use App\Models\Division;
 use App\Models\Fournisseur;
@@ -70,6 +72,7 @@ class DashController extends Controller
         return view('dashboard.bureau', compact('bureau'));
     }
 */
+
     public function indexFourniture()
     {
         $directionsCount = Direction::count();          //Compter le nombre de direction
@@ -79,7 +82,7 @@ class DashController extends Controller
         $niveauxCount = Niveau::count();                //Compter le nombre de niveaux
         $kelasiCount = Kelasi::count();                 //Compter le nombre de classes
         $fournisseurCount = Fournisseur::count();       //Compter le nombre de fournisseurs
-        $optionCount = Option::count();       //Compter le nombre d'options
+        $optionCount = Option::count();                 //Compter le nombre d'options
 
         return view('dashboard.fourniture',
             compact(
@@ -94,5 +97,44 @@ class DashController extends Controller
             )
         );
     }
+
+    public function indexVente()
+    {
+        $directionsCount = Direction::count();          //Compter le nombre de direction
+        $usersCount = User::count();                    //Compter le nombre d'utlisateurs
+        $divisionsCount = Division::count();            //Compter le nombre de divisions
+        $bureauxCount = Bureau::count();                //Compter le nombre de bureaux
+        $niveauxCount = Niveau::count();                //Compter le nombre de niveaux
+        $kelasiCount = Kelasi::count();                 //Compter le nombre de classes
+        $fournisseurCount = Fournisseur::count();       //Compter le nombre de fournisseurs
+        $optionCount = Option::count();                 //Compter le nombre d'options
+        $clientCount = ClientVente::count();
+        // Compter le nombre de commandes distinctes avec category_cmd = "Interne"
+        $interneCount = CommandeVente::where('category_cmd', 'Interne')
+                                    ->distinct('num_cmd') // Compter uniquement les commandes distinctes
+                                    ->count('num_cmd'); // Compter les num_cmd distincts
+
+        // Compter le nombre de commandes distinctes avec category_cmd = "Externe"
+        $externeCount = CommandeVente::where('category_cmd', 'Externe')
+                                    ->distinct('num_cmd') // Compter uniquement les commandes distinctes
+                                    ->count('num_cmd'); // Compter les num_cmd distincts
+
+        return view('dashboard.vente',
+            compact(
+                'directionsCount',
+                'usersCount',
+                'divisionsCount',
+                'bureauxCount',
+                'niveauxCount',
+                'kelasiCount',
+                'fournisseurCount',
+                'optionCount',
+                'clientCount',
+                'interneCount',
+                'externeCount'
+            )
+        );
+    }
+
 
 }

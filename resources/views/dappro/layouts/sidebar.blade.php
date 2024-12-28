@@ -85,6 +85,19 @@
           </li>
         </ul>
       </li><!-- End Components Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed {{ Request::is('admin/*') ? 'active' : '' }}" data-bs-target="#components-nav41" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Division Vente</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav41" class="nav-content collapse {{ Request::is('admin/*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{ route('admin.PrixBulletin.create') }}" class="{{ Request::routeIs('admin.PrixBulletin.*') ? 'active' : '' }}">
+              <i class="bi bi-circle"></i><span>Prix Bulletin</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- DIVISION VENTE -->
       @endif
 
       @if(auth()->user()->role == 'User')

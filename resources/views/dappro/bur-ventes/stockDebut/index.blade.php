@@ -21,7 +21,7 @@
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5>Liste des articles du Stock de Départ</h5>
-                                    <a href="{{ route('admin.stockDebut-Fourniture.create') }}" class="btn btn-primary btn-round">
+                                    <a href="{{ route('admin.stockDebut-Vente.create') }}" class="btn btn-primary btn-round">
                                         <i class="fas fa-plus"></i>
                                         Ajouter
                                     </a>
@@ -47,11 +47,11 @@
                                                     <td>{{ number_format($stockDebut->stock_debut, 0, ',', ' ') }} Bulletins</td>
                                                     <td>
                                                         <div class="d-flex justify-content-end mb-3">
-                                                            <a href="{{ route('admin.stockDebut-Fourniture.edit', $stockDebut) }}"
+                                                            <a href="{{ route('admin.stockDebut-Vente.edit', $stockDebut) }}"
                                                                 title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
-                                                            <form action="{{ route('admin.stockDebut-Fourniture.destroy', $stockDebut) }}"
+                                                            <form action="{{ route('admin.stockDebut-Vente.destroy', $stockDebut) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method("delete")

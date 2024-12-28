@@ -57,7 +57,7 @@
                                 </td>
                                 <td>{{ $user->role }}</td>
                                 <td>
-                                    @if ($user->account_status)
+                                    @if (is_null($user->account_status) || $user->account_status == 1)
                                         <span class="badge bg-success">Actif</span>
                                     @else
                                         <span class="badge bg-danger">Inactif</span>

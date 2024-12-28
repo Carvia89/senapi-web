@@ -6,22 +6,9 @@
     // Initialiser la variable photo
     $photo = asset('dappro_dash_assets/assets/images/user-profile_.jpg'); // Chemin par défaut si pas de photo
     $userBureaux = [3, 9]; // ID des bureaux de la DAPPRO
+    $userBurVente = [10]; // ID des bureaux division Vente
+    $userBurDistr = [11]; // ID des bureaux distribution
 
-    /*
-    // Récupérer les informations selon le rôle de l'utilisateur
-    if ($user->role === 'Elève') {
-        $identity = App\Models\Eleve::find($user->user_reference_id); // Récupérer les informations de l'élève
-        $photo = $identity->photo ? asset('storage/' . $identity->photo) : $photo;
-
-    } elseif ($user->role === 'Enseignant') {
-        $identity = App\Models\Enseignant::find($user->user_reference_id); // Récupérer les informations de l'enseignant
-        $photo = $identity->photo ? asset('storage/' . $identity->photo) : $photo;
-
-    } elseif ($user->role === 'Tuteur') {
-                    $identity = App\Models\Tutaire::find($user->user_reference_id); // Récupérer les informations du tuteur
-                    $photo = $identity->photo ? asset('storage/' . $identity->photo) : $photo;
-    }
-*/
 @endphp
 
 <nav class="pcoded-navbar">
@@ -151,6 +138,9 @@
                     </a>
                 </li>
             </ul>
+
+        <!-- *************** BUREAU MAGASINAGE FOURNITURES SCOLAIRES ******************* -->
+
         @elseif (in_array($user->bureau_id, $userBureaux) && $user->role == 'User')
             <div class="pcoded-navigation-label">Bureau Fournitures</div>
             <ul class="pcoded-item pcoded-left-item">
@@ -169,33 +159,41 @@
                     </a>
                 </li>
                 <ul class="pcoded-item pcoded-left-item">
-                    <li class="pcoded-hasmenu {{ request()->routeIs('dashboard.direction3') ||
-                            request()->routeIs('dashboard.direction3') ||
-                            request()->routeIs('dashboard.direction3') ? 'active' : '' }} pcoded-trigger">
+                    <li class="pcoded-hasmenu {{ request()->routeIs('admin.entree-Fourniture.*') ||
+                            request()->routeIs('admin.transfert-commande.*') ||
+                            request()->routeIs('admin.inventaire') ||
+                            request()->routeIs('admin.sortie-Fourniture.*') ? 'active' : '' }} pcoded-trigger">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
                             <span class="pcoded-mtext">Mouvement de Stock</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                         <ul class="pcoded-submenu">
-                            <li class="{{ request()->routeIs('dashboard.direction1') ? 'active' : '' }}">
-                                <a href="{{ route('dashboard.direction1') }}" class="waves-effect waves-dark">
+                            <li class="{{ request()->routeIs('admin.transfert-commande.*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.transfert-commande.index') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                    <span class="pcoded-mtext">Panier</span>
+                                    <span class="pcoded-mtext">Commandes en attente</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
-                            <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
-                                <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                            <li class="{{ request()->routeIs('admin.entree-Fourniture.*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.entree-Fourniture.create') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext">Approvisionnement</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
-                            <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
-                                <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                            <li class="{{ request()->routeIs('admin.sortie-Fourniture.*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.sortie-Fourniture.create') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext">Livraison</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('admin.inventaire') ? 'active' : '' }}">
+                                <a href="{{ route('admin.inventaire') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Inventaire</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
@@ -279,28 +277,102 @@
                     </li>
                 </ul>
             </ul>
-        @elseif(auth()->user()->role == 'Enseignant')
-            <div class="pcoded-navigation-label">Espace Enseignant</div>
+
+        <!-- ************************* BUREAU POINT DE VENTE ************************** -->
+
+        @elseif(in_array($user->bureau_id, $userBurVente) && $user->role == 'User')
+            <div class="pcoded-navigation-label">Bureau Vente</div>
+            <ul class="pcoded-item pcoded-left-item">
+                <li class="{{ request()->routeIs('admin.client-Vente.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.client-Vente.create') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="fas fa-users"></i><b>FC</b></span>
+                        <span class="pcoded-mtext">Clients</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('admin.stockDebut-Vente.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.stockDebut-Vente.create') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="fas fa-shopping-cart"></i><b>SA</b></span>
+                        <span class="pcoded-mtext">Stock Début</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                </li>
+                <li class="pcoded-hasmenu {{ request()->routeIs('admin.commande-Interne.*') ||
+                    request()->routeIs('admin.commande-Externe.*') ||
+                    request()->routeIs('dashboard.direction3') ? 'active' : '' }} pcoded-trigger">
+                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
+                        <span class="pcoded-mtext">Commandes</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li class="{{ request()->routeIs('admin.commande-Interne.*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.commande-Interne.create') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext">Interne</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->routeIs('admin.commande-Externe.*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.commande-Externe.create') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext">Externe</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="fas fa-cart-plus"></i><b>FC</b></span>
+                        <span class="pcoded-mtext">Approvisionnement</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="fas fa-truck"></i><b>LV</b></span>
+                        <span class="pcoded-mtext">Livraison</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                </li>
+            </ul>
+
+        @elseif(in_array($user->bureau_id, $userBurVente) && $user->role == 'Caissier')
+            <div class="pcoded-navigation-label">Bureau Vente</div>
             <ul class="pcoded-item pcoded-left-item">
                 <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
                     <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-book"></i><b>FC</b></span>
-                        <span class="pcoded-mtext">Mes Cours</span>
+                        <span class="pcoded-mtext">Facturation</span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('dashboard.direction1') ||
-                            request()->routeIs('dashboard.direction1') ? 'active' : '' }}">
-                    <a href="{{ route('dashboard.direction1') }}" class="waves-effect waves-dark">
-                        <span class="pcoded-micon"><i class="fas fa-clock"></i><b>FC</b></span>
-                        <span class="pcoded-mtext">Pointage Présences</span>
+            </ul>
+
+        <!-- ************************* BUREAU DISTRIBUTION ************************** -->
+
+        @elseif(in_array($user->bureau_id, $userBurDistr) && $user->role == 'User')
+            <div class="pcoded-navigation-label">Bureau Distribution</div>
+            <ul class="pcoded-item pcoded-left-item">
+                <li class="{{ request()->routeIs('admin.transfert-commande.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.transfert-commande.create') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="fas fa-paper-plane"></i><b>FC</b></span>
+                        <span class="pcoded-mtext">Transfert Commandes</span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('admin.bureau.*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.bureau.create') }}" class="waves-effect waves-dark">
+                <li class="{{ request()->routeIs('admin.stockDebut-Vente.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.stockDebut-Vente.create') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="fas fa-file-alt"></i><b>SA</b></span>
+                        <span class="pcoded-mtext">Liste de Colisage</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                </li>
+                <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-file-alt"></i><b>FC</b></span>
-                        <span class="pcoded-mtext">Transcription Côtes</span>
+                        <span class="pcoded-mtext">Note d'Envoi</span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>

@@ -29,9 +29,16 @@
 
                 // Vérifiez le rôle de l'utilisateur
                 var userRole = "{{ auth()->user()->role }}"; // Récupère le rôle de l'utilisateur depuis le backend
+                var userBureau = "{{ auth()->user()->bureau_id }}"; // Récupère le bureau de l'utilisateur depuis le backend
 
-                if (userRole === 'User' || userRole === 'Admin') {
-                    window.location.href = "{{ route('dashboard.bureau') }}"; // Redirige vers le dashboard
+                if (userRole === 'User') {
+                    if (userBureau == 10) {
+                        window.location.href = "{{ route('dashboard.bureau.vente') }}"; // Redirige vers le bureau de vente
+                    } else if (userBureau == 6) {
+                        window.location.href = "{{ route('dashboard.bureau') }}"; // Redirige vers le bureau par défaut
+                    }
+                } else if (userRole === 'Admin') {
+                    window.location.href = "{{ route('dashboard.bureau') }}"; // Redirige vers le dashboard admin
                 }
             });
         </script>
@@ -44,21 +51,7 @@
 
                 // Initialiser la variable photo
                 $photo = asset('dappro_dash_assets/assets/images/user-profile_.jpg'); // Chemin par défaut si pas de photo
-/*
-                // Récupérer les informations selon le rôle de l'utilisateur
-                if ($user->role === 'Elève') {
-                    $identity = App\Models\Eleve::find($user->user_reference_id); // Récupérer les informations de l'élève
-                    $photo = $identity->photo ? asset('storage/' . $identity->photo) : $photo;
 
-                } elseif ($user->role === 'Enseignant') {
-                    $identity = App\Models\Enseignant::find($user->user_reference_id); // Récupérer les informations de l'enseignant
-                    $photo = $identity->photo ? asset('storage/' . $identity->photo) : $photo;
-
-                } elseif ($user->role === 'Tuteur') {
-                    $identity = App\Models\Tutaire::find($user->user_reference_id); // Récupérer les informations du tuteur
-                    $photo = $identity->photo ? asset('storage/' . $identity->photo) : $photo;
-                }
-*/
             @endphp
 
             <ul class="nav-left">
@@ -73,58 +66,19 @@
             </ul>
             <ul class="nav-right">
                 @if (auth()->user()->role == 'User')
-                <li class="header-notification">
-                    <a href="#!" class="waves-effect waves-light">
-                        <i class="ti-bell"></i>
-                        <span class="badge bg-c-red"></span>
-                    </a>
-                    <style>
-                        .notification {
-                            padding: 10px;
-                            border: 1px solid #ddd;
-                            margin: 10px 0;
-                        }
-                    </style>
-                    <ul class="show-notification">
-                        <li>
-                            <h6>Notifications</h6>
-                            <label class="label label-danger">New</label>
-                        </li>
-                        <li class="waves-effect waves-light">
-                            <div class="media">
-                                <img class="d-flex align-self-center img-radius"
-                                    src="{{ asset('dappro_dash_assets/assets/images/user-profile_.jpg') }}"
-                                    alt="Generic placeholder image">
-                                <div class="media-body">
-                                    <h5 class="notification-user">Charles Thamba</h5>
-                                    <p class="notification-msg">Les notifications seront bientôt prises en charge.</p>
-                                    <span class="notification-time" id="session-time">0 minutes ago</span>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <script>
-                        // Vérifier si l'heure de début est déjà enregistrée
-                        let startTime = localStorage.getItem('sessionStartTime');
-
-                        if (!startTime) {
-                            startTime = Date.now(); // Enregistrer l'heure de début si elle n'existe pas
-                            localStorage.setItem('sessionStartTime', startTime);
-                        } else {
-                            startTime = parseInt(startTime); // Convertir en entier
-                        }
-
-                        const sessionTimeDisplay = document.getElementById('session-time');
-
-                        function updateSessionTime() {
-                            const elapsedTime = Math.floor((Date.now() - startTime) / 60000); // Temps écoulé en minutes
-                            sessionTimeDisplay.textContent = `${elapsedTime} minute${elapsedTime !== 1 ? 's' : ''} ago`; // Mettre à jour le texte
-                        }
-
-                        setInterval(updateSessionTime, 60000); // Mettre à jour toutes les minutes
-                        updateSessionTime(); // Mettre à jour immédiatement au chargement
-                    </script>
-                </li>
+                    <li class="header-notification">
+                        <a href="#!" class="waves-effect waves-light" onclick="loadNotifications()">
+                            <i class="ti-bell"></i>
+                            <span class="badge bg-c-red" id="notification-count">{{ auth()->user()->unreadNotifications->count() }}</span>
+                        </a>
+                        <ul class="show-notification" id="notification-list">
+                            <li>
+                                <h6>Notifications</h6>
+                                <label class="label label-danger">New</label>
+                            </li>
+                            <!-- Les notifications seront ajoutées ici -->
+                        </ul>
+                    </li>
                 @endif
                 <li class="user-profile header-notification">
                     <a href="#!" class="waves-effect waves-light">
@@ -153,6 +107,35 @@
                     </ul>
                 </li>
             </ul>
+            <script>
+                function loadNotifications() {
+                    fetch('/notifications') // Endpoint pour récupérer les notifications
+                        .then(response => response.json())
+                        .then(data => {
+                            const notificationList = document.getElementById('notification-list');
+                            notificationList.innerHTML = ''; // Vider la liste des notifications
+                            data.notifications.forEach(notification => {
+                                const li = document.createElement('li');
+                                li.className = 'waves-effect waves-light';
+                                li.innerHTML = `
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <h5 class="notification-user">${notification.data.userName}</h5>
+                                            <p class="notification-msg">${notification.data.message}</p>
+                                            <a href="${notification.data.pdfPath}" download>Télécharger le PDF</a>
+                                            <span class="notification-time">${notification.created_at}</span>
+                                        </div>
+                                    </div>
+                                `;
+                                notificationList.appendChild(li);
+                            });
+                            document.getElementById('notification-count').innerText = data.count; // Mettre à jour le compteur
+                        });
+                }
+
+                // Appeler la fonction pour charger les notifications au chargement de la page
+                document.addEventListener('DOMContentLoaded', loadNotifications);
+            </script>
         </div>
     </div>
 </nav>

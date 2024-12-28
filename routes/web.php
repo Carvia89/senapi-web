@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\
     KelasiController,
     NiveauController,
     OptionController,
+    PrixBulletinController,
     UArticleController,
     UserController,
 };
@@ -24,11 +25,19 @@ use App\Http\Controllers\
     GetElementController,
     globalReportController,
     InStockController,
+    NotificationController,
     OutStockController,
     PDFController,
     ReportController,
 };
+use App\Http\Controllers\Distribution\TransferController;
+use App\Http\Controllers\Fourniture\EntreeFournController;
+use App\Http\Controllers\Fourniture\PanierSortieController;
 use App\Http\Controllers\Fourniture\StockDebutController;
+use App\Http\Controllers\Vente\ClientController;
+use App\Http\Controllers\Vente\PanierController;
+use App\Http\Controllers\Vente\PanierExtController;
+use App\Http\Controllers\Vente\StkDebutController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -39,6 +48,8 @@ Route::get('/login/{direction_id}', [AccueilController::class, 'showLoginForm'])
 Route::post('/login/{direction_id}', [AccueilController::class, 'login'])->name('login');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/bureaux/{direction_id}', [AccueilController::class, 'getBureaux'])->name('bureaux.get');
+Route::get('/get-quantity/{num_cmd}', [TransferController::class, 'getQuantity']);
+
 
 Route::middleware(['auth'])->group(function() {
 // Route pour la DAPPRO
@@ -57,6 +68,8 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('Cycle', CycleController::class)->except(['show']);
         Route::resource('Kelasi', KelasiController::class)->except(['show']);
         Route::resource('Option', OptionController::class)->except(['show']);
+        Route::resource('PrixBulletin', PrixBulletinController::class)->except(['show']);
+
 
         //Bureau Fournitures PARTIE USER
         Route::get('/fournisseur-fournitures', [FournController::class, 'showFournisseur'])->name('fourn-founisseurs');
@@ -65,6 +78,25 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/classes-bulletins', [KelasiController::class, 'showKelasi'])->name('kelasi');
         Route::get('/options-bulletins', [OptionController::class, 'showOption'])->name('optionBul');
         Route::resource('stockDebut-Fourniture', StockDebutController::class)->except(['show']);
+        Route::resource('entree-Fourniture', EntreeFournController::class);
+        Route::get('/notifications', [NotificationController::class, 'getNotifications']);
+        Route::resource('sortie-Fourniture', PanierSortieController::class)->except(['index', 'destroy', 'show']);
+        Route::post('/sortie-fourniture', [PanierSortieController::class, 'livraison'])->name('panier.sortie');
+        Route::get('/inventaire', [PanierSortieController::class, 'inventaire'])->name('inventaire');
+
+
+        //** Bureau Vente  **//
+        Route::resource('client-Vente', ClientController::class);
+        Route::resource('stockDebut-Vente', StkDebutController::class)->except(['show']);
+        Route::resource('commande-Interne', PanierController::class)->except(['index']);
+        Route::resource('commande-Externe', PanierExtController::class)->except(['index', 'show']);
+        Route::post('/commande-externe-form', [PanierExtController::class, 'panierVide'])->name('commande.externe');
+
+            //Reporting
+            Route::post('/generate-pdf', [PanierController::class, 'show'])->name('generate.pdf');
+
+        //**  Bureau Distribution  **//
+        Route::resource('transfert-commande', TransferController::class)->except(['show', 'destroy']);
 
 
     });
@@ -87,6 +119,9 @@ Route::middleware(['auth'])->group(function() {
 
     //Les routes pour les tableaux de bord suivant les bureaux
     Route::get('/dashboard/fourniture', [DashController::class, 'indexFourniture'])->name('dashboard.bureau');
+    Route::get('/dashboard/vente', [DashController::class, 'indexVente'])->name('dashboard.bureau.vente');
+
+
 
 /*
     Route::get('dashboard', [DashController::class, 'index'])->name('dashboard');

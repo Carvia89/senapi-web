@@ -129,10 +129,19 @@ class AccueilController extends Controller
             }
 
             // Redirection en fonction du bureau et du rôle de l'utilisateur
-            $userBureaux = [3, 9]; // ID des bureaux de la DAPPRO
+            $userBureaux = [3, 9]; // ID des bureaux de la division fournitures
+            $userBurVente = [10];  // ID des bureaux de la division Vente
+            $userBurDistr = [11];  // ID des bureaux Distribution
 
             if (in_array($user->bureau_id, $userBureaux) && $user->role == 'User') {
                 return redirect()->route('dashboard.bureau')->with('success', 'Bienvenue sur votre tableau de bord');
+
+            } elseif (in_array($user->bureau_id, $userBurVente) && $user->role == 'User') {
+                return redirect()->route('dashboard.bureau.vente')->with('success', 'Bienvenue sur votre tableau de bord');
+
+            } elseif (in_array($user->bureau_id, $userBurDistr) && $user->role == 'User') {
+                return redirect()->route('admin.transfert-commande.create');
+
             } elseif ($user->bureau_id == 2 && $user->role == 'Admin') {
                 return redirect()->route('dashboard.admin')->with('success', 'Bienvenue Admin');
             }

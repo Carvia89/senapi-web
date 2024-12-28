@@ -20,8 +20,8 @@
 
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5>Liste des articles du Stock de Départ</h5>
-                                    <a href="{{ route('admin.stockDebut-Fourniture.create') }}" class="btn btn-primary btn-round">
+                                    <h5>Liste des clients</h5>
+                                    <a href="{{ route('admin.client-Vente.create') }}" class="btn btn-primary btn-round">
                                         <i class="fas fa-plus"></i>
                                         Ajouter
                                     </a>
@@ -32,26 +32,30 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Option</th>
-                                                    <th>Classe</th>
-                                                    <th>Stock Début</th>
+                                                    <th>Désignation</th>
+                                                    <th>Adresse</th>
+                                                    <th>Téléphone</th>
                                                     <th class="d-flex justify-content-end">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($stockDebuts as $stockDebut)
+                                                @foreach ($clients as $client)
                                                 <tr>
-                                                    <td scope="row">{{ $stockDebut->id }}</td>
-                                                    <td>{{ $stockDebut->methodOption->designation }}</td>
-                                                    <td>{{ $stockDebut->classe->designation }}</td>
-                                                    <td>{{ number_format($stockDebut->stock_debut, 0, ',', ' ') }} Bulletins</td>
+                                                    <td scope="row">{{ $client->id }}</td>
+                                                    <td>{{ $client->designation }}</td>
+                                                    <td>{{ $client->adresse }}</td>
+                                                    <td>{{ $client->telephone ?? 'Aucun'}} </td>
                                                     <td>
                                                         <div class="d-flex justify-content-end mb-3">
-                                                            <a href="{{ route('admin.stockDebut-Fourniture.edit', $stockDebut) }}"
+                                                            <a href="{{ route('admin.client-Vente.show', $client) }}"
+                                                                title="Voir" class="btn btn-primary btn-circle btn-sm me-4">
+                                                                <i class="fas fa-eye"></i>
+                                                            </a>
+                                                            <a href="{{ route('admin.client-Vente.edit', $client) }}"
                                                                 title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
-                                                            <form action="{{ route('admin.stockDebut-Fourniture.destroy', $stockDebut) }}"
+                                                            <form action="{{ route('admin.client-Vente.destroy', $client) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method("delete")
@@ -66,7 +70,7 @@
                                             </tbody>
                                         </table>
                                         <!-- Pagination -->
-                                        {{ $stockDebuts->links() }}
+                                        {{ $clients->links() }}
                                     </div>
                                 </div>
                             </div>

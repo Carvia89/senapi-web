@@ -43,7 +43,12 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         try {
-            $users = User::create($request->validated());
+            // Ajouter la valeur par défaut pour account_status
+            $data = $request->validated();
+            $data['account_status'] = 1; // Définir account_status à 1
+
+            $users = User::create($data);
+
             return to_route('admin.Utilisateur.index')
                     ->with('success', 'Utilisateur créé avec succès.');
 
@@ -59,7 +64,6 @@ class UserController extends Controller
                 throw $e;
             }
         }
-
     }
 
 
