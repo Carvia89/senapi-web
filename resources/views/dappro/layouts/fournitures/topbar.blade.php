@@ -36,6 +36,8 @@
                         window.location.href = "{{ route('dashboard.bureau.vente') }}"; // Redirige vers le bureau de vente
                     } else if (userBureau == 6) {
                         window.location.href = "{{ route('dashboard.bureau') }}"; // Redirige vers le bureau par défaut
+                    } else if (userBureau == 9) {
+                        window.location.href = "{{ route('dashboard.bureau') }}"; // Redirige vers le bureau par défaut
                     }
                 } else if (userRole === 'Admin') {
                     window.location.href = "{{ route('dashboard.bureau') }}"; // Redirige vers le dashboard admin

@@ -68,8 +68,8 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Option</th>
                                                 <th>Classe</th>
+                                                <th>Option</th>
                                                 <th>Stock Début</th>
                                                 <th>Entrée</th>
                                                 <th>Sortie</th>
@@ -80,8 +80,8 @@
                                             @foreach ($enregistrements as $enregistrement)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $options->find($enregistrement->option_id)->designation ?? 'N/A' }}</td>
                                                     <td>{{ $kelasis->find($enregistrement->classe_id)->designation ?? 'N/A' }}</td>
+                                                    <td>{{ $options->find($enregistrement->option_id)->designation ?? 'N/A' }}</td>
                                                     <td>{{ number_format($enregistrement->stock_debut, 0, ',', ' ') }}</td>
                                                     <td>{{ number_format($enregistrement->quantite_recue, 0, ',', ' ') }}</td>
                                                     <td>{{ number_format($enregistrement->qte_livree, 0, ',', ' ') }}</td>

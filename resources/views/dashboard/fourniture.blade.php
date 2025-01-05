@@ -122,10 +122,10 @@
                                 <div class="card-block">
                                     <div class="row">
                                         <div class="col-3 text-center bg-c-green">
-                                            <i class="fas fa-money-bill-alt mat-icon f-24"></i>
+                                            <i class="fas fa-file-alt mat-icon f-24"></i>
                                         </div>
                                         <div class="col-9 cst-cont">
-                                            <h5>00 bulletins</h5>
+                                            <h5>{{ number_format($soldeActuel, 0, ',', ' ') }} bulletins</h5>
                                             <p class="m-b-0">Solde Actuel des Bulletins Scolaires</p>
                                         </div>
                                     </div>
@@ -135,10 +135,10 @@
                                 <div class="card-block">
                                     <div class="row">
                                         <div class="col-3 text-center bg-c-red">
-                                            <i class="fas fa-money-bill-alt mat-icon f-24"></i>
+                                            <i class="fas fa-file-alt mat-icon f-24"></i>
                                         </div>
                                         <div class="col-9 cst-cont">
-                                            <h5>00 bulletins</h5>
+                                            <h5>{{ number_format($qteLivreeTotal, 0, ',', ' ') }} bulletins</h5>
                                             <p class="m-b-0">Stock des Bulltetins Livrés</p>
                                         </div>
                                     </div>
@@ -169,10 +169,38 @@
                                 <div class="card-block">
                                     <div class="table-responsive">
                                         <table class="table table-hover m-b-0 without-header">
-                                            <!-- Tableau à insérer
-
-                                        -->
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Classe</th>
+                                                    <th>Option</th>
+                                                    <th>Stock Début</th>
+                                                    <th>Entrée</th>
+                                                    <th>Sortie</th>
+                                                    <th style="font-weight: bold; font-size: 1.2em; text-align: right;">Solde</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($enregistrements as $enregistrement)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $kelasis->find($enregistrement->classe_id)->designation ?? 'N/A' }}</td>
+                                                        <td>{{ $options->find($enregistrement->option_id)->designation ?? 'N/A' }}</td>
+                                                        <td>{{ number_format($enregistrement->stock_debut, 0, ',', ' ') }}</td>
+                                                        <td>{{ number_format($enregistrement->quantite_recue, 0, ',', ' ') }}</td>
+                                                        <td>{{ number_format($enregistrement->qte_livree, 0, ',', ' ') }}</td>
+                                                        <td style="font-weight: bold; font-size: 1em; text-align: right;">
+                                                            {{ number_format($enregistrement->stock_debut + $enregistrement->quantite_recue - $enregistrement->qte_livree, 0, ',', ' ') }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
                                         </table>
+                                        <div>
+                                            <div>
+                                                {{ $enregistrements->links() }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -207,10 +235,10 @@
                                     <div class="card bg-c-red total-card">
                                         <div class="card-block">
                                             <div class="text-left">
-                                                <h4>00</h4>
+                                                <h4>{{ number_format($qteLivreeTotal, 0, ',', ' ') }}</h4>
                                                 <p class="m-0">Bulletins Livrés</p>
                                             </div>
-                                            <span class="label bg-c-red value-badges">00 %</span>
+                                            <span class="label bg-c-red value-badges">{{ number_format($pourcentageLivres, 2, ',', ' ') }}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -218,10 +246,10 @@
                                     <div class="card bg-c-green total-card">
                                         <div class="card-block">
                                             <div class="text-left">
-                                                <h4>00</h4>
+                                                <h4>{{ number_format($quantiteRecuTotal, 0, ',', ' ') }}</h4>
                                                 <p class="m-0">Bulletins Reçus</p>
                                             </div>
-                                            <span class="label bg-c-green value-badges">00 %</span>
+                                            <span class="label bg-c-green value-badges">{{ number_format($pourcentageRecu, 2, ',', ' ') }}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -258,38 +286,16 @@
                             <div class="card proj-progress-card">
                                 <div class="card-block">
                                     <div class="row">
+                                        @foreach ($resultats as $niveauId => $resultat)
                                         <div class="col-xl-3 col-md-6">
-                                            <h6>Total Terminal</h6>
-                                            <h5 class="m-b-30 f-w-700">00 bulletins, Soit <span class="text-c-green m-l-10">
-                                                00%</span></h5>
+                                            <h6>Total {{ $resultat['nom'] }}</h6>
+                                            <h5 class="m-b-30 f-w-700">{{ number_format($resultat['solde'], 0, ',', ' ') }} blts, Soit <span class="text-c-green m-l-10">
+                                                {{ number_format($resultat['pourcentage'], 2) }}%</span></h5>
                                             <div class="progress">
-                                                <div class="progress-bar bg-c-red" style="width:00%"></div>
+                                                <div class="progress-bar {{ $resultat['couleur'] }}" style="width: {{ number_format($resultat['pourcentage'], 2) }}%"></div>
                                             </div>
                                         </div>
-                                        <div class="col-xl-3 col-md-6">
-                                            <h6>Total Niveau Moyen</h6>
-                                            <h5 class="m-b-30 f-w-700">00 bulletins, Soit <span class="text-c-red m-l-10">
-                                                00%</span></h5>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-c-blue" style="00%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-md-6">
-                                            <h6>Total Ensg. de Base</h6>
-                                            <h5 class="m-b-30 f-w-700">00 bulletins, Soit <span class="text-c-green m-l-10">
-                                                00%</span></h5>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-c-green" style="00%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-md-6">
-                                            <h6>Total Humanités</h6>
-                                            <h5 class="m-b-30 f-w-700">00 bulletins, Soit <span class="text-c-green m-l-10">
-                                                00%</span></h5>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-c-yellow" style="00%"></div>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>

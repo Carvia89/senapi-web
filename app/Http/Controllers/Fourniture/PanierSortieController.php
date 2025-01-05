@@ -13,6 +13,9 @@ use App\Models\StockDebut;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Illuminate\Support\Facades\Log;
 
 class PanierSortieController extends Controller
 {
@@ -320,4 +323,174 @@ class PanierSortieController extends Controller
             )
         );
     }
+
+    public function indexColisage()
+    {
+    // Récupérer les commandes avec les critères spécifiés
+    $enregistrements = CommandeVente::select('commande_ventes.num_cmd', 'commande_ventes.client_id',
+            DB::raw('SUM(commande_ventes.qte_cmdee) as total_qte_cmdee'),
+            DB::raw('SUM(sortie_fournitures.qte_livree) as total_qte_livree'),
+            DB::raw('MIN(sortie_fournitures.date_sortie) as first_date_sortie'))
+        ->leftJoin('sortie_fournitures', 'commande_ventes.id', '=', 'sortie_fournitures.commande_vente_id')
+        ->where('commande_ventes.etat_cmd', 3)
+        ->where('commande_ventes.category_cmd', 'Interne')
+        ->groupBy('commande_ventes.num_cmd', 'commande_ventes.client_id')
+        ->get();
+
+        // Retourner la vue avec les enregistrements
+        return view('dappro.bur-distributions.liste-colisage.index', compact('enregistrements'));
+    }
+
+    public function indexNote()
+    {
+    // Récupérer les commandes avec les critères spécifiés
+    $enregistrements = CommandeVente::select('commande_ventes.num_cmd', 'commande_ventes.client_id',
+            DB::raw('SUM(commande_ventes.qte_cmdee) as total_qte_cmdee'),
+            DB::raw('SUM(sortie_fournitures.qte_livree) as total_qte_livree'),
+            DB::raw('MIN(sortie_fournitures.date_sortie) as first_date_sortie'))
+        ->leftJoin('sortie_fournitures', 'commande_ventes.id', '=', 'sortie_fournitures.commande_vente_id')
+        ->where('commande_ventes.etat_cmd', 3)
+        ->where('commande_ventes.category_cmd', 'Interne')
+        ->groupBy('commande_ventes.num_cmd', 'commande_ventes.client_id')
+        ->get();
+
+        // Retourner la vue avec les enregistrements
+        return view('dappro.bur-distributions.note-envoie.index', compact('enregistrements'));
+    }
+
+
+    public function downloadColis(Request $request, $id)
+    {
+        // Récupérer les données de la commande concernée
+        $commande = CommandeVente::with('sortieFournitures')->findOrFail($id);
+        $data = $commande->sortieFournitures; // Récupérer les sorties
+        $dateLivraison = now()->format('d-m-Y'); // Exemple de date
+        $numeroColi = $commande->num_cmd; // Numéro de la commande
+        $totalQteLivree = $data->sum('qte_livree'); // Total des quantités livrées
+
+        // Charger la vue HTML pour le PDF
+        $pdf = view('dappro.bur-distributions.liste-colisage.ListeColi',
+            compact('data', 'dateLivraison', 'numeroColi', 'totalQteLivree'))->render();
+
+        // Créer une instance de Dompdf
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($options);
+
+        // Charger le pdf dans Dompdf
+        $dompdf->loadHtml($pdf);
+
+        // (Optionnel) Configurer le format du papier et l'orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Rendre le PDF
+        $dompdf->render();
+
+        // Envoyer le PDF au navigateur
+        return $dompdf->stream('dappro.bur-distributions.liste-colisage.ListeColi', ['Attachment' => false]);
+    }
+
+
+    public function situationGenerale()
+    {
+        // Récupérer les options avec niveau_id = 6
+        $options = Option::where('niveau_id', 6)->pluck('id');
+
+        $data = [];
+        $totalQte1ère = 0;
+        $totalQte2è = 0;
+        $totalQte3è = 0;
+        $totalQte4è = 0;
+
+        foreach ($options as $optionId) {
+            // Initialiser les soldes par classe à 0
+            $soldeClasses = [
+                '1ère' => 0,
+                '2è' => 0,
+                '3è' => 0,
+                '4è' => 0,
+            ];
+
+            // 1. StockDebut
+            $stockDebutRecords = StockDebut::where('option_id', $optionId)->get();
+            foreach ($stockDebutRecords as $record) {
+                switch ($record->classe_id) {
+                    case 1:
+                        $soldeClasses['1ère'] += $record->stock_debut;
+                        break;
+                    case 2:
+                        $soldeClasses['2è'] += $record->stock_debut;
+                        break;
+                    case 3:
+                        $soldeClasses['3è'] += $record->stock_debut;
+                        break;
+                    case 4:
+                        $soldeClasses['4è'] += $record->stock_debut;
+                        break;
+                }
+            }
+
+            // 2. EntreeFourniture
+            $entreeRecords = EntreeFourniture::where('option_id', $optionId)->get();
+            foreach ($entreeRecords as $record) {
+                switch ($record->classe_id) {
+                    case 1:
+                        $soldeClasses['1ère'] += $record->quantiteRecu;
+                        break;
+                    case 2:
+                        $soldeClasses['2è'] += $record->quantiteRecu;
+                        break;
+                    case 3:
+                        $soldeClasses['3è'] += $record->quantiteRecu;
+                        break;
+                    case 4:
+                        $soldeClasses['4è'] += $record->quantiteRecu;
+                        break;
+                }
+            }
+
+            // 3. SortieFourniture
+            $sortieRecords = SortieFourniture::join('commande_ventes', 'sortie_fournitures.commande_vente_id', '=', 'commande_ventes.id')
+                ->where('commande_ventes.option_id', $optionId)
+                ->get();
+
+            foreach ($sortieRecords as $record) {
+                switch ($record->classe_id) {
+                    case 1:
+                        $soldeClasses['1ère'] -= $record->qte_livree;
+                        break;
+                    case 2:
+                        $soldeClasses['2è'] -= $record->qte_livree;
+                        break;
+                    case 3:
+                        $soldeClasses['3è'] -= $record->qte_livree;
+                        break;
+                    case 4:
+                        $soldeClasses['4è'] -= $record->qte_livree;
+                        break;
+                }
+            }
+
+            // Ajouter les soldes au tableau de données
+            $data[] = [
+                'option' => Option::find($optionId)->designation,
+                'qte1ère' => max(0, $soldeClasses['1ère']),
+                'qte2è' => max(0, $soldeClasses['2è']),
+                'qte3è' => max(0, $soldeClasses['3è']),
+                'qte4è' => max(0, $soldeClasses['4è']),
+            ];
+
+            // Mettre à jour les totaux
+            $totalQte1ère += $soldeClasses['1ère'];
+            $totalQte2è += $soldeClasses['2è'];
+            $totalQte3è += $soldeClasses['3è'];
+            $totalQte4è += $soldeClasses['4è'];
+        }
+
+        $pdf = PDF::loadView('dappro.bur-fournitures.Reporting.sitGenHum',
+                    compact('data', 'totalQte1ère', 'totalQte2è', 'totalQte3è', 'totalQte4è'));
+
+        return $pdf->stream('');
+    }
+
 }

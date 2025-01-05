@@ -243,7 +243,7 @@
                     </li>
                 </ul>
                 <ul class="pcoded-item pcoded-left-item">
-                    <li class="pcoded-hasmenu {{ request()->routeIs('dashboard.direction3') ||
+                    <li class="pcoded-hasmenu {{ request()->routeIs('admin.situation.generale') ||
                             request()->routeIs('dashboard.direction3') ||
                             request()->routeIs('dashboard.direction3') ? 'active' : '' }} pcoded-trigger">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
@@ -266,8 +266,8 @@
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
-                            <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
-                                <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                            <li class="{{ request()->routeIs('admin.situation.generale') ? 'active' : '' }}">
+                                <a href="{{ route('admin.situation.generale') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext">Sit. Gén. Humanités</span>
                                     <span class="pcoded-mcaret"></span>
@@ -362,15 +362,15 @@
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('admin.stockDebut-Vente.*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.stockDebut-Vente.create') }}" class="waves-effect waves-dark">
+                <li class="{{ request()->routeIs('admin.colisage.liste') ? 'active' : '' }}">
+                    <a href="{{ route('admin.colisage.liste') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-file-alt"></i><b>SA</b></span>
                         <span class="pcoded-mtext">Liste de Colisage</span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
-                    <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                <li class="{{ request()->routeIs('admin.note.envoie') ? 'active' : '' }}">
+                    <a href="{{ route('admin.note.envoie') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-file-alt"></i><b>FC</b></span>
                         <span class="pcoded-mtext">Note d'Envoi</span>
                         <span class="pcoded-mcaret"></span>

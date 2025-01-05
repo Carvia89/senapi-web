@@ -83,6 +83,7 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('sortie-Fourniture', PanierSortieController::class)->except(['index', 'destroy', 'show']);
         Route::post('/sortie-fourniture', [PanierSortieController::class, 'livraison'])->name('panier.sortie');
         Route::get('/inventaire', [PanierSortieController::class, 'inventaire'])->name('inventaire');
+        Route::get('/situation-gen-humanite', [PanierSortieController::class, 'situationGenerale'])->name('situation.generale');
 
 
         //** Bureau Vente  **//
@@ -97,6 +98,10 @@ Route::middleware(['auth'])->group(function() {
 
         //**  Bureau Distribution  **//
         Route::resource('transfert-commande', TransferController::class)->except(['show', 'destroy']);
+        Route::get('/liste-colisage', [PanierSortieController::class, 'indexColisage'])->name('colisage.liste');
+        Route::get('/note-envoie', [PanierSortieController::class, 'indexNote'])->name('note.envoie');
+            //Download liste de colisages et Note d'envoie
+            Route::get('download-colis', [PanierSortieController::class, 'downloadColis'])->name('colisage.download');
 
 
     });

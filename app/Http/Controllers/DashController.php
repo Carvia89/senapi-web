@@ -10,6 +10,7 @@ use App\Models\ClientVente;
 use App\Models\CommandeVente;
 use App\Models\Direction;
 use App\Models\Division;
+use App\Models\EntreeFourniture;
 use App\Models\Fournisseur;
 use App\Models\InStock;
 use App\Models\Inventaire;
@@ -17,8 +18,11 @@ use App\Models\Kelasi;
 use App\Models\Niveau;
 use App\Models\Option;
 use App\Models\OutStock;
+use App\Models\SortieFourniture;
+use App\Models\StockDebut;
 use App\Models\UnitArticle;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class DashController extends Controller
 {
@@ -83,6 +87,109 @@ class DashController extends Controller
         $kelasiCount = Kelasi::count();                 //Compter le nombre de classes
         $fournisseurCount = Fournisseur::count();       //Compter le nombre de fournisseurs
         $optionCount = Option::count();                 //Compter le nombre d'options
+        // Calculer le solde actuel des bulletins
+        $stockDebutTotal = StockDebut::sum('stock_debut');
+        $quantiteRecuTotal = EntreeFourniture::sum('quantiteRecu');
+        $qteLivreeTotal = SortieFourniture::sum('qte_livree');
+        $totalGeneral = $stockDebutTotal + $quantiteRecuTotal + $qteLivreeTotal;
+        $soldeActuel = $stockDebutTotal + $quantiteRecuTotal - $qteLivreeTotal;
+
+        // Calculer le pourcentage de bulletins livrés
+        $pourcentageLivres = 0; // Valeur par défaut
+        if ($totalGeneral > 0) {
+            $pourcentageLivres = ($qteLivreeTotal / $totalGeneral) * 100;
+        }
+
+        // Calculer le pourcentage de bulletins reçus
+        $pourcentageRecu = 0; // Valeur par défaut
+        if ($totalGeneral > 0) {
+            $pourcentageRecu = ($quantiteRecuTotal / $totalGeneral) * 100;
+        }
+
+        //** CALCUL DE SOLDE SELON LES NIVEAUX */
+
+        // Initialiser les variables pour chaque niveau
+        $niveaux = [
+            5 => ['nom' => 'Ensg. de Base', 'couleur' => 'bg-c-green'],
+            3 => ['nom' => 'Niveau Moyen', 'couleur' => 'bg-c-blue'],
+            4 => ['nom' => 'Terminal', 'couleur' => 'bg-c-red'],
+            6 => ['nom' => 'Humanités', 'couleur' => 'bg-c-yellow'],
+            /*
+            1 => ['nom' => 'Autre Niveau 1', 'couleur' => 'bg-c-purple'],
+            2 => ['nom' => 'Autre Niveau 2', 'couleur' => 'bg-c-orange'],
+            */
+        ];
+
+        $resultats = []; // Tableau pour stocker les résultats
+
+        foreach ($niveaux as $niveauId => $info) {
+            // Calculer le solde actuel des bulletins pour chaque niveau
+            $stockDebutTotalNiv = StockDebut::whereHas('methodOption', function($query) use ($niveauId) {
+                $query->where('niveau_id', $niveauId);
+            })->sum('stock_debut');
+
+            $quantiteRecuTotalNiv = EntreeFourniture::whereHas('methodOption', function($query) use ($niveauId) {
+                $query->where('niveau_id', $niveauId);
+            })->sum('quantiteRecu');
+
+            // Calculer la quantité livrée via commande_ventes
+            $qteLivreeTotalNiv = SortieFourniture::whereHas('commandeVente.methodOption', function($query) use ($niveauId) {
+                $query->where('niveau_id', $niveauId);
+            })->sum('qte_livree');
+
+            $soldeActuelNiv = $stockDebutTotalNiv + $quantiteRecuTotalNiv - $qteLivreeTotalNiv;
+
+            // Calculer le pourcentage de solde de bulletins pour chaque niveau
+            $pourcentageNiv = 0; // Valeur par défaut
+            if ($soldeActuelNiv > 0) {
+                $pourcentageNiv = ($soldeActuelNiv / $soldeActuel) * 100;
+            }
+
+            // Stocker les résultats pour chaque niveau
+            $resultats[$niveauId] = [
+                'solde' => $soldeActuelNiv,
+                'pourcentage' => $pourcentageNiv,
+                'nom' => $info['nom'],
+                'couleur' => $info['couleur'],
+            ];
+        }
+
+        //** CALCUL DE LA SITUATION ACTUELLE  */
+        // Sous-requête pour les quantités reçues
+        $options = Option::all();
+        $kelasis = Kelasi::all();
+
+        $quantiteRecue = DB::table('entree_fournitures')
+        ->select('option_id', 'classe_id', DB::raw('SUM(quantiteRecu) AS total_recue'))
+        ->groupBy('option_id', 'classe_id');
+
+        // Sous-requête pour les quantités livrées
+        $qteLivree = DB::table('sortie_fournitures as sf')
+            ->join('commande_ventes as cv', 'sf.commande_vente_id', '=', 'cv.id')
+            ->select('cv.option_id', 'cv.classe_id', DB::raw('SUM(sf.qte_livree) AS total_livree'))
+            ->groupBy('cv.option_id', 'cv.classe_id');
+
+        // Requête principale avec pagination et tri
+        $enregistrements = DB::table('stock_debuts AS sd')
+            ->select('sd.option_id', 'sd.classe_id', 'sd.stock_debut',
+                    DB::raw('COALESCE(qr.total_recue, 0) AS quantite_recue'),
+                    DB::raw('COALESCE(ql.total_livree, 0) AS qte_livree'))
+            ->leftJoin(DB::raw("({$quantiteRecue->toSql()}) as qr"),
+                    function ($join) {
+                        $join->on('sd.option_id', '=', 'qr.option_id')
+                                ->on('sd.classe_id', '=', 'qr.classe_id');
+                    })
+            ->leftJoin(DB::raw("({$qteLivree->toSql()}) as ql"),
+                    function ($join) {
+                        $join->on('sd.option_id', '=', 'ql.option_id')
+                                ->on('sd.classe_id', '=', 'ql.classe_id');
+                    })
+            ->mergeBindings($quantiteRecue) // Ajouter les bindings de la sous-requête
+            ->mergeBindings($qteLivree) // Ajouter les bindings de la sous-requête
+            ->groupBy('sd.option_id', 'sd.classe_id', 'sd.stock_debut', 'qr.total_recue', 'ql.total_livree') // Ajoutez les colonnes agrégées
+            ->orderBy('sd.option_id', 'asc') // Tri par option_id en ordre croissant
+            ->paginate(4); // Pagination à 25 éléments par page
+
 
         return view('dashboard.fourniture',
             compact(
@@ -93,7 +200,16 @@ class DashController extends Controller
                 'niveauxCount',
                 'kelasiCount',
                 'fournisseurCount',
-                'optionCount'
+                'optionCount',
+                'soldeActuel',
+                'qteLivreeTotal',
+                'pourcentageLivres',
+                'quantiteRecuTotal',
+                'pourcentageRecu',
+                'resultats',
+                'enregistrements',
+                'options',
+                'kelasis'
             )
         );
     }
