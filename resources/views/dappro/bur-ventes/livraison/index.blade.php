@@ -10,51 +10,21 @@
                 <div class="page-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5>Note d'envoie disponible dans le système</h5>
-                                </div>
-                                <div class="card-block">
-                                    <form class="vstack gap-3" action="{{ route('admin.note.download') }}" method="GET">
-                                        @csrf
-                                        @method('GET')
-
-                                        <div class="form-group row mt-3">
-                                            <div class="col-md-6 col-sm-6">
-                                                <label for="num_cmd" class="form-label">Numéro de la Commande *</label>
-                                                <select name="num_cmd" class="form-control form-control-round
-                                                    @error('num_cmd') is-invalid @enderror" id="num_cmd">
-                                                    <option value="">Sélectionnez...</option>
-                                                    @foreach ($nums as $num)
-                                                        <option value="{{ $num->num_cmd }}" {{ old('num_cmd') == $num->num_cmd ? 'selected' : '' }}>
-                                                            {{ $num->num_cmd }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('num_cmd')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <button type="submit" class="btn btn-primary btn-round">
-                                                <i class="fas fa-download"></i> Télécharger
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-12">
                             <!-- Section tableau de commandes -->
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5>Liste de Commandes déjà traitées</h5>
+                                    <h5>Liste de Commandes livrées</h5>
+                                    <a href="{{ route('admin.livraison-Vente.create') }}" class="btn btn-primary btn-round">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Ajouter
+                                    </a>
                                 </div>
                                 <div class="card-block">
+                                    @if(session('success'))
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                    @endif
                                 <!-- Section 3: Tableau des Enregistrements -->
                                 <div class="table-responsive mt-4">
                                     <table class="table table-hover">
@@ -82,7 +52,7 @@
                                                     </td>
                                                     <td>
                                                         <span class="badge bg-success">
-                                                            {{ number_format($enregistrement->total_qte_livree, 0, ',', ' ') }}
+                                                            {{ number_format($enregistrement->total_qte_sortie, 0, ',', ' ') }}
                                                         </span>
                                                     </td>
                                                     <td>{{ $enregistrement->first_date_sortie ? \Carbon\Carbon::parse($enregistrement->first_date_sortie)->format('d-m-Y') : 'N/A' }}</td>
@@ -90,13 +60,14 @@
                                                         @if ($enregistrement->etat_cmd)
                                                             <span class="badge bg-danger">en traitement</span>
                                                         @else
-                                                            <span class="badge bg-success">traitée</span>
+                                                            <span class="badge bg-danger">Fermée</span>
                                                         @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    {{ $enregistrements->links() }}
                                 </div>
                             </div>
                             <!-- Basic Form Inputs card end -->

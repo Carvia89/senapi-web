@@ -213,8 +213,9 @@
                                     <div class="card text-center order-visitor-card">
                                         <div class="card-block">
                                             <h6 class="m-b-0">Total Préliminaire</h6>
-                                            <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-down m-r-15 text-c-red"></i>
-                                                00
+                                            <h4 class="m-t-15 m-b-15">
+                                                <i class="fa fa-arrow-down m-r-15 text-c-red"></i>
+                                                    00
                                             </h4>
                                             <p class="m-b-0">Solde actuel</p>
                                         </div>
@@ -289,7 +290,7 @@
                                         @foreach ($resultats as $niveauId => $resultat)
                                         <div class="col-xl-3 col-md-6">
                                             <h6>Total {{ $resultat['nom'] }}</h6>
-                                            <h5 class="m-b-30 f-w-700">{{ number_format($resultat['solde'], 0, ',', ' ') }} blts, Soit <span class="text-c-green m-l-10">
+                                            <h5 class="m-b-30 f-w-700">{{ number_format($resultat['solde'], 0, ',', ' ') }}, Soit <span class="text-c-green m-l-10">
                                                 {{ number_format($resultat['pourcentage'], 2) }}%</span></h5>
                                             <div class="progress">
                                                 <div class="progress-bar {{ $resultat['couleur'] }}" style="width: {{ number_format($resultat['pourcentage'], 2) }}%"></div>

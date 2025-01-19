@@ -87,6 +87,7 @@ class DashController extends Controller
         $kelasiCount = Kelasi::count();                 //Compter le nombre de classes
         $fournisseurCount = Fournisseur::count();       //Compter le nombre de fournisseurs
         $optionCount = Option::count();                 //Compter le nombre d'options
+
         // Calculer le solde actuel des bulletins
         $stockDebutTotal = StockDebut::sum('stock_debut');
         $quantiteRecuTotal = EntreeFourniture::sum('quantiteRecu');
@@ -114,10 +115,10 @@ class DashController extends Controller
             3 => ['nom' => 'Niveau Moyen', 'couleur' => 'bg-c-blue'],
             4 => ['nom' => 'Terminal', 'couleur' => 'bg-c-red'],
             6 => ['nom' => 'Humanités', 'couleur' => 'bg-c-yellow'],
-            /*
-            1 => ['nom' => 'Autre Niveau 1', 'couleur' => 'bg-c-purple'],
-            2 => ['nom' => 'Autre Niveau 2', 'couleur' => 'bg-c-orange'],
-            */
+/*
+            1 => ['nom' => 'Préliminaire', 'couleur' => 'bg-c-purple'],
+            2 => ['nom' => 'Elémentaire', 'couleur' => 'bg-c-orange'],
+*/
         ];
 
         $resultats = []; // Tableau pour stocker les résultats

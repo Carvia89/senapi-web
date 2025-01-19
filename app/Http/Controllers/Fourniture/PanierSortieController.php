@@ -13,8 +13,6 @@ use App\Models\StockDebut;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use Illuminate\Support\Facades\Log;
 
 class PanierSortieController extends Controller
@@ -112,7 +110,7 @@ class PanierSortieController extends Controller
         }
 
         // Récupérer les données à partir de la table panier_sortie
-        $data = PanierSortieFourniture::with('commandeVente') // Assurez-vous que la relation est définie dans le modèle
+        $data = PanierSortieFourniture::with('commandeVente')
             ->select('commande_vente_id', 'qte_livree', 'qte_cmdee', 'date_sortie')
             ->get();
 
@@ -142,7 +140,7 @@ class PanierSortieController extends Controller
 
         $pdfData = [
             'data' => $data,
-            'totalQteCommandee' => $data->sum('qte_cmdee'), // Assurez-vous que ce champ existe
+            'totalQteCommandee' => $data->sum('qte_cmdee'),
             'totalQteLivree' => $totalQteLivree,
         ];
 
@@ -324,73 +322,6 @@ class PanierSortieController extends Controller
         );
     }
 
-    public function indexColisage()
-    {
-    // Récupérer les commandes avec les critères spécifiés
-    $enregistrements = CommandeVente::select('commande_ventes.num_cmd', 'commande_ventes.client_id',
-            DB::raw('SUM(commande_ventes.qte_cmdee) as total_qte_cmdee'),
-            DB::raw('SUM(sortie_fournitures.qte_livree) as total_qte_livree'),
-            DB::raw('MIN(sortie_fournitures.date_sortie) as first_date_sortie'))
-        ->leftJoin('sortie_fournitures', 'commande_ventes.id', '=', 'sortie_fournitures.commande_vente_id')
-        ->where('commande_ventes.etat_cmd', 3)
-        ->where('commande_ventes.category_cmd', 'Interne')
-        ->groupBy('commande_ventes.num_cmd', 'commande_ventes.client_id')
-        ->get();
-
-        // Retourner la vue avec les enregistrements
-        return view('dappro.bur-distributions.liste-colisage.index', compact('enregistrements'));
-    }
-
-    public function indexNote()
-    {
-    // Récupérer les commandes avec les critères spécifiés
-    $enregistrements = CommandeVente::select('commande_ventes.num_cmd', 'commande_ventes.client_id',
-            DB::raw('SUM(commande_ventes.qte_cmdee) as total_qte_cmdee'),
-            DB::raw('SUM(sortie_fournitures.qte_livree) as total_qte_livree'),
-            DB::raw('MIN(sortie_fournitures.date_sortie) as first_date_sortie'))
-        ->leftJoin('sortie_fournitures', 'commande_ventes.id', '=', 'sortie_fournitures.commande_vente_id')
-        ->where('commande_ventes.etat_cmd', 3)
-        ->where('commande_ventes.category_cmd', 'Interne')
-        ->groupBy('commande_ventes.num_cmd', 'commande_ventes.client_id')
-        ->get();
-
-        // Retourner la vue avec les enregistrements
-        return view('dappro.bur-distributions.note-envoie.index', compact('enregistrements'));
-    }
-
-
-    public function downloadColis(Request $request, $id)
-    {
-        // Récupérer les données de la commande concernée
-        $commande = CommandeVente::with('sortieFournitures')->findOrFail($id);
-        $data = $commande->sortieFournitures; // Récupérer les sorties
-        $dateLivraison = now()->format('d-m-Y'); // Exemple de date
-        $numeroColi = $commande->num_cmd; // Numéro de la commande
-        $totalQteLivree = $data->sum('qte_livree'); // Total des quantités livrées
-
-        // Charger la vue HTML pour le PDF
-        $pdf = view('dappro.bur-distributions.liste-colisage.ListeColi',
-            compact('data', 'dateLivraison', 'numeroColi', 'totalQteLivree'))->render();
-
-        // Créer une instance de Dompdf
-        $options = new Options();
-        $options->set('defaultFont', 'Arial');
-        $dompdf = new Dompdf($options);
-
-        // Charger le pdf dans Dompdf
-        $dompdf->loadHtml($pdf);
-
-        // (Optionnel) Configurer le format du papier et l'orientation
-        $dompdf->setPaper('A4', 'portrait');
-
-        // Rendre le PDF
-        $dompdf->render();
-
-        // Envoyer le PDF au navigateur
-        return $dompdf->stream('dappro.bur-distributions.liste-colisage.ListeColi', ['Attachment' => false]);
-    }
-
-
     public function situationGenerale()
     {
         // Récupérer les options avec niveau_id = 6
@@ -493,4 +424,126 @@ class PanierSortieController extends Controller
         return $pdf->stream('');
     }
 
+    public function situationGeneraleBulScol()
+    {
+        $soldes = [
+            'maternelle' => [
+                'niveau_1' => 0,
+                'niveau_1_class_10' => 0,
+               // 'niveau_6_cycle_2' => 0,
+            ],
+            'primaire' => [
+                'niveau_2' => 0,
+                'niveau_3' => 0,
+                'niveau_4' => 0,
+                'niveau_5' => 0,
+            ],
+            'secondaire' => [
+                'niveau_7' => 0,
+                'niveau_8' => 0,
+            ],
+            'humanite_cycle_long' => [
+                'niveau_1' => 0,
+                'niveau_2' => 0,
+                'niveau_3' => 0,
+                'niveau_4' => 0,
+            ],
+            'humanite_cycle_court' => [
+                'niveau_1' => 0,
+                'niveau_2' => 0,
+                'niveau_3' => 0,
+            ],
+        ];
+
+        $totaux = [
+            'maternelle' => 0,
+            'primaire' => 0,
+            'secondaire' => 0,
+            'humanite_cycle_long' => 0,
+            'humanite_cycle_court' => 0,
+        ];
+
+        // Boucle à travers chaque niveau de 1 à 6
+        for ($niveauId = 1; $niveauId <= 6; $niveauId++) {
+            $options = Option::where('niveau_id', $niveauId)->pluck('id');
+
+            // Calculer les soldes pour chaque classe en fonction du niveau
+            if ($niveauId == 1) {
+                $soldes['maternelle']['niveau_1'] = $this->calculerSolde(1, $options); // 1è Maternelle
+                $soldes['maternelle']['niveau_1_class_10'] = $this->calculerSolde(10, $options); // 2è et 3è Maternelle
+            } elseif ($niveauId == 2) {
+                $soldes['primaire']['niveau_2'] = $this->calculerSolde(9, $options); // 1è et 2è Primaire
+            } elseif ($niveauId == 3) {
+                $soldes['primaire']['niveau_3'] = $this->calculerSolde(11, $options); // 3è et 4è Primaire
+            } elseif ($niveauId == 4) {
+                $soldes['primaire']['niveau_4'] = $this->calculerSolde(5, $options); // 5è Primaire
+                $soldes['primaire']['niveau_5'] = $this->calculerSolde(6, $options); // 6è Primaire
+            } elseif ($niveauId == 5) {
+                $soldes['secondaire']['niveau_7'] = $this->calculerSolde(7, $options); // 7è Secondaire
+                $soldes['secondaire']['niveau_8'] = $this->calculerSolde(8, $options); // 8è Secondaire
+            } elseif ($niveauId == 6) {
+                $soldes['humanite_cycle_long']['niveau_1'] = $this->calculerSolde(1, $options); // 1ère Humanité Cycle Long
+                $soldes['humanite_cycle_long']['niveau_2'] = $this->calculerSolde(2, $options); // 2ème Humanité Cycle Long
+                $soldes['humanite_cycle_long']['niveau_3'] = $this->calculerSolde(3, $options); // 3ème Humanité Cycle Long
+                $soldes['humanite_cycle_long']['niveau_4'] = $this->calculerSolde(4, $options); // 4ème Humanité Cycle Long
+            } elseif ($niveauId == 6) {
+                $soldes['humanite_cycle_court']['niveau_1'] = $this->calculerSolde(1, $options); // 1ère Humanité Cycle Court
+                $soldes['humanite_cycle_court']['niveau_2'] = $this->calculerSolde(2, $options); // 2ème Humanité Cycle Court
+                $soldes['humanite_cycle_court']['niveau_3'] = $this->calculerSolde(3, $options); // 3ème Humanité Cycle Court
+            }
+        }
+
+        // Calculer les totaux par section
+        $totaux = $this->calculerTotaux($soldes);
+
+        // Calculer le total général à partir des sous-totaux
+        $totalGeneral = array_sum($totaux);
+
+        // Générer le PDF
+        $pdf = PDF::loadView('dappro.bur-fournitures.Reporting.sitGenBulScol',
+                    compact('soldes', 'totaux', 'totalGeneral'));
+        $pdf->setPaper('A4', 'landscape');
+        return $pdf->stream('');
+    }
+
+    private function calculerSolde($classeId, $options)
+    {
+        // Récupérer le stock de début
+        $stockDebut = StockDebut::whereIn('option_id', $options)
+            ->where('classe_id', $classeId)
+            ->sum('stock_debut');
+
+        // Récupérer la quantité reçue
+        $quantiteRecu = EntreeFourniture::whereIn('option_id', $options)
+            ->where('classe_id', $classeId)
+            ->sum('quantiteRecu');
+
+        // Récupérer la quantité livrée
+        $qteLivree = SortieFourniture::join('commande_ventes', 'sortie_fournitures.commande_vente_id', '=', 'commande_ventes.id')
+            ->whereIn('commande_ventes.option_id', $options)
+            ->where('commande_ventes.classe_id', $classeId)
+            ->sum('qte_livree');
+
+        return $stockDebut + $quantiteRecu - $qteLivree;
+    }
+
+    private function calculerTotaux($soldes)
+    {
+        $totaux = [
+            'maternelle' => 0,
+            'primaire' => 0,
+            'secondaire' => 0,
+            'humanite_cycle_long' => 0,
+            'humanite_cycle_court' => 0,
+        ];
+
+        // Calculer les totaux par section
+        foreach ($soldes as $section => $classes) {
+            foreach ($classes as $solde) {
+                $totaux[$section] += $solde;
+            }
+        }
+
+        return $totaux;
+    }
 }

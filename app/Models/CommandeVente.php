@@ -46,4 +46,9 @@ class CommandeVente extends Model
     {
         return $this->hasMany(SortieFourniture::class, 'commande_vente_id');
     }
+
+    public function sortieVentes()
+    {
+        return $this->hasMany(SortieVente::class, 'commande_vente_id');
+    }
 }

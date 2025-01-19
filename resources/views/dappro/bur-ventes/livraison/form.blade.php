@@ -1,36 +1,32 @@
 @extends('dappro.layouts.fournitures.template')
 
 @section('content')
-    <!-- Pre-loader end -->
     <div id="pcoded" class="pcoded">
-        <!-- Main-body start -->
         <div class="main-body">
             <div class="page-wrapper">
-                <!-- Page body start -->
                 <div class="page-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            <!-- Basic Form Inputs card start -->
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5>Identifiants de la Commande</h5>
+                                    <h5>Livraison des bulletins scolaires</h5>
+                                    <a href="{{ route('admin.livraison-Vente.index') }}" class="btn btn-primary btn-round">
+                                        <i class="fas fa-eye mr-2"></i>
+                                        Voir la liste
+                                    </a>
                                 </div>
                                 <div class="card-block">
-
                                     @if(session('success'))
                                         <div class="alert alert-success">
                                             {{ session('success') }}
                                         </div>
                                     @endif
 
-                                    <form class="vstack gap-3" action="{{ route('admin.sortie-Fourniture.store') }}"
-                                        method="POST">
-
+                                    <form class="vstack gap-3" action="{{ route('admin.livraison-Vente.store') }}" method="POST">
                                         @csrf
-                                        @method('POST')
-
+                                        <h4 class="sub-title">Identifiants de la Commande</h4>
                                         <div class="form-group row mt-3">
-                                            <div class="col-md-6 col-sm-6">
+                                            <div class="col-md-4 col-sm-4">
                                                 <label for="num_cmd" class="form-label">Numéro de la Commande *</label>
                                                 <select name="num_cmd" class="form-control form-control-round
                                                     @error('num_cmd') is-invalid @enderror" id="num_cmd">
@@ -47,13 +43,25 @@
                                                     </div>
                                                 @enderror
                                             </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <label for="qte_cmdee" class="form-label">Quantité Totale Commandée </label>
-                                                <input type="text" name="qte_cmdee" class="form-control form-control-round
-                                                @error('qte_cmdee') is-invalid @enderror" id="qte_cmdee"
-                                                style="font-weight: bold; font-size: 1.2em; text-align: right;"
-                                                value="{{ old('qte_cmdee') ? number_format(old('qte_cmdee'), 0, ',', ' ') : '' }}" readonly>
+                                            <div class="col-md-4 col-sm-4">
+                                                <label for="qte_cmdee" class="form-label">Quantité Totale Commandée</label>
+                                                <input type="number" name="qte_cmdee" class="form-control form-control-round
+                                                    @error('qte_cmdee') is-invalid @enderror" id="qte_cmdee"
+                                                    style="font-weight: bold; font-size: 1.2em; text-align: right;"
+                                                    value="{{ old('qte_cmdee') }}" readonly>
                                                 @error('qte_cmdee')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-4 col-sm-4">
+                                                <label for="category_cmd" class="form-label">Catégorie Commande</label>
+                                                <input type="text" name="category_cmd" class="form-control form-control-round
+                                                    @error('category_cmd') is-invalid @enderror" id="category_cmd"
+                                                    style="font-weight: bold; font-size: 1.2em; text-align: right;"
+                                                    value="{{ old('category_cmd') }}" readonly>
+                                                @error('category_cmd')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
                                                     </div>
@@ -61,52 +69,44 @@
                                             </div>
                                         </div>
 
-                                        <script>
-                                            document.getElementById('num_cmd').addEventListener('change', function() {
-                                                const selectedNumCmd = this.value;
-
-                                                if (selectedNumCmd) {
-                                                    fetch(`/get-quantity/${selectedNumCmd}`)
-                                                        .then(response => {
-                                                            if (!response.ok) {
-                                                                throw new Error('Network response was not ok');
-                                                            }
-                                                            return response.json();
-                                                        })
-                                                        .then(data => {
-                                                            // Formater le nombre avec séparateur de milliers
-                                                            const formattedQuantity = new Intl.NumberFormat('fr-FR', {
-                                                                minimumFractionDigits: 0,
-                                                                maximumFractionDigits: 0
-                                                            }).format(data.total_qte_cmdee);
-
-                                                            document.getElementById('qte_cmdee').value = formattedQuantity; // Mettre à jour le champ avec le nombre formaté
-                                                        })
-                                                        .catch(error => console.error('Error:', error));
-                                                } else {
-                                                    document.getElementById('qte_cmdee').value = ''; // Réinitialiser si aucune commande sélectionnée
-                                                }
-                                            });
-                                        </script>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <button type="submit" class="btn btn-primary btn-round">
                                                 <i class="fas fa-check"></i> Valider
                                             </button>
                                         </div>
                                     </form>
+                                    <script>
+                                        document.getElementById('num_cmd').addEventListener('change', function() {
+                                            const selectedNumCmd = this.value;
+
+                                            if (selectedNumCmd) {
+                                                fetch(`/get-command-details/${selectedNumCmd}`)
+                                                    .then(response => {
+                                                        if (!response.ok) {
+                                                            throw new Error('Network response was not ok');
+                                                        }
+                                                        return response.json();
+                                                    })
+                                                    .then(data => {
+                                                        // Formater la somme de qte_cmdee avec séparateur de milliers
+                                                        const formattedTotalQte = data.totalQte.toLocaleString('fr-FR'); // Utiliser 'fr-FR' pour le format français
+                                                        document.getElementById('qte_cmdee').value = formattedTotalQte; // Afficher la somme formatée
+                                                        document.getElementById('category_cmd').value = data.category_cmd; // Afficher la catégorie de la commande
+                                                    })
+                                                    .catch(error => console.error('Error:', error));
+                                            } else {
+                                                document.getElementById('qte_cmdee').value = '';
+                                                document.getElementById('category_cmd').value = '';
+                                            }
+                                        });
+                                    </script>
                                 </div>
                             </div>
-                            <!-- Basic Form Inputs card end -->
-                        </div>
-
-                        <div class="col-sm-12">
-                            <!-- Section tableau de commandes -->
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5>Détails de la Commande</h5>
                                 </div>
                                 <div class="card-block">
-                                    <!-- Section 3: Tableau des Enregistrements -->
                                     <div class="table-responsive mt-4">
                                         <table class="table table-hover">
                                             <thead>
@@ -116,7 +116,6 @@
                                                     <th>Classe</th>
                                                     <th>Qté Cmdée</th>
                                                     <th>Qté livrée</th>
-                                                    <th>Date livraison</th>
                                                     <th class="d-flex justify-content-end">Actions</th>
                                                 </tr>
                                             </thead>
@@ -128,10 +127,9 @@
                                                         <td>{{ $enregistrement->classe->designation ?? 'Aucun' }}</td>
                                                         <td>{{ number_format($enregistrement->qte_cmdee, 0, ',', ' ') }}</td>
                                                         <td>{{ number_format($enregistrement->qte_livree, 0, ',', ' ') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($enregistrement->date_sortie)->format('d-m-Y') }}</td>
                                                         <td>
                                                             <div class="d-flex justify-content-end mb-3">
-                                                                <a href="{{ route('admin.sortie-Fourniture.edit', $enregistrement) }}"
+                                                                <a href="{{ route('admin.livraison-Vente.edit', $enregistrement) }}"
                                                                     title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
                                                                     <i class="fas fa-edit"></i>
                                                                 </a>
@@ -141,17 +139,17 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+
                                         <div class="d-flex justify-content-between align-items-center mt-3">
-                                            <form action="{{ route('admin.panier.sortie') }}" method="POST">
+                                            <form action="{{ route('admin.valide.livraison.vente') }}" method="POST">
                                                 @csrf
                                                 <button type="submit" class="btn btn-primary btn-round">
-                                                    <i class="fas fa-paper-plane"></i> Livrer
+                                                    <i class="fas fa-save"></i> Enregistrer
                                                 </button>
                                             </form>
 
                                             <div class="form-group">
                                                 <label for="total_bulletins" class="form-label">Qté Totale Livrée *</label>
-
                                                 <span class="form-control form-control-round text-end" style="font-weight: bold; font-size: 1.2em; text-align: right;">
                                                     {{ number_format($totalBulletins ?? 0, 0, ',', ' ') }}
                                                 </span>
@@ -159,14 +157,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Basic Form Inputs card end -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Main-body end -->
-        <div id="styleSelector">
+            <div id="styleSelector"></div>
         </div>
     </div>
 @endsection

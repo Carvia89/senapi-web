@@ -96,7 +96,7 @@
                         </li>
                         @if (auth()->user()->role == 'Admin')
                             <li class="waves-effect waves-light">
-                                <a href="{{ route('taux.create') }}">
+                                <a href="#">
                                     <i class="ti-settings"></i> Paramètres
                                 </a>
                             </li>

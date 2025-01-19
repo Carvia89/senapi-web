@@ -34,10 +34,13 @@ use App\Http\Controllers\Distribution\TransferController;
 use App\Http\Controllers\Fourniture\EntreeFournController;
 use App\Http\Controllers\Fourniture\PanierSortieController;
 use App\Http\Controllers\Fourniture\StockDebutController;
+use App\Http\Controllers\Vente\ApproController;
 use App\Http\Controllers\Vente\ClientController;
+use App\Http\Controllers\Vente\LivraisonVenteController;
 use App\Http\Controllers\Vente\PanierController;
 use App\Http\Controllers\Vente\PanierExtController;
 use App\Http\Controllers\Vente\StkDebutController;
+use App\Models\StockDebut;
 use Illuminate\Support\Facades\Route;
 
 
@@ -49,7 +52,7 @@ Route::post('/login/{direction_id}', [AccueilController::class, 'login'])->name(
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/bureaux/{direction_id}', [AccueilController::class, 'getBureaux'])->name('bureaux.get');
 Route::get('/get-quantity/{num_cmd}', [TransferController::class, 'getQuantity']);
-
+Route::get('/get-command-details/{num_cmd}', [LivraisonVenteController::class, 'getCommandDetails']);
 
 Route::middleware(['auth'])->group(function() {
 // Route pour la DAPPRO
@@ -83,7 +86,11 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('sortie-Fourniture', PanierSortieController::class)->except(['index', 'destroy', 'show']);
         Route::post('/sortie-fourniture', [PanierSortieController::class, 'livraison'])->name('panier.sortie');
         Route::get('/inventaire', [PanierSortieController::class, 'inventaire'])->name('inventaire');
-        Route::get('/situation-gen-humanite', [PanierSortieController::class, 'situationGenerale'])->name('situation.generale');
+            //Reporting
+            Route::get('/situation-gen-humanite', [PanierSortieController::class, 'situationGenerale'])->name('situation.generale');
+            Route::get('/sit-gen-bul-scol', [PanierSortieController::class, 'situationGeneraleBulScol'])->name('sit.gen.bulScol');
+            Route::get('/fiche', [StockDebutController::class, 'showForm'])->name('form.fiche.stock');
+            route::get('/fiche-de-stock', [StockDebutController::class, 'generateStockPDF'])->name('print.fiche');
 
 
         //** Bureau Vente  **//
@@ -92,17 +99,23 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('commande-Interne', PanierController::class)->except(['index']);
         Route::resource('commande-Externe', PanierExtController::class)->except(['index', 'show']);
         Route::post('/commande-externe-form', [PanierExtController::class, 'panierVide'])->name('commande.externe');
-
+        Route::resource('appro-Vente', ApproController::class)->except(['show', 'destroy', 'update', 'edit']);
+        Route::post('/valider-appro-vente', [ApproController::class, 'updateEtat'])->name('valide.appro.vente');
+        Route::resource('livraison-Vente', LivraisonVenteController::class)->except(['destroy', 'show']);
+        Route::post('/livraison-vente', [LivraisonVenteController::class, 'livraison'])->name('valide.livraison.vente');
             //Reporting
             Route::post('/generate-pdf', [PanierController::class, 'show'])->name('generate.pdf');
+            Route::get('/fiche-form-vente', [StkDebutController::class, 'showForm'])->name('form.ficheStk.vente');
+            route::get('/fiche-de-stock-vente', [StkDebutController::class, 'generateStockPDF'])->name('print.ficheStk.vente');
+
 
         //**  Bureau Distribution  **//
         Route::resource('transfert-commande', TransferController::class)->except(['show', 'destroy']);
-        Route::get('/liste-colisage', [PanierSortieController::class, 'indexColisage'])->name('colisage.liste');
-        Route::get('/note-envoie', [PanierSortieController::class, 'indexNote'])->name('note.envoie');
+        Route::get('/liste-colisage', [TransferController::class, 'indexColisage'])->name('colisage.liste');
+        Route::get('/note-envoie', [TransferController::class, 'indexNote'])->name('note.envoie');
             //Download liste de colisages et Note d'envoie
-            Route::get('download-colis', [PanierSortieController::class, 'downloadColis'])->name('colisage.download');
-
+            Route::get('download-colis', [TransferController::class, 'downloadColis'])->name('colisage.download');
+            Route::get('download-note', [TransferController::class, 'downloadNote'])->name('note.download');
 
     });
 

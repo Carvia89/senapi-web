@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sortie_fournitures', function (Blueprint $table) {
+        Schema::create('sortie_ventes', function (Blueprint $table) {
             $table->id();
             // Ajout de la clé étrangère
             $table->foreignId('commande_vente_id')->constrained('commande_ventes')->onDelete('cascade');
-            $table->integer('qte_livree');
+            $table->integer('qte_sortie');
             $table->date('date_sortie');
-            $table->string('etat')->nullable();
+            $table->integer('etat')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
-        });
 
+        });
     }
 
     /**
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sortie_fournitures');
+        Schema::dropIfExists('sortie_ventes');
     }
 };

@@ -128,16 +128,6 @@
                     </ul>
                 </li>
             </ul>
-            <div class="pcoded-navigation-label">Rapport Effectif</div>
-            <ul class="pcoded-item pcoded-left-item">
-                <li class="{{ request()->routeIs('bureau.form') ? 'active' : '' }}">
-                    <a href="{{ route('bureau.form') }}" class="waves-effect waves-dark">
-                        <span class="pcoded-micon"><i class="fas fa-users"></i></span>
-                        <span class="pcoded-mtext">Effectif des Elèves</span>
-                        <span class="pcoded-mcaret"></span>
-                    </a>
-                </li>
-            </ul>
 
         <!-- *************** BUREAU MAGASINAGE FOURNITURES SCOLAIRES ******************* -->
 
@@ -244,23 +234,23 @@
                 </ul>
                 <ul class="pcoded-item pcoded-left-item">
                     <li class="pcoded-hasmenu {{ request()->routeIs('admin.situation.generale') ||
-                            request()->routeIs('dashboard.direction3') ||
-                            request()->routeIs('dashboard.direction3') ? 'active' : '' }} pcoded-trigger">
+                            request()->routeIs('admin.sit.gen.bulScol') ||
+                            request()->routeIs('admin.form.fiche.stock') ? 'active' : '' }} pcoded-trigger">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
                             <span class="pcoded-mtext">Reporting</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                         <ul class="pcoded-submenu">
-                            <li class="{{ request()->routeIs('dashboard.direction1') ? 'active' : '' }}">
-                                <a href="{{ route('dashboard.direction1') }}" class="waves-effect waves-dark">
+                            <li class="{{ request()->routeIs('admin.form.fiche.stock') ? 'active' : '' }}">
+                                <a href="{{ route('admin.form.ficheStk.vente') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext">Fiche de stock</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
-                            <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
-                                <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                            <li class="{{ request()->routeIs('admin.sit.gen.bulScol') ? 'active' : '' }}">
+                                <a href="{{ route('admin.sit.gen.bulScol') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext">Sit. Gén. Bulletins</span>
                                     <span class="pcoded-mcaret"></span>
@@ -322,20 +312,40 @@
                         </li>
                     </ul>
                 </li>
-                <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
-                    <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                <li class="{{ request()->routeIs('admin.appro-Vente.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.appro-Vente.create') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-cart-plus"></i><b>FC</b></span>
                         <span class="pcoded-mtext">Approvisionnement</span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>
-                <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
-                    <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                <li class="{{ request()->routeIs('admin.livraison-Vente.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.livraison-Vente.create') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-truck"></i><b>LV</b></span>
                         <span class="pcoded-mtext">Livraison</span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>
+                <ul class="pcoded-item pcoded-left-item">
+                    <li class="pcoded-hasmenu {{ request()->routeIs('admin.form.ficheStk.vente') ||
+                            request()->routeIs('admin.sit.gen.bulScol') ||
+                            request()->routeIs('admin.form.fiche.stock') ? 'active' : '' }} pcoded-trigger">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
+                            <span class="pcoded-mtext">Reporting</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="{{ request()->routeIs('admin.form.ficheStk.vente') ? 'active' : '' }}">
+                                <a href="{{ route('admin.form.ficheStk.vente') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Fiche de stock</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </ul>
 
         @elseif(in_array($user->bureau_id, $userBurVente) && $user->role == 'Caissier')
