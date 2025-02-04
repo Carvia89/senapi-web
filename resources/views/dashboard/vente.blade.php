@@ -125,7 +125,7 @@
                                             <i class="fas fa-file-alt mat-icon f-24"></i>
                                         </div>
                                         <div class="col-9 cst-cont">
-                                            <h5>00 bulletins</h5>
+                                            <h5>{{ number_format($soldeActuel, 0, ',', ' ') }} bulletins</h5>
                                             <p class="m-b-0">Solde Actuel des Bulletins Scolaires</p>
                                         </div>
                                     </div>
@@ -169,10 +169,38 @@
                                 <div class="card-block">
                                     <div class="table-responsive">
                                         <table class="table table-hover m-b-0 without-header">
-                                            <!-- Tableau à insérer
-
-                                        -->
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Classe</th>
+                                                    <th>Option</th>
+                                                    <th>Stock Début</th>
+                                                    <th>Entrée</th>
+                                                    <th>Sortie</th>
+                                                    <th style="font-weight: bold; font-size: 1.2em; text-align: right;">Solde</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($enregistrements as $enregistrement)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $kelasis->find($enregistrement->classe_id)->designation ?? 'N/A' }}</td>
+                                                        <td>{{ $options->find($enregistrement->option_id)->designation ?? 'N/A' }}</td>
+                                                        <td>{{ number_format($enregistrement->stock_debut, 0, ',', ' ') }}</td>
+                                                        <td>{{ number_format($enregistrement->quantite_recue, 0, ',', ' ') }}</td>
+                                                        <td>{{ number_format($enregistrement->qte_livree, 0, ',', ' ') }}</td>
+                                                        <td style="font-weight: bold; font-size: 1em; text-align: right;">
+                                                            {{ number_format($enregistrement->stock_debut + $enregistrement->quantite_recue - $enregistrement->qte_livree, 0, ',', ' ') }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
                                         </table>
+                                        <div>
+                                            <div>
+                                                {{ $enregistrements->links() }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -305,7 +333,7 @@
             <!-- ======= Footer ======= -->
             <footer id="footer" class="footer">
                 <div class="copyright">
-                &copy;2024, <a style="font-weight: bold"><span>DANTIC-SENAPI</span></a>. All Rights Reserved
+                &copy;2025, <a style="font-weight: bold"><span>DANTIC-SENAPI</span></a>. All Rights Reserved
                 </div>
                 <div class="credits">
                     Designed by <a style="font-weight: bold">Charles THAMBA & Alexis LUBOYA</a> <br>

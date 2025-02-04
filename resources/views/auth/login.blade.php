@@ -81,7 +81,7 @@
                                     </div>
 
                                     @if($errors->any())
-                                        <div class="alert alert-danger">
+                                        <div style="color: red; font-weight: bold;">
                                             {{ $errors->first() }}
                                         </div>
                                     @endif

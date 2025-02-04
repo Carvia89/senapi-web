@@ -57,6 +57,23 @@ class User extends Authenticatable
         return $this->bureau ? $this->bureau->division() : null;
     }
 
+    public function caissierVentes()
+    {
+        return $this->hasMany(CaissierVente::class, 'user_id');
+    }
+
+    // Relation avec EtatBesoin
+    public function etatBesoins()
+    {
+        return $this->hasMany(EtatBesoin::class);
+    }
+
+    // Relation avec Bon Dépenses
+    public function bonDepenses()
+    {
+        return $this->hasMany(BonDepense::class);
+    }
+
 /*
     public function direction()
     {

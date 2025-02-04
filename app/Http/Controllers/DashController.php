@@ -19,7 +19,9 @@ use App\Models\Niveau;
 use App\Models\Option;
 use App\Models\OutStock;
 use App\Models\SortieFourniture;
+use App\Models\SortieVente;
 use App\Models\StockDebut;
+use App\Models\StockDebutVente;
 use App\Models\UnitArticle;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -236,6 +238,53 @@ class DashController extends Controller
                                     ->distinct('num_cmd') // Compter uniquement les commandes distinctes
                                     ->count('num_cmd'); // Compter les num_cmd distincts
 
+
+        //** CALCUL DE LA SITUATION ACTUELLE  */
+        // Sous-requête pour les quantités reçues
+        $options = Option::all();
+        $kelasis = Kelasi::all();
+
+        // Sous-requête pour les quantités reçues
+        $quantiteRecue = DB::table('sortie_fournitures as sf')
+            ->join('commande_ventes as cv', 'sf.commande_vente_id', '=', 'cv.id')
+            ->select('cv.option_id', 'cv.classe_id', DB::raw('SUM(sf.qte_livree) AS total_recue'))
+            ->where('sf.description', '=', 1)
+            ->groupBy('cv.option_id', 'cv.classe_id');
+
+        // Sous-requête pour les quantités livrées
+        $qteLivree = DB::table('sortie_ventes as sv')
+            ->join('commande_ventes as cv', 'sv.commande_vente_id', '=', 'cv.id')
+            ->select('cv.option_id', 'cv.classe_id', DB::raw('SUM(sv.qte_sortie) AS total_livree'))
+            ->groupBy('cv.option_id', 'cv.classe_id');
+
+        // Requête principale avec pagination et tri
+        $enregistrements = DB::table('stock_debut_ventes AS sd')
+            ->select('sd.option_id', 'sd.classe_id', 'sd.stock_debut',
+                    DB::raw('COALESCE(qr.total_recue, 0) AS quantite_recue'),
+                    DB::raw('COALESCE(ql.total_livree, 0) AS qte_livree'))
+            ->leftJoin(DB::raw("({$quantiteRecue->toSql()}) as qr"),
+                    function ($join) {
+                        $join->on('sd.option_id', '=', 'qr.option_id')
+                                ->on('sd.classe_id', '=', 'qr.classe_id');
+                    })
+            ->leftJoin(DB::raw("({$qteLivree->toSql()}) as ql"),
+                    function ($join) {
+                        $join->on('sd.option_id', '=', 'ql.option_id')
+                                ->on('sd.classe_id', '=', 'ql.classe_id');
+                    })
+            ->mergeBindings($quantiteRecue) // Ajouter les bindings de la sous-requête
+            ->mergeBindings($qteLivree) // Ajouter les bindings de la sous-requête
+            ->groupBy('sd.option_id', 'sd.classe_id', 'sd.stock_debut', 'qr.total_recue', 'ql.total_livree') // Ajoutez les colonnes agrégées
+            ->orderBy('sd.option_id', 'asc') // Tri par option_id en ordre croissant
+            ->paginate(4); // Pagination à 25 éléments par page
+
+        // Calculer le solde actuel des bulletins
+        $stockDebutTotal = StockDebutVente::sum('stock_debut');
+        $quantiteRecuTotal = SortieFourniture::where('description', 1)->sum('qte_livree');
+        $qteLivreeTotal = SortieVente::sum('qte_sortie');
+        $totalGeneral = $stockDebutTotal + $quantiteRecuTotal + $qteLivreeTotal;
+        $soldeActuel = $stockDebutTotal + $quantiteRecuTotal - $qteLivreeTotal;
+
         return view('dashboard.vente',
             compact(
                 'directionsCount',
@@ -248,10 +297,13 @@ class DashController extends Controller
                 'optionCount',
                 'clientCount',
                 'interneCount',
-                'externeCount'
+                'externeCount',
+                'enregistrements',
+                'options',
+                'kelasis',
+                'soldeActuel'
             )
         );
     }
-
 
 }

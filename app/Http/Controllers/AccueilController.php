@@ -129,25 +129,44 @@ class AccueilController extends Controller
             }
 
             // Redirection en fonction du bureau et du rôle de l'utilisateur
-            $userBureaux = [3, 9]; // ID des bureaux de la division fournitures
+            $userBurFourniture = [9]; // ID des bureaux de la division fournitures
             $userBurVente = [10];  // ID des bureaux de la division Vente
             $userBurDistr = [11];  // ID des bureaux Distribution
+            $userBurMP = [3];  // ID des bureaux Matières Premières
+            $userBurEliq = [2];  // ID bureau Engagement & Liquidation
+            $userBurBP = [1];
+            $userBurCaisse = [13];
 
-            if (in_array($user->bureau_id, $userBureaux) && $user->role == 'User') {
+            if (in_array($user->bureau_id, $userBurFourniture) && $user->role == 'User') {
                 return redirect()->route('dashboard.bureau')->with('success', 'Bienvenue sur votre tableau de bord');
 
             } elseif (in_array($user->bureau_id, $userBurVente) && $user->role == 'User') {
                 return redirect()->route('dashboard.bureau.vente')->with('success', 'Bienvenue sur votre tableau de bord');
 
+            } elseif (in_array($user->bureau_id, $userBurVente) && $user->role == 'Caissier') {
+                return redirect()->route('admin.caisse-vente-Bulletins.create');
+
             } elseif (in_array($user->bureau_id, $userBurDistr) && $user->role == 'User') {
                 return redirect()->route('admin.transfert-commande.create');
+
+            } elseif (in_array($user->bureau_id, $userBurMP) && $user->role == 'User') {
+                return redirect()->route('dashboard.bureau.mp');
+
+            } elseif (in_array($user->bureau_id, $userBurEliq) && $user->role == 'User') {
+                return redirect()->route('dashboard.bureau.eliq');
+
+            } elseif (in_array($user->bureau_id, $userBurBP) && $user->role == 'CB') {
+                return redirect()->route('admin.imputation.index');
+
+            } elseif (in_array($user->bureau_id, $userBurCaisse) && $user->role == 'User') {
+                return redirect()->route('dashboard.bureau.caisse');
 
             } elseif ($user->bureau_id == 2 && $user->role == 'Admin') {
                 return redirect()->route('dashboard.admin')->with('success', 'Bienvenue Admin');
             }
 
             // Redirection par défaut si aucune condition ne correspond
-            return redirect()->route('dashboard')->with('success', 'Bienvenue sur votre tableau de bord');
+            //return redirect()->route('dashboard')->with('success', 'Bienvenue sur votre tableau de bord');
         }
 
         // Si l'authentification échoue

@@ -18,6 +18,18 @@ class Bureau extends Model
     {
         return $this->belongsTo(Division::class, 'division_id');
     }
+
+    public function beneficiaires()
+    {
+        return $this->hasMany(Beneficiaire::class);
+    }
+
+    // Relation avec EtatBesoin
+    public function etatBesoins()
+    {
+        return $this->hasMany(EtatBesoin::class);
+    }
+
 /*
     public function users()
     {

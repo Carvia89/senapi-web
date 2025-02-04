@@ -30,16 +30,29 @@ use App\Http\Controllers\
     PDFController,
     ReportController,
 };
+use App\Http\Controllers\Caisse\MotCleController;
 use App\Http\Controllers\Distribution\TransferController;
+use App\Http\Controllers\DPSB\ServiceBudgetController;
+use App\Http\Controllers\Engagement\BanqueController;
+use App\Http\Controllers\Engagement\BeneficiaireController;
+use App\Http\Controllers\Engagement\BonCompletController;
+use App\Http\Controllers\Engagement\BonPartielController;
+use App\Http\Controllers\Engagement\DashEliqController;
+use App\Http\Controllers\Engagement\DossierController;
+use App\Http\Controllers\Engagement\EtatBesoinController;
+use App\Http\Controllers\Engagement\ImputationController;
 use App\Http\Controllers\Fourniture\EntreeFournController;
 use App\Http\Controllers\Fourniture\PanierSortieController;
 use App\Http\Controllers\Fourniture\StockDebutController;
 use App\Http\Controllers\Vente\ApproController;
+use App\Http\Controllers\Vente\CaissierVenteController;
 use App\Http\Controllers\Vente\ClientController;
 use App\Http\Controllers\Vente\LivraisonVenteController;
 use App\Http\Controllers\Vente\PanierController;
 use App\Http\Controllers\Vente\PanierExtController;
 use App\Http\Controllers\Vente\StkDebutController;
+use App\Models\Dossier;
+use App\Models\ServiceBudgetVisa;
 use App\Models\StockDebut;
 use Illuminate\Support\Facades\Route;
 
@@ -53,10 +66,17 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/bureaux/{direction_id}', [AccueilController::class, 'getBureaux'])->name('bureaux.get');
 Route::get('/get-quantity/{num_cmd}', [TransferController::class, 'getQuantity']);
 Route::get('/get-command-details/{num_cmd}', [LivraisonVenteController::class, 'getCommandDetails']);
+Route::get('/get-details-command/{num_cmd}', [CaissierVenteController::class, 'getDetailsCommand']);
+Route::get('/imputation/nature/{id}', [ImputationController::class, 'getNature'])->name('imputation.nature');
+
+
+//Route login DG
+Route::get('/connexion-direction-generale', [AuthController::class, 'loginDG'])->name('login.DG');
+Route::post('/connexion-dg', [AuthController::class, 'handleLoginDG'])->name('DG.login');
 
 Route::middleware(['auth'])->group(function() {
-// Route pour la DAPPRO
     Route::prefix('admin')->name('admin.')->group(function () {
+        //Bureau Matières Premières
         Route::resource('Utilisateur', UserController::class)->except(['show']);
         Route::resource('uniteArticle', UArticleController::class)->except(['show']);
         Route::resource('categorieArticle', CatArticleController::class)->except(['show']);
@@ -108,6 +128,9 @@ Route::middleware(['auth'])->group(function() {
             Route::get('/fiche-form-vente', [StkDebutController::class, 'showForm'])->name('form.ficheStk.vente');
             route::get('/fiche-de-stock-vente', [StkDebutController::class, 'generateStockPDF'])->name('print.ficheStk.vente');
 
+            //Caissier Vente
+            Route::resource('caisse-vente-Bulletins', CaissierVenteController::class)->except(['index', 'show', 'destroy']);
+
 
         //**  Bureau Distribution  **//
         Route::resource('transfert-commande', TransferController::class)->except(['show', 'destroy']);
@@ -117,12 +140,33 @@ Route::middleware(['auth'])->group(function() {
             Route::get('download-colis', [TransferController::class, 'downloadColis'])->name('colisage.download');
             Route::get('download-note', [TransferController::class, 'downloadNote'])->name('note.download');
 
+
+
+        //**  Bureau ENGAGEMENT ET LIQUIDATION (Partie USER) */
+        Route::resource('banque-senapi', BanqueController::class)->except(['show']);
+        Route::resource('beneficiaire', BeneficiaireController::class)->except(['show']);
+        Route::resource('dossier', DossierController::class)->except(['show', 'index']);
+        Route::resource('numérisation-etat-de-besoin', EtatBesoinController::class);
+        Route::resource('bon-de-dépense-complète', BonCompletController::class);
+            //Télécharger EB dans Bon de Dépense
+            Route::get('/etat-besoin/{id}', [BonCompletController::class, 'downloadEB'])->name('bdp.telecharger-etat-besoin');
+        Route::resource('bon-de-dépense-partielle', BonPartielController::class);
+
+
+        //** Bureau BUDGET PROGRAMME */
+        Route::resource('imputation', ImputationController::class)->except(['show']);
+        Route::resource('imputation-bon-depense', ServiceBudgetController::class)->except(['show', 'create', 'store', 'show', 'destroy']);
+
+
+        //**  Bureau COMPTABILITE / CAISSE (Partie USER) */
+        Route::resource('mot-cle-imputation', MotCleController::class)->except(['show']);
+
     });
 
     //Tableau de Bord pour la DANTIC
     Route::get('/dashboard/dantic', [DashController::class, 'index'])->name('dashboard.direction1');
     //Tableau de Bord pour la DIR-GENERALE
-    Route::get('/dashboard/dir-générale', [DashController::class, 'index2'])->name('dashboard.direction2');
+    Route::get('/dashboard/direction-générale', [AuthController::class, 'index2'])->name('dashboard.direction2');
     //Tableau de Bord pour la DAPPRO
     Route::get('/dashboard/dappro', [DashController::class, 'indexDappro'])->name('dashboard.direction3');
     //Tableau de Bord pour la DEP
@@ -138,12 +182,9 @@ Route::middleware(['auth'])->group(function() {
     //Les routes pour les tableaux de bord suivant les bureaux
     Route::get('/dashboard/fourniture', [DashController::class, 'indexFourniture'])->name('dashboard.bureau');
     Route::get('/dashboard/vente', [DashController::class, 'indexVente'])->name('dashboard.bureau.vente');
-
-
-
-/*
-    Route::get('dashboard', [DashController::class, 'index'])->name('dashboard');
-*/
+    Route::get('/dashboard/mp', [DashController::class, 'indexDappro'])->name('dashboard.bureau.mp');
+    Route::get('/dashboard/engagement/liquidation', [DashEliqController::class, 'indexEliq'])->name('dashboard.bureau.eliq');
+    Route::get('/dashboard/comptabilité/caisse', [DashEliqController::class, 'indexCaisse'])->name('dashboard.bureau.caisse');
 
     Route::prefix('stock')->name('mouvement.')->group(function () {
         Route::resource('gestion', gestionArticleController::class)->except(['show']);

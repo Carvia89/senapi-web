@@ -312,7 +312,7 @@
             <!-- ======= Footer ======= -->
             <footer id="footer" class="footer">
                 <div class="copyright">
-                &copy;2024, <a style="font-weight: bold"><span>DANTIC-SENAPI</span></a>. All Rights Reserved
+                &copy;2025, <a style="font-weight: bold"><span>DANTIC-SENAPI</span></a>. All Rights Reserved
                 </div>
                 <div class="credits">
                     Designed by <a style="font-weight: bold">Charles THAMBA & Alexis LUBOYA</a> <br>

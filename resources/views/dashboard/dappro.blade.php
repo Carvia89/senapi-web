@@ -526,7 +526,7 @@
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
         <div class="copyright">
-          &copy; Copyright 2024, <strong><span>DANTIC-SENAPI</span></strong>. All Rights Reserved
+          &copy; 2025, <strong><span>DANTIC-SENAPI</span></strong>. All Rights Reserved
         </div>
             <div class="credits">
             Designed by <a href="{{route('dashboard.direction3')}}">Bienvenu_THAMBA</a>

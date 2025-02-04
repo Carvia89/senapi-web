@@ -73,7 +73,7 @@
                         <a class="btn btn-square btn-light rounded-circle mx-1" href=""><i class="fab fa-instagram"></i></a>
                         <a class="btn btn-square btn-light rounded-circle mx-1" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
-                    <a href="#" class="btn btn-primary rounded-pill py-2 px-4 flex-shrink-0">Go Pass</a>
+                    <a href="{{ route('login.DG') }}" class="btn btn-primary rounded-pill py-2 px-4 flex-shrink-0">Go Pass</a>
                 </div>
             </nav>
         </div>
@@ -82,7 +82,7 @@
         <!-- Carousel Start -->
         <div class="header-carousel owl-carousel">
             <div class="header-carousel-item">
-                <img src="{{asset('assets/img/carousel-1.jpg')}}" class="img-fluid w-100" alt="Image">
+                <img src="{{asset('assets/img/img9.jpg')}}" class="img-fluid w-100" alt="Image">
                 <div class="carousel-caption">
                     <div class="container align-items-center py-4">
                         <div class="row g-5 align-items-center">
@@ -137,44 +137,6 @@
                                         </div>
                                     </form>
                                 </div>
-<!--
-                                <script>
-                                    console.log("Script chargé"); // Ajoutez ceci pour vérifier
-                                    document.getElementById('direction_id').addEventListener('change', function () {
-                                        const bureauSelect = document.getElementById('bureau_id');
-                                        bureauSelect.innerHTML = '<option value="">Sélectionnez votre Bureau</option>'; // Réinitialiser les bureaux
-
-                                        const directionId = this.value;
-                                        console.log("Direction ID sélectionné:", directionId); // Vérifiez l'ID sélectionné
-
-                                        if (directionId) {
-                                            fetch(`/bureaux/${directionId}`)
-                                                .then(response => {
-                                                    if (!response.ok) {
-                                                        throw new Error('Network response was not ok');
-                                                    }
-                                                    return response.json();
-                                                })
-                                                .then(data => {
-                                                    console.log("Bureaux reçus:", data); // Afficher les bureaux reçus
-                                                    if (data.length === 0) {
-                                                        const option = document.createElement('option');
-                                                        option.textContent = 'Aucun bureau disponible';
-                                                        bureauSelect.appendChild(option);
-                                                    } else {
-                                                        data.forEach(bureau => {
-                                                            const option = document.createElement('option');
-                                                            option.value = bureau.id;
-                                                            option.textContent = bureau.designation; // Assurez-vous que "nom" est le bon attribut
-                                                            bureauSelect.appendChild(option);
-                                                        });
-                                                    }
-                                                })
-                                                .catch(error => console.error('Erreur:', error));
-                                        }
-                                    });
-                                </script>
--->
                             </div>
                         </div>
                     </div>
@@ -284,11 +246,11 @@
                 <div class="row g-4">
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="feature-item">
-                            <img src="{{asset('assets/img/feature-1.jpg')}}" class="img-fluid rounded w-100" alt="Image">
+                            <img src="{{asset('assets/img/img_LOFI.jpg')}}" class="img-fluid rounded w-100" alt="Image">
                             <div class="feature-content p-4">
                                 <div class="feature-content-inner">
-                                    <h4 class="text-white">Best Pools</h4>
-                                    <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis porro soluta voluptatum laborum mollitia blanditiis suscipit,
+                                    <h4 class="text-white">GESTODIVE</h4>
+                                    <p class="text-white">Una branche de la plateforme destinée à la gestion des matières premières et la vente des bulletins scolaires pour la Direction des Approvisionnements...
                                     </p>
                                     <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More <i class="fa fa-arrow-right ms-1"></i></a>
                                 </div>
@@ -298,11 +260,11 @@
                     </div>
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.4s">
                         <div class="feature-item">
-                            <img src="{{asset('assets/img/feature-2.jpg')}}" class="img-fluid rounded w-100" alt="Image">
+                            <img src="{{asset('assets/img/img_LOFI.jpg')}}" class="img-fluid rounded w-100" alt="Image">
                             <div class="feature-content p-4">
                                 <div class="feature-content-inner">
-                                    <h4 class="text-white">Waterslides</h4>
-                                    <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis porro soluta voluptatum laborum mollitia blanditiis suscipit,
+                                    <h4 class="text-white">COMPT-APP</h4>
+                                    <p class="text-white">Une branche de la plateforme qui gère le circuit de la comptabilité de la Direction Administrative & Financière de l'ordonnancement  à la liquidation...
                                     </p>
                                     <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More <i class="fa fa-arrow-right ms-1"></i></a>
                                 </div>
@@ -312,11 +274,11 @@
                     </div>
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.6s">
                         <div class="feature-item">
-                            <img src="{{asset('assets/img/feature-3.jpg')}}" class="img-fluid rounded w-100" alt="Image">
+                            <img src="{{asset('assets/img/img_LOFI.jpg')}}" class="img-fluid rounded w-100" alt="Image">
                             <div class="feature-content p-4">
                                 <div class="feature-content-inner">
-                                    <h4 class="text-white">River Rides</h4>
-                                    <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis porro soluta voluptatum laborum mollitia blanditiis suscipit,
+                                    <h4 class="text-white">GECIPRO</h4>
+                                    <p class="text-white">Une branche de la plateforme destinée à la gestion du circuit de l'Imprimerie pour la Direction de Production, de la facturation à la livraison...
                                     </p>
                                     <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More <i class="fa fa-arrow-right ms-1"></i></a>
                                 </div>
@@ -344,65 +306,52 @@
         <div class="container-fluid service py-5">
             <div class="container service-section py-5">
                 <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-                    <h4 class="text-primary">Our Service</h4>
-                    <h1 class="display-5 text-white mb-4">Explore Waterland Park service</h1>
-                    <p class="mb-0 text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur adipisci facilis cupiditate recusandae aperiam temporibus corporis itaque quis facere, numquam, ad culpa deserunt sint dolorem autem obcaecati, ipsam mollitia hic.
+                    <h4 class="text-primary">Nos Services</h4>
+                    <h1 class="display-5 text-white mb-4">Les différents services du SENAPI</h1>
+                    <p class="mb-0 text-white">Nous sommes un service public de l'Etat Congolais, sous tutelle du Ministère de Budget. Nous sommes l'Imprimerie Nationale et à ce titre, imprimons les imprimés de valeurs. Nos horaires de travail sont dépendants de la Fonction Publique, tels que :
                     </p>
                 </div>
                 <div class="row g-4">
                     <div class="col-0 col-md-1 col-lg-2 col-xl-2"></div>
                     <div class="col-md-10 col-lg-8 col-xl-8 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="service-days p-4">
-                            <div class="py-2 border-bottom border-top d-flex align-items-center justify-content-between flex-wrap"><h4 class="mb-0 pb-2 pb-sm-0">Monday - Friday</h4> <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i>11:00 AM - 16:00 PM</p></div>
-                            <div class="py-2 border-bottom d-flex align-items-center justify-content-between flex-shrink-1 flex-wrap"><h4 class="mb-0 pb-2 pb-sm-0">Saturday - Sunday</h4> <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i>09:00 AM - 17:00 PM</p></div>
-                            <div class="py-2 border-bottom d-flex align-items-center justify-content-between flex-shrink-1 flex-wrap"><h4 class="mb-0">Holiday</h4> <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i>09:00 AM - 17:00 PM</p></div>
+                            <div class="py-2 border-bottom border-top d-flex align-items-center justify-content-between flex-wrap"><h4 class="mb-0 pb-2 pb-sm-0">Lundi - Vendredi</h4> <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i>08:00 - 16:00 </p></div>
+                            <div class="py-2 border-bottom d-flex align-items-center justify-content-between flex-shrink-1 flex-wrap"><h4 class="mb-0 pb-2 pb-sm-0">Samedi - Dimanche (Jours Fériés) </h4> <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i>00:00 - 23:59</p></div>
                         </div>
                     </div>
                     <div class="col-0 col-md-1 col-lg-2 col-xl-2"></div>
 
-                    <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.2s">
+                    <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="service-item p-4">
                             <div class="service-content">
                                 <div class="mb-4">
                                     <i class="fas fa-home fa-4x"></i>
                                 </div>
-                                <a href="#" class="h4 d-inline-block mb-3">Private Gazebo</a>
+                                <a href="#" class="h4 d-inline-block mb-3">SERIGRAPHIE</a>
                                 <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet vel beatae numquam.
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.4s">
+                    <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.4s">
                         <div class="service-item p-4">
                             <div class="service-content">
                                 <div class="mb-4">
                                     <i class="fas fa-utensils fa-4x"></i>
                                 </div>
-                                <a href="#" class="h4 d-inline-block mb-3">Delicious Food</a>
+                                <a href="#" class="h4 d-inline-block mb-3">OFFSET</a>
                                 <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet vel beatae numquam.
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.6s">
+                    <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.6s">
                         <div class="service-item p-4">
                             <div class="service-content">
                                 <div class="mb-4">
-                                    <i class="fas fa-door-closed fa-4x"></i>
+                                    <i class="fas fa-print fa-4x"></i>
                                 </div>
-                                <a href="#" class="h4 d-inline-block mb-3">Safety Lockers</a>
-                                <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet vel beatae numquam.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.8s">
-                        <div class="service-item p-4">
-                            <div class="service-content">
-                                <div class="mb-4">
-                                    <i class="fas fa-swimming-pool fa-4x"></i>
-                                </div>
-                                <a href="#" class="h4 d-inline-block mb-3">River Rides</a>
+                                <a href="#" class="h4 d-inline-block mb-3">NUMERIQUE</a>
                                 <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet vel beatae numquam.
                                 </p>
                             </div>
@@ -414,76 +363,12 @@
         <!-- Service End -->
 <br>
 <br>
-        <!-- Gallery Start -->
-        <div class="container-fluid gallery pb-5">
-            <div class="container pb-5">
-                <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-                    <h4 class="text-primary">Our Gallery</h4>
-                    <h1 class="display-5 mb-4">Captured Moments In Waterland</h1>
-                    <p class="mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur adipisci facilis cupiditate recusandae aperiam temporibus corporis itaque quis facere, numquam, ad culpa deserunt sint dolorem autem obcaecati, ipsam mollitia hic.
-                    </p>
-                </div>
-                <div class="row g-4">
-                    <div class="col-md-6 wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="gallery-item">
-                            <img src="{{asset('assets/img/gallery-1.jpg')}}" class="img-fluid rounded w-100 h-100" alt="">
-                            <div class="search-icon">
-                                <a href="{{asset('assets/img/gallery-1.jpg')}}" class="btn btn-light btn-lg-square rounded-circle" data-lightbox="Gallery-1"><i class="fas fa-search-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 wow fadeInUp" data-wow-delay="0.4s">
-                        <div class="gallery-item">
-                            <img src="{{asset('assets/img/gallery-2.jpg')}}" class="img-fluid rounded w-100 h-100" alt="">
-                            <div class="search-icon">
-                                <a href="{{asset('assets/img/gallery-2.jpg')}}" class="btn btn-light btn-lg-square rounded-circle" data-lightbox="Gallery-2"><i class="fas fa-search-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 wow fadeInUp" data-wow-delay="0.6s">
-                        <div class="gallery-item">
-                            <img src="{{asset('assets/img/gallery-3.jpg')}}" class="img-fluid rounded w-100 h-100" alt="">
-                            <div class="search-icon">
-                                <a href="{{asset('assets/img/gallery-3.jpg')}}" class="btn btn-light btn-lg-square rounded-circle" data-lightbox="Gallery-3"><i class="fas fa-search-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="gallery-item">
-                            <img src="{{asset('assets/img/gallery-4.jpg')}}" class="img-fluid rounded w-100 h-100" alt="">
-                            <div class="search-icon">
-                                <a href="{{asset('assets/img/gallery-4.jpg')}}" class="btn btn-light btn-lg-square rounded-circle" data-lightbox="Gallery-4"><i class="fas fa-search-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 wow fadeInUp" data-wow-delay="0.4s">
-                        <div class="gallery-item">
-                            <img src="{{asset('assets/img/gallery-5.jpg')}}" class="img-fluid rounded w-100 h-100" alt="">
-                            <div class="search-icon">
-                                <a href="{{asset('assets/img/gallery-5.jpg')}}" class="btn btn-light btn-lg-square rounded-circle" data-lightbox="Gallery-5"><i class="fas fa-search-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 wow fadeInUp" data-wow-delay="0.6s">
-                        <div class="gallery-item">
-                            <img src="{{asset('assets/img/gallery-6.jpg')}}" class="img-fluid rounded w-100 h-100" alt="">
-                            <div class="search-icon">
-                                <a href="{{asset('assets/img/gallery-6.jpg')}}" class="btn btn-light btn-lg-square rounded-circle" data-lightbox="Gallery-6"><i class="fas fa-search-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Gallery End -->
-
-
         <!-- Blog Start -->
         <div class="container-fluid blog pb-5">
             <div class="container pb-5">
                 <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-                    <h4 class="text-primary">Our Blog</h4>
-                    <h1 class="display-5 mb-4">Latest Blog & Articles</h1>
+                    <h4 class="text-primary">Notre Catalogue</h4>
+                    <h1 class="display-5 mb-4">Les imprimés de valeur</h1>
                     <p class="mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur adipisci facilis cupiditate recusandae aperiam temporibus corporis itaque quis facere, numquam, ad culpa deserunt sint dolorem autem obcaecati, ipsam mollitia hic.
                     </p>
                 </div>
@@ -492,13 +377,13 @@
                         <div class="blog-item">
                             <div class="blog-img">
                                 <a href="#">
-                                    <img src="{{asset('assets/img/blog-2.jpg')}}" class="img-fluid w-100 rounded-top" alt="Image">
+                                    <img src="{{asset('assets/img/img_CIRC.jpg')}}" class="img-fluid w-100 rounded-top" alt="Image">
                                 </a>
-                                <div class="blog-category py-2 px-4">Vacation</div>
-                                <div class="blog-date"><i class="fas fa-clock me-2"></i>August 19, 2025</div>
+                                <div class="blog-category py-2 px-4">Circulaires et Brévets</div>
+                                <div class="blog-date"><i class="fas fa-clock me-2"></i>August 19, 2024</div>
                             </div>
                             <div class="blog-content p-4">
-                                <a href="#" class="h4 d-inline-block mb-4">Why Children Dont Like Getting Out Of The Water</a>
+                                <a href="#" class="h4 d-inline-block mb-4">Circulaire d'exécution de la LOFIP 2022</a>
                                 <p class="mb-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam aspernatur nam quidem porro sapiente, neque a quibusdam....
                                 </p>
                                 <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More <i class="fas fa-arrow-right ms-2"></i></a>
@@ -509,13 +394,13 @@
                         <div class="blog-item">
                             <div class="blog-img">
                                 <a href="#">
-                                    <img src="{{asset('assets/img/blog-3.jpg')}}" class="img-fluid w-100 rounded-top" alt="Image">
+                                    <img src="{{asset('assets/img/img_BDG.jpg')}}" class="img-fluid w-100 rounded-top" alt="Image">
                                 </a>
-                                <div class="blog-category py-2 px-4">Insight</div>
-                                <div class="blog-date"><i class="fas fa-clock me-2"></i>August 19, 2025</div>
+                                <div class="blog-category py-2 px-4">Cabinet</div>
+                                <div class="blog-date"><i class="fas fa-clock me-2"></i>August 19, 2024</div>
                             </div>
                             <div class="blog-content p-4">
-                                <a href="#" class="h4 d-inline-block mb-4">5 Ways To Enjoy Waterland This Spring Break</a>
+                                <a href="#" class="h4 d-inline-block mb-4">L'Efficacité et la Rigueur dans la gestion des Finances Publiques</a>
                                 <p class="mb-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam aspernatur nam quidem porro sapiente, neque a quibusdam....
                                 </p>
                                 <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More <i class="fas fa-arrow-right ms-2"></i></a>
@@ -526,13 +411,13 @@
                         <div class="blog-item">
                             <div class="blog-img">
                                 <a href="#">
-                                    <img src="{{asset('assets/img/blog-1.jpg')}}" class="img-fluid w-100 rounded-top" alt="Image">
+                                    <img src="{{asset('assets/img/img_DOC.jpg')}}" class="img-fluid w-100 rounded-top" alt="Image">
                                 </a>
-                                <div class="blog-category py-2 px-4">Insight</div>
-                                <div class="blog-date"><i class="fas fa-clock me-2"></i>August 19, 2025</div>
+                                <div class="blog-category py-2 px-4">Autres documents</div>
+                                <div class="blog-date"><i class="fas fa-clock me-2"></i>August 19, 2024</div>
                             </div>
                             <div class="blog-content p-4">
-                                <a href="#" class="h4 d-inline-block mb-4">3 Tips for Your Family Spring Break at Amusement Park</a>
+                                <a href="#" class="h4 d-inline-block mb-4">Révues, livres, Calendriers et autres documents</a>
                                 <p class="mb-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam aspernatur nam quidem porro sapiente, neque a quibusdam....
                                 </p>
                                 <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More <i class="fas fa-arrow-right ms-2"></i></a>
@@ -549,22 +434,22 @@
         <div class="container-fluid team pb-5">
             <div class="container pb-5">
                 <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-                    <h4 class="text-primary">Meet Our Team</h4>
-                    <h1 class="display-5 mb-4">Our Waterland Park Dedicated Team Member</h1>
-                    <p class="mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur adipisci facilis cupiditate recusandae aperiam temporibus corporis itaque quis facere, numquam, ad culpa deserunt sint dolorem autem obcaecati, ipsam mollitia hic.
+                    <h4 class="text-primary">Equipe de Développeurs</h4>
+                    <h1 class="display-5 mb-4">Les développeurs de la DANTIC</h1>
+                    <p class="mb-0">La mise sur pied et la maintenance de cette plateforme-web est l'oeuvre de développeurs du Bureau Réseau et Site Internet, de la Direction des Archives, Nouvelles Technologies de l'Information et Communication du SENAPI.
                     </p>
                 </div>
                 <div class="row g-4 justify-content-center">
-                    <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
+                    <div class="col-md-6 col-lg-6 col-xl-6 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="team-item p-4">
                             <div class="team-content">
                                 <div class="d-flex justify-content-between border-bottom pb-4">
                                     <div class="text-start">
-                                        <h4 class="mb-0">David James</h4>
-                                        <p class="mb-0">Profession</p>
+                                        <h4 class="mb-0">Charles THAMBA</h4>
+                                        <p class="mb-0">Stagiaire</p>
                                     </div>
                                     <div>
-                                        <img src="{{asset('assets/img/team-1.jpg')}}" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
+                                        <img src="{{asset('assets/img/img_BVS.jpg')}}" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
                                     </div>
                                 </div>
                                 <div class="team-icon rounded-pill my-4 p-3">
@@ -578,13 +463,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.4s">
+                    <div class="col-md-6 col-lg-6 col-xl-6 wow fadeInUp" data-wow-delay="0.4s">
                         <div class="team-item p-4">
                             <div class="team-content">
                                 <div class="d-flex justify-content-between border-bottom pb-4">
                                     <div class="text-start">
-                                        <h4 class="mb-0">William John</h4>
-                                        <p class="mb-0">Profession</p>
+                                        <h4 class="mb-0">Alexis LUBOYA</h4>
+                                        <p class="mb-0">Stagiaire</p>
                                     </div>
                                     <div>
                                         <img src="{{asset('assets/img/team-2.jpg')}}" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
@@ -601,13 +486,14 @@
                             </div>
                         </div>
                     </div>
+                    <!--
                     <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.6s">
                         <div class="team-item p-4">
                             <div class="team-content">
                                 <div class="d-flex justify-content-between border-bottom pb-4">
                                     <div class="text-start">
-                                        <h4 class="mb-0">Michael John</h4>
-                                        <p class="mb-0">Profession</p>
+                                        <h4 class="mb-0">Aimé LIYENGI</h4>
+                                        <p class="mb-0">Chef de Bureau</p>
                                     </div>
                                     <div>
                                         <img src="{{asset('assets/img/team-3.jpg')}}" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
@@ -624,6 +510,7 @@
                             </div>
                         </div>
                     </div>
+                    -->
                 </div>
             </div>
         </div>
@@ -634,8 +521,8 @@
         <div class="container-fluid testimonial py-5">
             <div class="container py-5">
                 <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-                    <h4 class="text-primary">Testimonials</h4>
-                    <h1 class="display-5 text-white mb-4">Our Clients Riviews</h1>
+                    <h4 class="text-primary">Déclarations</h4>
+                    <h1 class="display-5 text-white mb-4">Mots de Directeurs</h1>
                     <p class="text-white mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur adipisci facilis cupiditate recusandae aperiam temporibus corporis itaque quis facere, numquam, ad culpa deserunt sint dolorem autem obcaecati, ipsam mollitia hic.
                     </p>
                 </div>
@@ -709,7 +596,7 @@
                 </div>
             </div>
         </div>
-        <!-- Testimonial End -->
+        <!-- Déclarations End -->
 
         <!-- Footer Start -->
         <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.2s">
@@ -717,22 +604,24 @@
                 <div class="row g-5">
                     <div class="col-md-6 col-lg-6 col-xl-4">
                         <div class="footer-item">
-                            <a href="index.html" class="p-0">
-                                <h4 class="text-white mb-4"><i class="fas fa-swimmer text-primary me-3"></i>WaterLand</h4>
-                                <!-- <img src="img/logo.png" alt="Logo"> -->
+                            <a href="#" class="p-0">
+                                <h4 class="display-6 text-white mb-4">
+                                    <img src="{{asset('assets/img/logo-snp.png')}}" alt="Logo" style="width: 60px; height: 60px;" class="me-3">
+                                    <span style="color: red;">S</span><span style="color: skyblue;">ENAPI</span>
+                                </h4>
                             </a>
-                            <p class="mb-2">Dolor amet sit justo amet elitr clita ipsum elitr est.Lorem ipsum dolor sit amet, consectetur adipiscing...</p>
+                            <p class="mb-2">Le Service National des Approvisionnements et de l'Imprimerie, sous tutelle du Ministère du Budget.</p>
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-map-marker-alt text-primary me-3"></i>
-                                <p class="text-white mb-0">123 Street New York.USA</p>
+                                <p class="text-white mb-0">1554, De la Rivière, Kinshasa - Gombe</p>
                             </div>
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-envelope text-primary me-3"></i>
-                                <p class="text-white mb-0">info@example.com</p>
+                                <p class="text-white mb-0">info@senapi.cd</p>
                             </div>
                             <div class="d-flex align-items-center">
                                 <i class="fa fa-phone-alt text-primary me-3"></i>
-                                <p class="text-white mb-0">(+012) 3456 7890</p>
+                                <p class="text-white mb-0">(+243) 81 00 00 000</p>
                             </div>
                         </div>
                     </div>
@@ -742,8 +631,6 @@
                             <a href="#"><i class="fas fa-angle-right me-2"></i> About Us</a>
                             <a href="#"><i class="fas fa-angle-right me-2"></i> Feature</a>
                             <a href="#"><i class="fas fa-angle-right me-2"></i> Attractions</a>
-                            <a href="#"><i class="fas fa-angle-right me-2"></i> Tickets</a>
-                            <a href="#"><i class="fas fa-angle-right me-2"></i> Blog</a>
                             <a href="#"><i class="fas fa-angle-right me-2"></i> Contact us</a>
                         </div>
                     </div>
@@ -751,8 +638,6 @@
                         <div class="footer-item">
                             <h4 class="text-white mb-4">Support</h4>
                             <a href="#"><i class="fas fa-angle-right me-2"></i> Privacy Policy</a>
-                            <a href="#"><i class="fas fa-angle-right me-2"></i> Terms & Conditions</a>
-                            <a href="#"><i class="fas fa-angle-right me-2"></i> Disclaimer</a>
                             <a href="#"><i class="fas fa-angle-right me-2"></i> Support</a>
                             <a href="#"><i class="fas fa-angle-right me-2"></i> FAQ</a>
                             <a href="#"><i class="fas fa-angle-right me-2"></i> Help</a>
@@ -760,24 +645,16 @@
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-4">
                         <div class="footer-item">
-                            <h4 class="text-white mb-4">Opening Hours</h4>
+                            <h4 class="text-white mb-4">Horaire de travail</h4>
                             <div class="opening-date mb-3 pb-3">
                                 <div class="opening-clock flex-shrink-0">
-                                    <h6 class="text-white mb-0 me-auto">Monday - Friday:</h6>
-                                    <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i> 11:00 AM - 16:00 PM</p>
+                                    <h6 class="text-white mb-0 me-auto">Lundi - Vendredi:</h6>
+                                    <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i> 08:00 - 16:00 </p>
                                 </div>
                                 <div class="opening-clock flex-shrink-0">
-                                    <h6 class="text-white mb-0 me-auto">Satur - Sunday:</h6>
-                                    <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i> 09:00 AM - 17:00 PM</p>
+                                    <h6 class="text-white mb-0 me-auto">Sam - Dim: (Fériés)</h6>
+                                    <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i> 00:00 - 23:59 </p>
                                 </div>
-                                <div class="opening-clock flex-shrink-0">
-                                    <h6 class="text-white mb-0 me-auto">Holiday:</h6>
-                                    <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i> 09:00 AM - 17:00 PM</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p class="text-white mb-2">Payment Accepted</p>
-                                <img src="{{asset('assets/img/payment.png')}}" class="img-fluid" alt="Image">
                             </div>
                         </div>
                     </div>
@@ -791,12 +668,9 @@
             <div class="container">
                 <div class="row g-4 align-items-center">
                     <div class="col-md-6 text-center text-md-start mb-md-0">
-                        <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i>2024 DANTIC-SENAPI</a>, All right reserved.</span>
+                        <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i>2025 DANTIC-SENAPI</a>, Tous droits reservés.</span>
                     </div>
                     <div class="col-md-6 text-center text-md-end text-body">
-                        <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
-                        <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
-                        <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
                         Designed By <a class="border-bottom text-white">TL_TEAM</a> Distributed By <a class="border-bottom text-white">Bureau Réseau et Site Internet</a>
                     </div>
                 </div>

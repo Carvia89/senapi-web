@@ -18,4 +18,9 @@ class Direction extends Model
         return $this->hasMany(Division::class);
     }
 
+    // Relation avec Bon Dépenses
+    public function bonDepenses()
+    {
+        return $this->hasMany(BonDepense::class);
+    }
 }

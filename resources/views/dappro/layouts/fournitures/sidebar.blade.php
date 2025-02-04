@@ -243,7 +243,7 @@
                         </a>
                         <ul class="pcoded-submenu">
                             <li class="{{ request()->routeIs('admin.form.fiche.stock') ? 'active' : '' }}">
-                                <a href="{{ route('admin.form.ficheStk.vente') }}" class="waves-effect waves-dark">
+                                <a href="{{ route('admin.form.fiche.stock') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                     <span class="pcoded-mtext">Fiche de stock</span>
                                     <span class="pcoded-mcaret"></span>
@@ -351,8 +351,8 @@
         @elseif(in_array($user->bureau_id, $userBurVente) && $user->role == 'Caissier')
             <div class="pcoded-navigation-label">Bureau Vente</div>
             <ul class="pcoded-item pcoded-left-item">
-                <li class="{{ request()->routeIs('dashboard.direction3') ? 'active' : '' }}">
-                    <a href="{{ route('dashboard.direction3') }}" class="waves-effect waves-dark">
+                <li class="{{ request()->routeIs('admin.caisse-vente-Bulletins.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.caisse-vente-Bulletins.create') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-book"></i><b>FC</b></span>
                         <span class="pcoded-mtext">Facturation</span>
                         <span class="pcoded-mcaret"></span>

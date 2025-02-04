@@ -51,4 +51,9 @@ class CommandeVente extends Model
     {
         return $this->hasMany(SortieVente::class, 'commande_vente_id');
     }
+
+    public function caissierVentes()
+    {
+        return $this->hasMany(CaissierVente::class, 'commande_vente_id');
+    }
 }
