@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('date_emission');
             $table->foreignId('direction_id')->constrained('directions')->onDelete('cascade');
             $table->foreignId('etat_besoin_id')->nullable()->constrained('etat_besoins')->onDelete('cascade');
-            $table->float('montant_bon');
+            $table->decimal('montant_bon', 15, 2);
             $table->string('motif');
             $table->string('num_enreg');
             $table->string('pour_acquit')->nullable();

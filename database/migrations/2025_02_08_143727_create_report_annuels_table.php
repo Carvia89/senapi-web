@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('paiement_acomptes', function (Blueprint $table) {
+        Schema::create('report_annuels', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bon_depense_id')->constrained('bon_depenses')->onDelete('cascade');
-            $table->string('beneficiaire');
-            $table->date('date_paiement');
-            $table->decimal('montant_acompte', 15, 2);
+            $table->decimal('montant_report');
+            $table->date('annee');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('paiement_acomptes');
+        Schema::dropIfExists('report_annuels');
     }
 };

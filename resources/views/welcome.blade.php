@@ -325,7 +325,7 @@
                         <div class="service-item p-4">
                             <div class="service-content">
                                 <div class="mb-4">
-                                    <i class="fas fa-home fa-4x"></i>
+                                    <i class="fas fa-print fa-4x"></i>
                                 </div>
                                 <a href="#" class="h4 d-inline-block mb-3">SERIGRAPHIE</a>
                                 <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet vel beatae numquam.
@@ -337,7 +337,7 @@
                         <div class="service-item p-4">
                             <div class="service-content">
                                 <div class="mb-4">
-                                    <i class="fas fa-utensils fa-4x"></i>
+                                    <i class="fas fa-print fa-4x"></i>
                                 </div>
                                 <a href="#" class="h4 d-inline-block mb-3">OFFSET</a>
                                 <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet vel beatae numquam.

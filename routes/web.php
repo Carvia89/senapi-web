@@ -30,7 +30,12 @@ use App\Http\Controllers\
     PDFController,
     ReportController,
 };
+use App\Http\Controllers\Caisse\DepenseBonController;
+use App\Http\Controllers\Caisse\DepenseSansBonController;
 use App\Http\Controllers\Caisse\MotCleController;
+use App\Http\Controllers\Caisse\RecetteCaisseController;
+use App\Http\Controllers\Caisse\ReportAnnuelController;
+use App\Http\Controllers\Caisse\ReportingController;
 use App\Http\Controllers\Distribution\TransferController;
 use App\Http\Controllers\DPSB\ServiceBudgetController;
 use App\Http\Controllers\Engagement\BanqueController;
@@ -51,6 +56,7 @@ use App\Http\Controllers\Vente\LivraisonVenteController;
 use App\Http\Controllers\Vente\PanierController;
 use App\Http\Controllers\Vente\PanierExtController;
 use App\Http\Controllers\Vente\StkDebutController;
+use App\Models\DepenseSansBon;
 use App\Models\Dossier;
 use App\Models\ServiceBudgetVisa;
 use App\Models\StockDebut;
@@ -68,6 +74,7 @@ Route::get('/get-quantity/{num_cmd}', [TransferController::class, 'getQuantity']
 Route::get('/get-command-details/{num_cmd}', [LivraisonVenteController::class, 'getCommandDetails']);
 Route::get('/get-details-command/{num_cmd}', [CaissierVenteController::class, 'getDetailsCommand']);
 Route::get('/imputation/nature/{id}', [ImputationController::class, 'getNature'])->name('imputation.nature');
+Route::get('/bons-de-depenses/{id}', [DepenseBonController::class, 'getBonDepense'])->name('bons-de-depenses.show');
 
 
 //Route login DG
@@ -160,6 +167,17 @@ Route::middleware(['auth'])->group(function() {
 
         //**  Bureau COMPTABILITE / CAISSE (Partie USER) */
         Route::resource('mot-cle-imputation', MotCleController::class)->except(['show']);
+        Route::resource('recettes-caisse', RecetteCaisseController::class)->except(['show']);
+        Route::resource('recettes-caisse', RecetteCaisseController::class)->except(['show']);
+        Route::resource('dépenses-avec-bons', DepenseBonController::class)->except(['show']);
+        Route::resource('dépenses-sans-bons', DepenseSansBonController::class)->except(['show']);
+        Route::resource('dépenses-sans-bons', DepenseSansBonController::class)->except(['show']);
+        Route::resource('report-annuel', ReportAnnuelController::class)->except(['show', 'index']);
+            //Reporting
+            Route::get('/rapport-financier-form', [ReportingController::class, 'index'])->name('rap.financier.form');
+            Route::get('/rapport-journalier-pdf', [ReportingController::class, 'generatePdf'])->name('rap.financier.pdf');
+            Route::get('/rapport-périodique-pdf', [ReportingController::class, 'generatePeriodicReport'])->name('rap.periodique.pdf');
+
 
     });
 

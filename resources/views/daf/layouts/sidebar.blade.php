@@ -136,38 +136,53 @@
         @elseif(in_array($user->bureau_id, $userBurCaisse) && $user->role == 'User')
             <div class="pcoded-navigation-label">Bureau Comptabilité / Caisse</div>
             <ul class="pcoded-item pcoded-left-item">
+                <li class="{{ route('dashboard.bureau.caisse') }}">
+                    <a href="{{ route('dashboard.bureau.caisse') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                        <span class="pcoded-mtext">Dashboard</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                </li>
                 <li class="{{ request()->routeIs('admin.mot-cle-imputation.*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.mot-cle-imputation.create') }}" class="waves-effect waves-dark">
+                    <a href="{{ route('admin.mot-cle-imputation.index') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-code"></i><b>C</b></span>
                         <span class="pcoded-mtext">Mot clé d'imputation</span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>
-                <li class="pcoded-hasmenu {{ request()->routeIs('admin.numérisation-etat-de-besoin.*') ||
-                    request()->routeIs('admin.bon-de-dépense-complète.*') ||
-                    request()->routeIs('admin.bon-de-dépense-partielle.*') ? 'active' : '' }} pcoded-trigger">
+                <li class="pcoded-hasmenu {{ request()->routeIs('admin.recettes-caisse.*') ||
+                    request()->routeIs('admin.dépenses-avec-bons.*') ||
+                    request()->routeIs('admin.report-annuel.*') ||
+                    request()->routeIs('admin.dépenses-sans-bons.*') ? 'active' : '' }} pcoded-trigger">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
                         <span class="pcoded-mtext">Livret de Caisse</span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                     <ul class="pcoded-submenu">
-                        <li class="{{ request()->routeIs('admin.numérisation-etat-de-besoin.*') ? 'active' : '' }}">
-                            <a href="#" class="waves-effect waves-dark">
+                        <li class="{{ request()->routeIs('admin.report-annuel.*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.report-annuel.create') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                <span class="pcoded-mtext">Report Annuel</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->routeIs('admin.recettes-caisse.*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.recettes-caisse.index') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                 <span class="pcoded-mtext">Recettes</span>
                                 <span class="pcoded-mcaret"></span>
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('admin.bon-de-dépense-complète.*') ? 'active' : '' }}">
-                            <a href="#" class="waves-effect waves-dark">
+                        <li class="{{ request()->routeIs('admin.dépenses-avec-bons.*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.dépenses-avec-bons.index') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                <span class="pcoded-mtext">Dépenses</span>
+                                <span class="pcoded-mtext">Dépenses liées aux bons</span>
                                 <span class="pcoded-mcaret"></span>
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('admin.bon-de-dépense-partielle.*') ? 'active' : '' }}">
-                            <a href="#" class="waves-effect waves-dark">
+                        <li class="{{ request()->routeIs('admin.dépenses-sans-bons.*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.dépenses-sans-bons.index') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                 <span class="pcoded-mtext">Autres Dépenses</span>
                                 <span class="pcoded-mcaret"></span>
@@ -175,7 +190,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="pcoded-hasmenu {{ request()->routeIs('admin.numérisation-etat-de-besoin.*') ||
+                <li class="pcoded-hasmenu {{ request()->routeIs('admin.rap.financier.form') ||
                     request()->routeIs('admin.bon-de-dépense-complète.*') ||
                     request()->routeIs('admin.bon-de-dépense-partielle.*') ? 'active' : '' }} pcoded-trigger">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
@@ -184,8 +199,8 @@
                         <span class="pcoded-mcaret"></span>
                     </a>
                     <ul class="pcoded-submenu">
-                        <li class="{{ request()->routeIs('admin.numérisation-etat-de-besoin.*') ? 'active' : '' }}">
-                            <a href="#" class="waves-effect waves-dark">
+                        <li class="{{ request()->routeIs('admin.rap.financier.form') ? 'active' : '' }}">
+                            <a href="{{ route('admin.rap.financier.form') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                 <span class="pcoded-mtext">Rapport Financier</span>
                                 <span class="pcoded-mcaret"></span>

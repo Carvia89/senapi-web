@@ -12,6 +12,16 @@
             height: 100vh;
             margin: 0;
         }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -90%);
+            width: 90%; /* Ajustez la taille de l'image ici */
+            height: auto;
+            opacity: 0.1; /* Rendre l'image floue */
+            z-index: -1; /* Placer l'image derrière le contenu */
+        }
         .text {
             text-align: center;
             line-height: 0.2; /* Ajustez l'interligne ici */
@@ -147,6 +157,9 @@
     </style>
 </head>
 <body>
+    <!-- Image en filigrane -->
+    <img src="{{ public_path('assets/img/logo-snp.png') }}" alt="Watermark" class="watermark">
+
     <div class="text">
         <p>REPUBLIQUE DEMOCRATIQUE DU CONGO</p>
         <p style="color: skyblue">MINISTERE DU BUDGET</p>

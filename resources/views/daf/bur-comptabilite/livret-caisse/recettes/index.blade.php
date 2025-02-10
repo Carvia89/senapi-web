@@ -16,20 +16,20 @@
 
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h5>Répertoire de bons des dépenses</h5>
-                                <a href="{{ route('admin.bon-de-dépense-complète.create') }}" class="btn btn-primary btn-round">
-                                    <i class="fas fa-plus"></i> Nouveau
+                                <h5>Journal des Recettes</h5>
+                                <a href="{{ route('admin.recettes-caisse.create') }}" class="btn btn-primary btn-round">
+                                    <i class="fas fa-plus"></i> Nouvelle Recette
                                 </a>
                             </div>
                             <div class="card-block">
-                                <form action="{{ route('admin.bon-de-dépense-complète.index') }}" method="GET">
+                                <form action="{{ route('admin.recettes-caisse.index') }}" method="GET">
                                     <div class="form-group row mt-3">
                                         <div class="col-md-4 col-sm-4">
-                                            <label for="direction_id" class="form-label">Direction *</label>
-                                            <select name="direction_id" class="form-control form-control-round" id="direction_id">
+                                            <label for="reference_imputation_id" class="form-label">Mot clé *</label>
+                                            <select name="reference_imputation_id" class="form-control form-control-round" id="reference_imputation_id">
                                                 <option value="">Sélectionnez...</option>
-                                                @foreach ($directions as $direction)
-                                                    <option value="{{ $direction->direction->id }}">{{ $direction->direction->designation }}</option>
+                                                @foreach ($refImputs as $refImput)
+                                                    <option value="{{ $refImput->refeImputation->id ?? '' }}">{{ $refImput->refeImputation->designation ?? '' }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -38,23 +38,23 @@
                                             <select name="dossier_id" class="form-control form-control-round" id="dossier_id">
                                                 <option value="">Sélectionnez...</option>
                                                 @foreach ($dossiers as $dossier)
-                                                    <option value="{{ $dossier->dossier->id ?? 'Aucun' }}">{{ $dossier->dossier->designation ?? 'Aucun' }}</option>
+                                                    <option value="{{ $dossier->dossier->id ?? '' }}">{{ $dossier->dossier->designation ?? '' }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="col-md-4 col-sm-4">
-                                            <label for="date_reception" class="form-label">Date Réception</label>
-                                            <input type="date" name="date_reception" class="form-control form-control-round" id="date_reception">
+                                            <label for="date_recette" class="form-label">Date </label>
+                                            <input type="date" name="date_recette" class="form-control form-control-round" id="date_recette">
                                         </div>
                                     </div>
                                     <div class="form-group row mt-3">
                                         <div class="col-md-4 col-sm-4">
-                                            <label for="motif" class="form-label">Libelle</label>
-                                            <input type="text" name="motif" class="form-control form-control-round" id="motif">
+                                            <label for="libelle" class="form-label">Libelle</label>
+                                            <input type="text" name="libelle" class="form-control form-control-round" id="libelle">
                                         </div>
                                         <div class="col-md-4 col-sm-4">
-                                            <label for="montant_bon" class="form-label">Montant</label>
-                                            <input type="text" name="montant_bon" class="form-control form-control-round" id="montant_bon">
+                                            <label for="montant_recu" class="form-label">Montant</label>
+                                            <input type="text" name="montant_recu" class="form-control form-control-round" id="montant_recu">
                                         </div>
                                         <div class="col-md-4 col-sm-4">
                                             <label for="user_id" class="form-label">Enregistré par</label>
@@ -70,49 +70,36 @@
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Numéro Bon</th>
+                                                <th>Date</th>
                                                 <th>Libelle</th>
                                                 <th>Montant (CDF)</th>
-                                                <th>Date Emission</th>
-                                                <th>Etat</th>
+                                                <th>Mot clé</th>
+                                                <th>Dossier</th>
                                                 <th class="d-flex justify-content-end">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($bonDepenses as $bon)
+                                            @foreach ($recettes as $recette)
                                                 <tr>
-                                                    <td> {{ $bon->num_bon }}</td>
-                                                    <td>{{ $bon->motif }}</td>
-                                                    <td>{{ number_format($bon->montant_bon, 2, ',', ' ') }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($bon->date_emission)->format('d-m-Y') }}</td>
-                                                    <!-- <td>{{ $bon->utilisateur->prenom ?? '-' }} {{ $bon->utilisateur->name ?? '-' }}</td> -->
-                                                    <td>
-                                                        @if ($bon->etat == 1)
-                                                            <span class="badge bg-success">En attente d'imputation</span>
-                                                        @elseif ($bon->etat == 2)
-                                                            <span class="badge bg-success">Imputé</span>
-                                                        @elseif ($bon->etat == 3)
-                                                            <span class="badge bg-success">Payé</span>
-                                                        @elseif ($bon->etat == 0)
-                                                            <span class="badge bg-danger">Apuré</span>
-                                                        @endif
-                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($recette->date_recette)->format('d/m/Y') }}</td>
+                                                    <td>{{ $recette->libelle }}</td>
+                                                    <td>{{ number_format($recette->montant_recu, 2, ',', ' ') }}</td>
+                                                    <td>{{ $recette->refeImputation->designation ?? 'Aucun' }}</td>
+                                                    <td>{{ $recette->dossier->designation ?? 'Aucun' }}</td>
                                                     <td>
                                                         <div class="d-flex justify-content-end mb-3">
-                                                            <a href="{{ route('admin.bon-de-dépense-complète.edit', $bon) }}"
+                                                            <a href="{{ route('admin.recettes-caisse.edit', $recette) }}"
                                                                 title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
-                                                            @if ($bon->etat_besoin_id && $bon->etatBesoin && $bon->etatBesoin->fichier)
-                                                                <a href="{{ route('admin.bdp.telecharger-etat-besoin', $bon->etat_besoin_id) }}"
-                                                                title="Télécharger EB" class="btn btn-secondary btn-circle btn-sm me-4">
-                                                                <i class="fas fa-download"></i>
-                                                                </a>
-                                                            @endif
-                                                            <a href="{{ route('admin.bon-de-dépense-complète.show', $bon->id) }}"
-                                                               title="Imprimer" class="btn btn-primary btn-circle btn-sm me-4">
-                                                               <i class="fas fa-print"></i>
-                                                            </a>
+                                                            <form action="{{ route('admin.recettes-caisse.destroy', $recette) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method("delete")
+                                                                <button class="btn btn-danger btn-circle btn-sm" title="Supprimer">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </form>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -120,7 +107,7 @@
                                         </tbody>
                                     </table>
                                     <!-- Pagination -->
-                                    {{ $bonDepenses->links() }}
+                                    {{ $recettes->links() }}
                                 </div>
                             </div>
                         </div>

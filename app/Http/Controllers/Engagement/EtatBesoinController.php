@@ -45,6 +45,9 @@ class EtatBesoinController extends Controller
             });
         }
 
+        // Tri des résultats par date d'émission en ordre descendant
+        $query->orderBy('created_at', 'desc');
+
         // Pagination des résultats
         $etatBesoins = $query->paginate(5);
 

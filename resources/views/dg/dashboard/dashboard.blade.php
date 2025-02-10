@@ -125,7 +125,7 @@
                                     <i class="fas fa-star mat-icon f-24"></i>
                                 </div>
                                 <div class="col-9 cst-cont">
-                                    <h5 style="text-align: right">4 000</h5>
+                                    <h5 style="text-align: right">174 000</h5>
                                     <p class="m-b-0">Recettes Bulletins Scolaires (CDF)</p>
                                 </div>
                             </div>
@@ -171,13 +171,13 @@
                                                 <div class="d-inline-block align-middle">
                                                     <img src="{{asset('dappro_dash_assets/assets/images/user-profile_.jpg')}}" alt="user image" class="img-radius img-40 align-top m-r-15">
                                                     <div class="d-inline-block">
-                                                        <h6>Shirley Hoe</h6>
-                                                        <p class="text-muted m-b-0">Sales executive , NY</p>
+                                                        <h6>CMD0006</h6>
+                                                        <p class="text-muted m-b-0">Institut MAVUNGU</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="text-right">
-                                                <h6 class="f-w-700">$78.001<i class="fas fa-level-down-alt text-c-red m-l-10"></i></h6>
+                                                <h6 class="f-w-700">210.000<i class="fas fa-level-down-alt text-c-red m-l-10"></i></h6>
                                             </td>
                                         </tr>
                                         <tr>
@@ -185,13 +185,13 @@
                                                 <div class="d-inline-block align-middle">
                                                     <img src="{{asset('dappro_dash_assets/assets/images/user-profile_.jpg')}}" alt="user image" class="img-radius img-40 align-top m-r-15">
                                                     <div class="d-inline-block">
-                                                        <h6>James Alexander</h6>
-                                                        <p class="text-muted m-b-0">Sales executive , EL</p>
+                                                        <h6>CMD0004</h6>
+                                                        <p class="text-muted m-b-0">Institut MINKONDO</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="text-right">
-                                                <h6 class="f-w-700">$89.051<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
+                                                <h6 class="f-w-700">141.200<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
                                             </td>
                                         </tr>
                                         <tr>
@@ -199,13 +199,13 @@
                                                 <div class="d-inline-block align-middle">
                                                     <img src="{{asset('dappro_dash_assets/assets/images/user-profile_.jpg')}}" alt="user image" class="img-radius img-40 align-top m-r-15">
                                                     <div class="d-inline-block">
-                                                        <h6>Shirley Hoe</h6>
-                                                        <p class="text-muted m-b-0">Sales executive , NY</p>
+                                                        <h6>CMD0003</h6>
+                                                        <p class="text-muted m-b-0">CS LES ANGES</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="text-right">
-                                                <h6 class="f-w-700">$89.051<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
+                                                <h6 class="f-w-700">89.100<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
                                             </td>
                                         </tr>
                                         <tr>
@@ -213,13 +213,13 @@
                                                 <div class="d-inline-block align-middle">
                                                     <img src="{{asset('dappro_dash_assets/assets/images/user-profile_.jpg')}}" alt="user image" class="img-radius img-40 align-top m-r-15">
                                                     <div class="d-inline-block">
-                                                        <h6>Nick Xander</h6>
-                                                        <p class="text-muted m-b-0">Sales executive , EL</p>
+                                                        <h6>CMD0002</h6>
+                                                        <p class="text-muted m-b-0">Collège BOBOTO</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="text-right">
-                                                <h6 class="f-w-700">$89.051<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
+                                                <h6 class="f-w-700">450.000<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
                                             </td>
                                         </tr>
                                     </tbody>

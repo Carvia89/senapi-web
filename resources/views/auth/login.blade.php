@@ -47,7 +47,7 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-6">
-                        <img src="{{asset('login/assets/images/e_cole.webp')}}" alt="Image" class="img-fluid">
+                        <img src="{{asset('login/assets/images/red.jpg')}}" alt="Image" class="img-fluid">
                     </div>
                     <div class="col-md-6 ">
                         <div class="row">

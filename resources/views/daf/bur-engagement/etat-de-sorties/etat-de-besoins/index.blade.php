@@ -29,7 +29,7 @@
                                             <select name="bureau_id" class="form-control form-control-round" id="bureau_id">
                                                 <option value="">Sélectionnez...</option>
                                                 @foreach ($bureaus as $bureau)
-                                                    <option value="{{ $bureau->bureau->id }}">{{ $bureau->bureau->designation }}</option>
+                                                    <option value="{{ $bureau->bureau->id ?? '' }}">{{ $bureau->bureau->designation ?? 'Aucun' }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -38,7 +38,7 @@
                                             <select name="dossier_id" class="form-control form-control-round" id="dossier_id">
                                                 <option value="">Sélectionnez...</option>
                                                 @foreach ($dossiers as $dossier)
-                                                    <option value="{{ $dossier->dossier->id }}">{{ $dossier->dossier->designation }}</option>
+                                                    <option value="{{ $dossier->dossier->id ?? '' }}">{{ $dossier->dossier->designation ?? 'Aucun' }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -84,6 +84,8 @@
                                                             <span class="badge bg-success">Bon élaboré</span>
                                                         @elseif ($etat->etat == 3)
                                                             <span class="badge bg-success">Bon Imputé</span>
+                                                        @elseif ($etat->etat == 4)
+                                                            <span class="badge bg-danger">Bon Payé</span>
                                                         @elseif ($etat->etat == 0)
                                                             <span class="badge bg-danger">Apuré</span>
                                                         @endif

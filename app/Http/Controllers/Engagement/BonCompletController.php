@@ -201,9 +201,6 @@ class BonCompletController extends Controller
         // Récupérer le bon de dépense par ID
         $bonDepense = BonDepense::findOrFail($id);
 
-        $montantPaiement = PaiementAcompte::where('bon_depense_id', $id)
-                                        ->value('montant_paiement');
-
         // Récupérer les valeurs spécifiques
         $numBon = $bonDepense->num_bon;
         $dateEmission = $bonDepense->date_emission;
@@ -251,7 +248,6 @@ class BonCompletController extends Controller
                 'imputationExists',
                 'signaturePath',
                 'showSignature', // Passer le chemin de la signature à la vue
-                'montantPaiement'
             )
         );
 

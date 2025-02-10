@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('date_reception');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('fichier'); // Ce champ va stocker le chemin du fichier PDF
-            $table->float('montant');
+            $table->decimal('montant', 15, 2);
             $table->timestamps();
         });
     }

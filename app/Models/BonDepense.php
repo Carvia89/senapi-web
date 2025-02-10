@@ -70,4 +70,9 @@ class BonDepense extends Model
         return $this->hasMany(PaiementAcompte::class, 'bon_depense_id');
     }
 
+    public function depenseBons()
+    {
+        return $this->hasMany(DepenseBon::class, 'bon_depense_id');
+    }
+
 }

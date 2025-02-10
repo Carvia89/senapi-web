@@ -90,9 +90,9 @@
                                                         @if ($bon->etat == 1)
                                                             <span class="badge bg-success">En cours de paiement</span>
                                                         @elseif ($bon->etat == 2)
-                                                            <span class="badge bg-success">Soldé</span>
+                                                            <span class="badge bg-success">Bon imputé</span>
                                                         @elseif ($bon->etat == 3)
-                                                            <span class="badge bg-success">visé par DAF</span>
+                                                            <span class="badge bg-success">Payé</span>
                                                         @elseif ($bon->etat == 0)
                                                             <span class="badge bg-danger">Apuré</span>
                                                         @endif

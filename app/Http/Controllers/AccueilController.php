@@ -14,11 +14,8 @@ class AccueilController extends Controller
 {
     public function accueil()
     {
-        // Récupérer toutes les directions et les bureaux
-        //$directions = Direction::all();
-        //Récupéredr tous les bureaux
+
         $bureaux = Bureau::all();
-        // Charger toutes les directions
         $directions = Direction::with('divisions.bureaux')->get(); // Charger les divisions et leurs bureaux
 
         return view('welcome', compact('directions', 'bureaux'));
@@ -57,16 +54,9 @@ class AccueilController extends Controller
         // Tenter de connecter l'utilisateur
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-/*
-            // Débogage : afficher les infos de l'utilisateur
-            Log::info('Comparaison des directions:', [
-                'user_direction_id' => $user->division->direction->id,
-                'expected_direction_id' => $direction_id,
-                'comparison_result' => (int) $user->division->direction->id === (int) $direction_id,
-            ]);
-*/
+
             // Vérifiez si l'utilisateur a une division et une direction
-            if ($user->division && $user->division->direction) {
+            if ($user->division && $user->division->direction && $user->role == 'Admin') {
                 if ((int) $user->division->direction->id !== (int) $direction_id) {
                     Auth::logout(); // Déconnexion de l'utilisateur
                     return redirect()->route('login.show', ['direction_id' => $direction_id])
@@ -81,7 +71,7 @@ class AccueilController extends Controller
             } else {
                 Auth::logout(); // Déconnexion de l'utilisateur
                 return redirect()->route('login.show', ['direction_id' => $direction_id])
-                    ->withErrors(['access' => 'L\'utilisateur n\'est pas associé à une division ou une direction.']);
+                    ->withErrors(['access' => 'Accès refusé.']);
             }
         }
 
