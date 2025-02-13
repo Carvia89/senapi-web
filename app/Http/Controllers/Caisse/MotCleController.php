@@ -18,7 +18,7 @@ class MotCleController extends Controller
     public function index(Request $request)
     {
         // Récupération des états de besoins avec filtrage
-        $query = ReferenceImputation::with('imputation');
+        $query = ReferenceImputation::with('imputation')->orderBy('created_at', 'desc');
 
         // Filtrage par bureau_id
         if ($request->filled('imputation_id')) {
@@ -26,7 +26,7 @@ class MotCleController extends Controller
         }
 
         // Pagination des résultats
-        $references = $query->paginate(5);
+        $references = $query->paginate(10);
 
         // Récupération des imputations
         $imputations = ReferenceImputation::select('imputation_id')->distinct()->with('imputation')->get();

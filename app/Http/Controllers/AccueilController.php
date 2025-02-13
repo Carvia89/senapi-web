@@ -68,6 +68,7 @@ class AccueilController extends Controller
 
                 // Redirigez vers le tableau de bord
                 return redirect()->route('dashboard.direction' . $direction_id);
+
             } else {
                 Auth::logout(); // Déconnexion de l'utilisateur
                 return redirect()->route('login.show', ['direction_id' => $direction_id])

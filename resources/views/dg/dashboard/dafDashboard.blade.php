@@ -1,4 +1,4 @@
-@extends('daf.layouts.template')
+@extends('dg.dashboard.layouts.template')
 
 @section('content')
     <div class="pcoded-inner-content">
@@ -237,7 +237,7 @@
                             <div class="card text-center order-visitor-card">
                                 <div class="card-block">
                                     <h6 class="m-b-0">Recette (CDF)</h6>
-                                    <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-up m-r-15 text-c-green"></i>{{ number_format($recettesToday, 2, ',', ' ') }} CDF</h4>
+                                    <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-up m-r-15 text-c-green"></i>{{ number_format($recettesToday, 2, ',', ' ') }}</h4>
                                     <p class="m-b-0">Journalière</p>
                                 </div>
                             </div>
@@ -246,7 +246,7 @@
                             <div class="card text-center order-visitor-card">
                                 <div class="card-block">
                                     <h6 class="m-b-0">Recette (CDF)</h6>
-                                    <h4 class="m-t-15 m-b-15" style="text-align: right"><i class="fa fa-arrow-up m-r-15 text-c-green"></i>{{ number_format($recettesAnnuelle, 2, ',', ' ') }} CDF</h4>
+                                    <h4 class="m-t-15 m-b-15" style="text-align: right"><i class="fa fa-arrow-up m-r-15 text-c-green"></i>{{ number_format($recettesAnnuelle, 2, ',', ' ') }}</h4>
                                     <p class="m-b-0">Annuelle</p>
                                 </div>
                             </div>

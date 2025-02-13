@@ -7,6 +7,14 @@
                 <div class="page-body">
                     <div class="row">
                         <div class="col-sm-12">
+
+                            @if (Session('success'))
+                            <div class="alert alert-success d-flex align-items-center">
+                                <i class="fas fa-hand-thumbs-up-fill me-2"></i>
+                                <span>{{ session('success') }}</span>
+                            </div>
+                            @endif
+
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5>Enregistrements des Dépenses (Sans Bons)</h5>
@@ -28,7 +36,7 @@
                                                 <input type="date" name="date_depense"
                                                     class="form-control form-control-round
                                                         @error('date_depense') is-invalid @enderror"
-                                                        id="date_depense" value="{{ old('date_depense') }}">
+                                                        id="date_depense" value="{{ session('date_depense', old('date_depense')) }}">
                                                 @error('date_depense')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -43,6 +51,20 @@
                                                         style="font-weight: bold; text-align: right"
                                                         id="montant_depense" value="{{ old('montant_depense') }}">
                                                 @error('montant_depense')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mt-3">
+                                            <div class="col-md-12 col-sm-12">
+                                                <label for="libelle" class="form-label">* Libelle </label>
+                                                <input type="text" name="libelle"
+                                                    class="form-control form-control-round
+                                                        @error('libelle') is-invalid @enderror"
+                                                    id="libelle" value="{{ old('libelle') }}">
+                                                @error('libelle')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
                                                     </div>
@@ -79,20 +101,6 @@
                                                 @endforeach
                                                 </select>
                                                 @error('dossier_id')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mt-3">
-                                            <div class="col-md-12 col-sm-12">
-                                                <label for="libelle" class="form-label">* Libelle </label>
-                                                <input type="text" name="libelle"
-                                                    class="form-control form-control-round
-                                                        @error('libelle') is-invalid @enderror"
-                                                    id="libelle" value="{{ old('libelle') }}">
-                                                @error('libelle')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
                                                     </div>

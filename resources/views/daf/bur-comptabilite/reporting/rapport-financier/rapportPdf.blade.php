@@ -48,6 +48,11 @@
             vertical-align: middle;
             font-family: Arial, sans-serif;
         }
+        .footer {
+            line-height: 1.7; /* Ajustez l'interligne ici */
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -70,14 +75,15 @@
             <tr>
                 <th class="center" style="width: 5%;">CODE</th>
                 <th style="min-width: 150px; width: auto;">LIBELLE</th>
-                <th style="min-width: 80px; text-align: right;">RECETTE</th>
-                <th style="min-width: 80px; text-align: right;">DEPENSE</th>
+                <th style="min-width: 80px; text-align: right;">ENTREES</th>
+                <th style="min-width: 80px; text-align: right;">SORTIES</th>
                 <th style="min-width: 80px; text-align: right;">SOLDE</th>
             </tr>
         </thead>
         <tbody>
             @php
-                $totalRecettes = $reportData['report']['montant_report']; // Initialiser avec le montant du report
+                $recettesToday = $reportData['recettesToday'];
+                $totalRecettes = $reportData['report']['montant_report'] + $recettesToday; // Initialiser avec le montant du report
                 $totalDepenses = 0;
                 $previousSolde = $totalRecettes; // Utiliser le montant du report comme solde initial
             @endphp
@@ -87,6 +93,14 @@
                 <td></td>
                 <td style="text-align: left; font-weight: bold;">{{ $reportData['report']['libelle'] }}</td>
                 <td style="text-align: right; font-weight: bold;">{{ number_format($reportData['report']['montant_report'], 2, ',', ' ') }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <!-- Ligne RECETTES -->
+            <tr>
+                <td></td>
+                <td style="text-align: left; font-weight: bold;">RECETTES</td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -103,7 +117,14 @@
                     $totalRecettes += $recette->montant_recu; // Ajouter aux recettes
                 @endphp
             @endforeach
-
+            <!-- Ligne DEPENSES -->
+            <tr>
+                <td></td>
+                <td style="text-align: left; font-weight: bold;">DEPENSES</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
             @foreach ($reportData['depenses_bons'] as $index => $depense)
                 @php
                     $montantBon = $depense['montant_bon'];
@@ -111,7 +132,7 @@
                     // Calculer le solde pour la ligne
                     if ($index === 0) {
                         // Pour la première ligne, calculer avec la somme des recettes
-                        $solde = $totalRecettes - $montantBon; // (RECETTES + REPORT) - DEPENSE
+                        $solde = ($totalRecettes) - $montantBon; // (RECETTES + REPORT) - DEPENSE
                     } else {
                         // Pour les lignes suivantes
                         $solde = $previousSolde - $montantBon;
@@ -150,11 +171,18 @@
 
             <tr>
                 <td colspan="2" style="text-align: left; font-weight: bold;">TOTAL</td>
-                <td style="font-weight: bold; text-align:right;">{{ number_format($totalRecettes, 2, ',', ' ') }}</td>
+                <td style="font-weight: bold; text-align:right;">{{ number_format(($reportData['report']['montant_report'] + $recettesToday), 2, ',', ' ') }}</td>
                 <td style="font-weight: bold; text-align:right;">{{ number_format($totalDepenses, 2, ',', ' ') }}</td>
-                <td style="font-weight: bold; text-align:right;">{{ number_format($totalRecettes - $totalDepenses, 2, ',', ' ') }}</td>
+                <td style="font-weight: bold; text-align:right;">{{ number_format(($reportData['report']['montant_report'] + $recettesToday) - $totalDepenses, 2, ',', ' ') }}</td>
             </tr>
         </tbody>
     </table>
+
+    <div class="footer">
+        <p style="text-align: right;">Fait à Kinshasa, le {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}</p>
+        <strong style="margin-right: 296px">C.B. Ord & Cpté</strong><strong>C.D. EXECUTION DU BUDGET-PROGRAMME</strong>
+        <strong style="margin-right: 390px">LIKIMBA AGWENDE</strong><strong>IMPONGE Peter</strong>
+        <p style="text-align: center; font-weight: bold;">VISA du Directeur Administratif et Financier</p>
+    </div>
 </body>
 </html>

@@ -60,6 +60,9 @@ class ReportingController extends Controller
         $dateDebut = $request->input('date_debut');
         $dateFin = $request->input('date_fin');
 
+        // Récupérer la date du jour
+        $dateDuJour = now();
+
         // Calculer les données
         $reportData = $this->calculateReportData($dateDebut, $dateFin);
 
@@ -68,7 +71,8 @@ class ReportingController extends Controller
             compact(
                 'dateDebut',
                 'dateFin',
-                'reportData'
+                'reportData',
+                'dateDuJour'
             )
         );
 
@@ -132,6 +136,10 @@ class ReportingController extends Controller
         // Calculer le montant total du report
         $reportMontant = $recettesAnterieures + $montantReport - ($totalMontantBons + $depensesAnterieuresSansBons);
 
+        // Calculer les montants pour la ligne "REPORT"
+        $recettesToday = RecetteCaisse::where('date_recette', $dateStart)
+            ->sum('montant_recu');
+
         // Organiser les données en un tableau
         $reportData = [
             'report' => [
@@ -142,6 +150,7 @@ class ReportingController extends Controller
             'depenses_bons' => $depensesBonsData,
             'depenses_sans_bons' => $depensesSansBons,
             'recettes' => $recettes,
+            'recettesToday' => $recettesToday,
         ];
 
         return $reportData;

@@ -50,6 +50,20 @@
                                             </div>
                                         </div>
                                         <div class="form-group row mt-3">
+                                            <div class="col-md-12 col-sm-12">
+                                                <label for="libelle" class="form-label">* Libelle</label>
+                                                <input type="text" name="libelle"
+                                                    class="form-control form-control-round
+                                                        @error('libelle') is-invalid @enderror"
+                                                    id="libelle" value="{{ old('libelle', $depense->libelle) }}">
+                                                @error('libelle')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mt-3">
                                             <div class="col-md-6 col-sm-6">
                                                 <label for="reference_imputation_id" class="form-label">* Mot clé </label>
                                                 <select name="reference_imputation_id" class="form-control form-control-round
@@ -79,20 +93,6 @@
                                                 @endforeach
                                                 </select>
                                                 @error('dossier_id')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mt-3">
-                                            <div class="col-md-12 col-sm-12">
-                                                <label for="libelle" class="form-label">* Libelle</label>
-                                                <input type="text" name="libelle"
-                                                    class="form-control form-control-round
-                                                        @error('libelle') is-invalid @enderror"
-                                                    id="libelle" value="{{ old('libelle', $depense->libelle) }}">
-                                                @error('libelle')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
                                                     </div>

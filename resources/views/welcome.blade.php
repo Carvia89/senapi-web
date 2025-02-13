@@ -472,7 +472,7 @@
                                         <p class="mb-0">Stagiaire</p>
                                     </div>
                                     <div>
-                                        <img src="{{asset('assets/img/team-2.jpg')}}" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
+                                        <img src="{{asset('assets/img/imgAlexis.png')}}" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
                                     </div>
                                 </div>
                                 <div class="team-icon rounded-pill my-4 p-3">

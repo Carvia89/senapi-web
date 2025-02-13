@@ -74,7 +74,7 @@
                                                 <th>Libelle</th>
                                                 <th>Montant (CDF)</th>
                                                 <th>Mot clé</th>
-                                                <th>Dossier</th>
+                                                <!-- <th>Dossier</th> -->
                                                 <th class="d-flex justify-content-end">Actions</th>
                                             </tr>
                                         </thead>
@@ -85,7 +85,7 @@
                                                     <td>{{ $depense->libelle }}</td>
                                                     <td>{{ number_format($depense->montant_depense, 2, ',', ' ') }}</td>
                                                     <td>{{ $depense->referImput->designation ?? 'Aucun' }}</td>
-                                                    <td>{{ $depense->dossier->designation ?? 'Aucun' }}</td>
+                                                    <!-- <td>{{ $depense->dossier->designation ?? 'Aucun' }}</td> -->
                                                     <td>
                                                         <div class="d-flex justify-content-end mb-3">
                                                             <a href="{{ route('admin.dépenses-sans-bons.edit', $depense) }}"

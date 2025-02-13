@@ -179,18 +179,21 @@ Route::middleware(['auth'])->group(function() {
             Route::get('/rapport-périodique-pdf', [ReportingController::class, 'generatePeriodicReport'])->name('rap.periodique.pdf');
 
 
+
+
     });
 
     //Tableau de Bord pour la DANTIC
     Route::get('/dashboard/dantic', [DashController::class, 'index'])->name('dashboard.direction1');
     //Tableau de Bord pour la DIR-GENERALE
     Route::get('/dashboard/direction-générale', [AuthController::class, 'index2'])->name('dashboard.direction2');
+    Route::get('/dashboard/direction-admin-financière', [AuthController::class, 'dashDAFpourDG'])->name('dash.daf');
     //Tableau de Bord pour la DAPPRO
     Route::get('/dashboard/dappro', [DashController::class, 'indexDappro'])->name('dashboard.direction3');
     //Tableau de Bord pour la DEP
     Route::get('/dashboard/dep', [DashController::class, 'index4'])->name('dashboard.direction4');
     //Tableau de Bord pour la DAF
-    Route::get('/dashboard/daf', [DashController::class, 'index5'])->name('dashboard.direction5');
+    Route::get('/dashboard/daf', [AuthController::class, 'indexDAF'])->name('dashboard.direction5');
     //Tableau de Bord pour la PROD
     Route::get('/dashboard/production', [DashController::class, 'indexProd'])->name('dashboard.direction6');
     //Tableau de Bord pour la DRH

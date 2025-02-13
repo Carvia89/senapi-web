@@ -55,6 +55,11 @@
             vertical-align: middle;
             font-family: Arial, sans-serif;
         }
+        .footer {
+            line-height: 1.2; /* Ajustez l'interligne ici */
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -167,5 +172,11 @@
             </tr>
         </tbody>
     </table>
+
+    <div class="footer">
+        <p style="text-align: right;">Fait à Kinshasa, le {{ \Carbon\Carbon::parse($dateDuJour)->format('d/m/Y') }}</p>
+        <p style="text-align: center; font-weight: bold;">Octave IYAKA BONKONGOLA</p>
+        <p style="text-align: center; font-weight: bold;">Directeur</p>
+    </div>
 </body>
 </html>

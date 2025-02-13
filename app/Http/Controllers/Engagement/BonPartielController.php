@@ -164,7 +164,7 @@ class BonPartielController extends Controller
                 'motif' => $request->motif,
                 'num_enreg' => $num_Enreg,
                 'dossier_id' => $request->dossier_id,
-                'etat' => 1,  // valeur par défaut (en cours de paiement)
+                'etat' => 6,  // valeur par défaut (en cours de paiement)
                 'user_id' => auth()->id(), // ID de l'utilisateur connecté
             ]);
 
@@ -332,7 +332,7 @@ class BonPartielController extends Controller
                 'montant_bon' => $request->montant_bon,
                 'motif' => $request->motif,
                 'dossier_id' => $request->dossier_id,
-                'etat' => 1,  // reste "en cours de paiement"
+                'etat' => 6,  // reste "en cours de paiement"
                 'user_id' => auth()->id(), // ID de l'utilisateur connecté
             ]);
 

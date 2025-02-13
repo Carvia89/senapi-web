@@ -121,7 +121,12 @@ class DepenseSansBonController extends Controller
                 'user_id' => auth()->id(), // ID de l'utilisateur connecté
             ]);
 
-            return redirect()->route('admin.dépenses-sans-bons.index')->with('success', 'Dépense enregistrée avec succès.');
+            // Stocker les informations dans la session pour les réutiliser
+            session([
+                'date_depense' => $request->date_depense
+            ]);
+
+            return redirect()->route('admin.dépenses-sans-bons.create')->with('success', 'Dépense enregistrée avec succès.');
 
         } catch (Exception $e) {
             return back()->withErrors(['libelle' => 'Erreur lors de l\'enregistrement : ' . $e->getMessage()])->withInput();

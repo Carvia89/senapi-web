@@ -40,15 +40,15 @@
         </div>
         <div class="pcoded-navigation-label">Tableaux de Bord</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="active">
-                <a href="#!" class="waves-effect waves-dark">
+            <li class="{{ request()->routeIs('dashboard.direction2') ? 'active' : '' }}">
+                <a href="{{ route('dashboard.direction2') }}" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                     <span class="pcoded-mtext">DAPPRO</span>
                     <span class="pcoded-mcaret"></span>
                 </a>
             </li>
-            <li class=" ">
-                <a href="#!" class="waves-effect waves-dark">
+            <li class="{{ request()->routeIs('dash.daf') ? 'active' : '' }}">
+                <a href="{{ route('dash.daf') }}" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-home"></i><b>C</b></span>
                     <span class="pcoded-mtext">DAF</span>
                     <span class="pcoded-mcaret"></span>

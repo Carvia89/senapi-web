@@ -87,7 +87,7 @@
                                                     <td>{{ \Carbon\Carbon::parse($bon->date_emission)->format('d-m-Y') }}</td>
                                                     <!-- <td>{{ $bon->utilisateur->prenom ?? '-' }} {{ $bon->utilisateur->name ?? '-' }}</td> -->
                                                     <td>
-                                                        @if ($bon->etat == 1)
+                                                        @if ($bon->etat == 6)
                                                             <span class="badge bg-success">En cours de paiement</span>
                                                         @elseif ($bon->etat == 2)
                                                             <span class="badge bg-success">Bon imputé</span>

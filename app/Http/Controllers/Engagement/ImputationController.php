@@ -15,7 +15,7 @@ class ImputationController extends Controller
      */
     public function index()
     {
-        $imputations = Imputation::orderBy('created_at', 'desc')->paginate(5);
+        $imputations = Imputation::orderBy('created_at', 'desc')->paginate(10);
         return view('daf.bur-engagement.imputations.index',
             compact(
                 'imputations'
