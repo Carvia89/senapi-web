@@ -17,9 +17,11 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5>Journal des Dépenses (sans bons)</h5>
-                                <a href="{{ route('admin.dépenses-sans-bons.create') }}" class="btn btn-primary btn-round">
-                                    <i class="fas fa-plus"></i> Nouvelle Dépense
-                                </a>
+                                @if(auth()->user()->role !== 'Admin')
+                                    <a href="{{ route('admin.dépenses-sans-bons.create') }}" class="btn btn-primary btn-round">
+                                        <i class="fas fa-plus"></i> Nouvelle Dépense
+                                    </a>
+                                @endif
                             </div>
                             <div class="card-block">
                                 <form action="{{ route('admin.dépenses-sans-bons.index') }}" method="GET">
@@ -29,7 +31,7 @@
                                             <select name="reference_imputation_id" class="form-control form-control-round" id="reference_imputation_id">
                                                 <option value="">Sélectionnez...</option>
                                                 @foreach ($refImputs as $refImput)
-                                                    <option value="{{ $refImput->refeImputation->id ?? '' }}">{{ $refImput->refeImputation->designation ?? '' }}</option>
+                                                    <option value="{{ $refImput->referImput->id ?? '' }}">{{ $refImput->referImput->designation ?? '' }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -43,18 +45,21 @@
                                             </select>
                                         </div>
                                         <div class="col-md-4 col-sm-4">
-                                            <label for="date_recette" class="form-label">Date </label>
-                                            <input type="date" name="date_recette" class="form-control form-control-round" id="date_recette">
+                                            <label for="date_depense" class="form-label">Date </label>
+                                            <input type="date" name="date_depense" class="form-control form-control-round" id="date_depense"
+                                            value="{{ request('date_depense') }}">
                                         </div>
                                     </div>
                                     <div class="form-group row mt-3">
                                         <div class="col-md-4 col-sm-4">
                                             <label for="libelle" class="form-label">Libelle</label>
-                                            <input type="text" name="libelle" class="form-control form-control-round" id="libelle">
+                                            <input type="text" name="libelle" class="form-control form-control-round" id="libelle"
+                                            value="{{ request('libelle') }}" placeholder="Entrez un libellé">
                                         </div>
                                         <div class="col-md-4 col-sm-4">
-                                            <label for="montant_recu" class="form-label">Montant</label>
-                                            <input type="text" name="montant_recu" class="form-control form-control-round" id="montant_recu">
+                                            <label for="montant_depense" class="form-label">Montant</label>
+                                            <input type="text" name="montant_depense" class="form-control form-control-round" id="montant_depense"
+                                            value="{{ request('montant_depense') }}">
                                         </div>
                                         <div class="col-md-4 col-sm-4">
                                             <label for="user_id" class="form-label">Enregistré par</label>
@@ -75,7 +80,9 @@
                                                 <th>Montant (CDF)</th>
                                                 <th>Mot clé</th>
                                                 <!-- <th>Dossier</th> -->
-                                                <th class="d-flex justify-content-end">Actions</th>
+                                                @if(auth()->user()->role !== 'Admin')
+                                                    <th class="d-flex justify-content-end">Actions</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -86,28 +93,31 @@
                                                     <td>{{ number_format($depense->montant_depense, 2, ',', ' ') }}</td>
                                                     <td>{{ $depense->referImput->designation ?? 'Aucun' }}</td>
                                                     <!-- <td>{{ $depense->dossier->designation ?? 'Aucun' }}</td> -->
-                                                    <td>
-                                                        <div class="d-flex justify-content-end mb-3">
-                                                            <a href="{{ route('admin.dépenses-sans-bons.edit', $depense) }}"
-                                                                title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <form action="{{ route('admin.dépenses-sans-bons.destroy', $depense) }}"
-                                                                method="post">
-                                                                @csrf
-                                                                @method("delete")
-                                                                <button class="btn btn-danger btn-circle btn-sm" title="Supprimer">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </td>
+                                                    <!-- Boutons d'actions conditionnels -->
+                                                    @if(auth()->user()->role !== 'Admin')
+                                                        <td>
+                                                            <div class="d-flex justify-content-end mb-3">
+                                                                <a href="{{ route('admin.dépenses-sans-bons.edit', $depense) }}"
+                                                                    title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <form action="{{ route('admin.dépenses-sans-bons.destroy', $depense) }}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    @method("delete")
+                                                                    <button class="btn btn-danger btn-circle btn-sm" title="Supprimer">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                     <!-- Pagination -->
-                                    {{ $depenses->links() }}
+                                    {{ $depenses->appends(request()->query())->links() }}
                                 </div>
                             </div>
                         </div>

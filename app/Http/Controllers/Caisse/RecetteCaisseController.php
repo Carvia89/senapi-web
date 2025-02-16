@@ -32,17 +32,17 @@ class RecetteCaisseController extends Controller
 
         // Filtrage par date_emission
         if ($request->filled('date_recette')) {
-            $query->whereDate('date_recette', $request->date_recette);
+            $query->whereDate('date_recette', 'LIKE', '%' . $request->date_recette . '%');
         }
 
         // Filtrage par montant_bon
         if ($request->filled('montant_recu')) {
-            $query->where('montant_recu', $request->montant_recu);
+            $query->where('montant_recu', 'LIKE', '%' . $request->montant_recu . '%');
         }
 
-        // Filtrage par motif
+        // Filtrage par libelle (recherche partielle)
         if ($request->filled('libelle')) {
-            $query->where('libelle', $request->libelle);
+            $query->where('libelle', 'LIKE', '%' . $request->libelle . '%');
         }
 
         // Filtrage par nom ou prénom de l'utilisateur
@@ -57,7 +57,7 @@ class RecetteCaisseController extends Controller
         $query->orderBy('date_recette', 'desc');
 
         // Pagination des résultats
-        $recettes = $query->paginate(10);
+        $recettes = $query->paginate(25);
 
         // Récupération des directions et dossiers uniques dans bons de dépenses
         $refImputs = RecetteCaisse::select('reference_imputation_id')->distinct()->with('refeImputation')->get();

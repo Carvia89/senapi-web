@@ -34,17 +34,17 @@ class DepenseSansBonController extends Controller
 
         // Filtrage par date_emission
         if ($request->filled('date_depense')) {
-            $query->whereDate('date_depense', $request->date_depense);
+            $query->whereDate('date_depense', 'LIKE', '%' . $request->date_depense . '%');
         }
 
         // Filtrage par montant_bon
         if ($request->filled('montant_depense')) {
-            $query->where('montant_depense', $request->montant_depense);
+            $query->where('montant_depense', 'LIKE', '%' . $request->montant_depense . '%');
         }
 
-        // Filtrage par motif
+        // Filtrage par libelle (recherche partielle)
         if ($request->filled('libelle')) {
-            $query->where('libelle', $request->libelle);
+            $query->where('libelle', 'LIKE', '%' . $request->libelle . '%');
         }
 
         // Filtrage par nom ou prénom de l'utilisateur
@@ -59,7 +59,7 @@ class DepenseSansBonController extends Controller
         $query->orderBy('date_depense', 'desc');
 
         // Pagination des résultats
-        $depenses = $query->paginate(10);
+        $depenses = $query->paginate(25);
 
         // Récupération des directions et dossiers uniques dans bons de dépenses
         $refImputs = DepenseSansBon::select('reference_imputation_id')->distinct()->with('referImput')->get();

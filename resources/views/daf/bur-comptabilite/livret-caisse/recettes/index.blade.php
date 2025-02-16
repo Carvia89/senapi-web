@@ -17,9 +17,11 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5>Journal des Recettes</h5>
-                                <a href="{{ route('admin.recettes-caisse.create') }}" class="btn btn-primary btn-round">
-                                    <i class="fas fa-plus"></i> Nouvelle Recette
-                                </a>
+                                @if(auth()->user()->role !== 'Admin')
+                                    <a href="{{ route('admin.recettes-caisse.create') }}" class="btn btn-primary btn-round">
+                                        <i class="fas fa-plus"></i> Nouvelle Recette
+                                    </a>
+                                @endif
                             </div>
                             <div class="card-block">
                                 <form action="{{ route('admin.recettes-caisse.index') }}" method="GET">
@@ -44,17 +46,20 @@
                                         </div>
                                         <div class="col-md-4 col-sm-4">
                                             <label for="date_recette" class="form-label">Date </label>
-                                            <input type="date" name="date_recette" class="form-control form-control-round" id="date_recette">
+                                            <input type="date" name="date_recette" class="form-control form-control-round" id="date_recette"
+                                            value="{{ request('date_recette') }}">
                                         </div>
                                     </div>
                                     <div class="form-group row mt-3">
                                         <div class="col-md-4 col-sm-4">
                                             <label for="libelle" class="form-label">Libelle</label>
-                                            <input type="text" name="libelle" class="form-control form-control-round" id="libelle">
+                                            <input type="text" name="libelle" class="form-control form-control-round" id="libelle"
+                                            value="{{ request('libelle') }}" placeholder="Entrez un libellé">
                                         </div>
                                         <div class="col-md-4 col-sm-4">
                                             <label for="montant_recu" class="form-label">Montant</label>
-                                            <input type="text" name="montant_recu" class="form-control form-control-round" id="montant_recu">
+                                            <input type="text" name="montant_recu" class="form-control form-control-round" id="montant_recu"
+                                            value="{{ request('montant_recu') }}">
                                         </div>
                                         <div class="col-md-4 col-sm-4">
                                             <label for="user_id" class="form-label">Enregistré par</label>
@@ -75,7 +80,9 @@
                                                 <th>Montant (CDF)</th>
                                                 <th>Mot clé</th>
                                                 <th>Dossier</th>
-                                                <th class="d-flex justify-content-end">Actions</th>
+                                                @if(auth()->user()->role !== 'Admin')
+                                                    <th class="d-flex justify-content-end">Actions</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -86,22 +93,25 @@
                                                     <td>{{ number_format($recette->montant_recu, 2, ',', ' ') }}</td>
                                                     <td>{{ $recette->refeImputation->designation ?? 'Aucun' }}</td>
                                                     <td>{{ $recette->dossier->designation ?? 'Aucun' }}</td>
-                                                    <td>
-                                                        <div class="d-flex justify-content-end mb-3">
-                                                            <a href="{{ route('admin.recettes-caisse.edit', $recette) }}"
-                                                                title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <form action="{{ route('admin.recettes-caisse.destroy', $recette) }}"
-                                                                method="post">
-                                                                @csrf
-                                                                @method("delete")
-                                                                <button class="btn btn-danger btn-circle btn-sm" title="Supprimer">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </td>
+                                                    <!-- Boutons d'actions conditionnels -->
+                                                    @if(auth()->user()->role !== 'Admin')
+                                                        <td>
+                                                            <div class="d-flex justify-content-end mb-3">
+                                                                <a href="{{ route('admin.recettes-caisse.edit', $recette) }}"
+                                                                    title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <form action="{{ route('admin.recettes-caisse.destroy', $recette) }}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    @method("delete")
+                                                                    <button class="btn btn-danger btn-circle btn-sm" title="Supprimer">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         </tbody>

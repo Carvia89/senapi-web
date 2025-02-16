@@ -157,7 +157,7 @@
                     $solde = $previousSolde - $montantDepense; // Calculer le solde pour la ligne
                 @endphp
                 <tr>
-                    <td style="text-align: center;">{{ $depense->reference_imputation_id }}</td> <!-- CODE ou identifiant de l'imputation -->
+                    <td style="text-align: center;">{{ $depense->imputation }}</td> <!-- CODE ou identifiant de l'imputation -->
                     <td style="text-align: left; white-space: normal;">{{ $depense->libelle }}</td>
                     <td></td> <!-- RECETTE si non disponible -->
                     <td style="text-align: right;">{{ number_format($montantDepense, 2, ',', ' ') }}</td>

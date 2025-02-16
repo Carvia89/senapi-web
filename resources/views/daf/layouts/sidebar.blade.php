@@ -169,7 +169,7 @@
                             </a>
                         </li>
                         <li class="{{ request()->routeIs('admin.recettes-caisse.*') ? 'active' : '' }}">
-                            <a href="{{ route('admin.recettes-caisse.index') }}" class="waves-effect waves-dark">
+                            <a href="{{ route('admin.recettes-caisse.create') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                 <span class="pcoded-mtext">Recettes</span>
                                 <span class="pcoded-mcaret"></span>
@@ -183,7 +183,7 @@
                             </a>
                         </li>
                         <li class="{{ request()->routeIs('admin.dépenses-sans-bons.*') ? 'active' : '' }}">
-                            <a href="{{ route('admin.dépenses-sans-bons.index') }}" class="waves-effect waves-dark">
+                            <a href="{{ route('admin.dépenses-sans-bons.create') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                 <span class="pcoded-mtext">Autres Dépenses</span>
                                 <span class="pcoded-mcaret"></span>
@@ -239,13 +239,20 @@
                         <span class="pcoded-mcaret"></span>
                     </a>
                 </li>
+                <li class="{{ request()->routeIs('admin.numérisation-etat-de-besoin.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.numérisation-etat-de-besoin.index') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="fas fa-clipboard"></i></span>
+                        <span class="pcoded-mtext">Etat de Besoin</span>
+                        <span class="pcoded-mcaret"></span>
+                    </a>
+                </li>
                 <li class="pcoded-hasmenu {{ request()->routeIs('admin.recettes-caisse.*') ||
                     request()->routeIs('admin.dépenses-avec-bons.*') ||
                     request()->routeIs('admin.report-annuel.*') ||
                     request()->routeIs('admin.dépenses-sans-bons.*') ? 'active' : '' }} pcoded-trigger">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
-                        <span class="pcoded-mtext">Livret de Caisse</span>
+                        <span class="pcoded-mtext">Livre de Caisse</span>
                         <span class="pcoded-mcaret"></span>
                     </a>
                     <ul class="pcoded-submenu">

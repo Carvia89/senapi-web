@@ -92,8 +92,16 @@
         <tbody>
             @php
                 $totalRecettes = $reportData['report']['montant_report']; // Initialiser avec le montant du report
-                $totalDepenses = 0;
+                $totalDepenses = 0; // Initialiser la somme des dépenses à 0
                 $previousSolde = $totalRecettes; // Utiliser le montant du report comme solde initial
+
+                $imputations = $reportData['imputations'] ?? [];
+                $depensesParImputation = $reportData['depensesParImputation'] ?? [];
+
+                // Calculer la somme totale des dépenses
+                foreach ($depensesParImputation as $imputationData) {
+                    $totalDepenses += $imputationData['depenses']->sum('total_depense');
+                }
             @endphp
 
             <!-- Ligne REPORT -->
@@ -138,25 +146,27 @@
                 <td></td>
             </tr>
 
-            <!-- Remplissage de dépenses -->
-            @foreach ($reportData['depenses_bons'] as $depense)
+            <!-- Remplissage de dépenses (triées par ID d'imputation) -->
+            @foreach ($depensesParImputation as $imputationData)
+                <!-- Ligne de l'imputation -->
                 <tr>
+                    <td style="font-weight: bold;">{{ $imputationData['imputation']->imputation }}</td>
+                    <td style="font-weight: bold;">{{ $imputationData['imputation']->designation }}</td>
                     <td></td>
-                    <td style="text-align: left;">{{ $depense['designation'] }}</td>
-                    <td style="text-align: right;">{{ number_format($depense['total_bon'], 2, ',', ' ') }}</td>
-                    <td style="text-align: right;"></td>
-                    @php $totalDepenses += $depense['total_bon']; @endphp
+                    <td style="font-weight: bold; text-align: right;">
+                        {{ number_format($imputationData['depenses']->sum('total_depense'), 2, ',', ' ') }}
+                    </td>
                 </tr>
-            @endforeach
 
-            @foreach ($reportData['depenses_sans_bons'] as $depense)
-                <tr>
-                    <td></td>
-                    <td style="text-align: left;">{{ $depense['designation'] }}</td>
-                    <td style="text-align: right;">{{ number_format($depense['total_depense'], 2, ',', ' ') }}</td>
-                    <td style="text-align: right;"></td>
-                    @php $totalDepenses += $depense['total_depense']; @endphp
-                </tr>
+                <!-- Lignes des reference_imputation_id sous cette imputation -->
+                @foreach ($imputationData['depenses'] as $depense)
+                    <tr>
+                        <td></td>
+                        <td style="text-align: left;">{{ $depense['designation'] }}</td>
+                        <td style="text-align: right;">{{ number_format($depense['total_depense'], 2, ',', ' ') }}</td>
+                        <td></td>
+                    </tr>
+                @endforeach
             @endforeach
 
             <!-- calcul de TOTAL -->
