@@ -49,6 +49,7 @@
                                                                 title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
+                                                            <!--
                                                             <form action="{{ route('admin.mot-cle-imputation.destroy', $reference) }}"
                                                                 method="post">
                                                                 @csrf
@@ -57,6 +58,7 @@
                                                                     <i class="fas fa-trash"></i>
                                                                 </button>
                                                             </form>
+                                                            -->
                                                         </div>
                                                     </td>
                                                 </tr>

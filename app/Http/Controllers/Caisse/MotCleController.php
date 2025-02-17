@@ -26,7 +26,7 @@ class MotCleController extends Controller
         }
 
         // Pagination des résultats
-        $references = $query->paginate(10);
+        $references = $query->paginate(25);
 
         // Récupération des imputations
         $imputations = ReferenceImputation::select('imputation_id')->distinct()->with('imputation')->get();
