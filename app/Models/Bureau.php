@@ -16,7 +16,7 @@ class Bureau extends Model
 
     public function division()
     {
-        return $this->belongsTo(Division::class, 'division_id');
+        return $this->belongsTo(Division::class);
     }
 
     public function beneficiaires()

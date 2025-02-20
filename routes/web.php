@@ -75,6 +75,7 @@ Route::get('/get-command-details/{num_cmd}', [LivraisonVenteController::class, '
 Route::get('/get-details-command/{num_cmd}', [CaissierVenteController::class, 'getDetailsCommand']);
 Route::get('/imputation/nature/{id}', [ImputationController::class, 'getNature'])->name('imputation.nature');
 Route::get('/bons-de-depenses/{id}', [DepenseBonController::class, 'getBonDepense'])->name('bons-de-depenses.show');
+Route::get('/get-bureaus/{direction_id}', [AccueilController::class, 'getBureausByDirection']);
 
 
 //Route login DG
@@ -173,12 +174,18 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('dépenses-sans-bons', DepenseSansBonController::class)->except(['show']);
         Route::resource('dépenses-sans-bons', DepenseSansBonController::class)->except(['show']);
         Route::resource('report-annuel', ReportAnnuelController::class)->except(['show', 'index']);
-            //Reporting
+            //Reporting (Rapport Financier)
             Route::get('/rapport-financier-form', [ReportingController::class, 'index'])->name('rap.financier.form');
             Route::get('/rapport-journalier-pdf', [ReportingController::class, 'generatePdf'])->name('rap.financier.pdf');
             Route::get('/rapport-périodique-pdf', [ReportingController::class, 'generatePeriodicReport'])->name('rap.periodique.pdf');
 
+            //Reporting (Rapport Dépenses)
+            Route::get('/rapport-dépenses-form', [ReportingController::class, 'indexRapDep'])->name('rap.depense.form');
+            Route::get('/rapport-dépenses-pdf', [ReportingController::class, 'generateRapDepPdf'])->name('rap.depense.pdf');
 
+            //Reporting (Rapport Recettes)
+            Route::get('/rapport-recettes-form', [ReportingController::class, 'indexRapRecette'])->name('rap.recette.form');
+            Route::get('/rapport-recettes-pdf', [ReportingController::class, 'generateRapRecettPdf'])->name('rap.recette.pdf');
 
 
     });

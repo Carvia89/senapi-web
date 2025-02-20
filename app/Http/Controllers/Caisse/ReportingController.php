@@ -20,6 +20,221 @@ class ReportingController extends Controller
         return view('daf.bur-comptabilite.reporting.rapport-financier.index');
     }
 
+    public function indexRapDep()
+    {
+        // Récupérer les dossiers distincts associés aux dépenses
+        $dossiers = DepenseSansBon::select('dossier_id')
+            ->distinct()
+            ->with('dossier') // Charger la relation vers la table "dossiers"
+            ->get()
+            ->pluck('dossier') // Extraire les objets "dossier"
+            ->filter() // Filtrer les valeurs nulles (au cas où certaines relations n'existent pas)
+            ->unique('id'); // Supprimer les doublons basés sur l'ID du dossier
+
+        // Récupérer les références imputations distinctes associées aux dépenses
+        $references = DepenseSansBon::select('reference_imputation_id')
+            ->distinct()
+            ->with('referImput')
+            ->get()
+            ->pluck('referImput') // Extraire les objets "referImput"
+            ->filter() // Filtrer les valeurs nulles
+            ->unique('id') // Supprimer les doublons basés sur l'ID
+            ->sortBy(function ($reference) {
+                return strtolower($reference->designation); // Trier par désignation en ordre alphabétique
+            });
+
+        // Récupérer toutes les imputations associées aux dépenses
+        $referenceImputationIds = DepenseSansBon::pluck('reference_imputation_id')->unique();
+
+        // Récupérer les imputations qui ont des références dans la table depense_sans_bons
+        $imputations = Imputation::whereIn('id', function($query) use ($referenceImputationIds) {
+            $query->select('imputation_id')
+                ->from('reference_imputations')
+                ->whereIn('id', $referenceImputationIds);
+        })->get();
+
+        return view('daf.bur-comptabilite.reporting.rapport-depenses.index',
+            compact(
+                'dossiers',
+                'references',
+                'imputations'
+            )
+        );
+    }
+
+    public function generateRapDepPdf(Request $request)
+    {
+        // Valider les données du formulaire
+        $request->validate([
+            'dossier_id' => 'nullable|exists:dossiers,id',
+            'imputation_id' => 'nullable|exists:imputations,id',
+            'reference_imputation_id' => 'nullable|exists:reference_imputations,id',
+            'date_debut' => 'required|date',
+            'date_fin' => 'required|date|after_or_equal:date_debut',
+        ]);
+    
+        // Récupérer les filtres
+        $dossierId = $request->input('dossier_id');
+        $imputationId = $request->input('imputation_id');
+        $referenceImputationId = $request->input('reference_imputation_id');
+        $dateDebut = $request->input('date_debut');
+        $dateFin = $request->input('date_fin');
+    
+        // Construire la requête de filtrage
+        $query = DepenseSansBon::query()
+            ->whereBetween('date_depense', [$dateDebut, $dateFin]);
+    
+        // Appliquer les filtres supplémentaires
+        if ($dossierId) {
+            $query->where('dossier_id', $dossierId);
+        }
+        if ($imputationId) {
+            $query->whereHas('referImput', function ($q) use ($imputationId) {
+                $q->where('imputation_id', $imputationId);
+            });
+        }
+        if ($referenceImputationId) {
+            $query->where('reference_imputation_id', $referenceImputationId);
+        }
+    
+        // Récupérer les dépenses filtrées
+        $depenses = $query->get();
+    
+        // Calculer le total des dépenses
+        $totalDepenses = $depenses->sum('montant_depense');
+    
+        // Récupérer la date du jour
+        $dateDuJour = now();
+
+        // Données à passer à la vue PDF
+        $data = [
+            'depenses' => $depenses,
+            'totalDepenses' => $totalDepenses,
+            'dateDebut' => $dateDebut,
+            'dateFin' => $dateFin,
+            'dossier' => $dossierId ? $query->first()->dossier : null,
+            'imputation' => $imputationId ? $query->first()->referImput->imputation : null,
+            'referenceImputation' => $referenceImputationId ? $query->first()->referImput : null,
+            'dateDuJour' => $dateDuJour,
+        ];
+    
+        // Générer le PDF
+        $pdf = Pdf::loadView('daf.bur-comptabilite.reporting.rapport-depenses.rapDepensePdf', $data);
+    
+        // Télécharger ou afficher le PDF
+        return $pdf->stream('');
+    }
+
+    public function indexRapRecette()
+    {
+        // Récupérer les dossiers distincts associés aux recettes
+        $dossiers = RecetteCaisse::select('dossier_id')
+            ->distinct()
+            ->with('dossier') // Charger la relation vers la table "dossiers"
+            ->get()
+            ->pluck('dossier') // Extraire les objets "dossier"
+            ->filter() // Filtrer les valeurs nulles (au cas où certaines relations n'existent pas)
+            ->unique('id'); // Supprimer les doublons basés sur l'ID du dossier
+
+        // Récupérer toutes les imputations associées aux recettes
+        $referenceImputationIds = RecetteCaisse::pluck('reference_imputation_id')->unique();
+
+        // Récupérer les imputations qui ont des références dans la table depense_sans_bons
+        $imputations = Imputation::whereIn('id', function($query) use ($referenceImputationIds) {
+            $query->select('imputation_id')
+                ->from('reference_imputations')
+                ->whereIn('id', $referenceImputationIds);
+        })->get();
+
+        return view('daf.bur-comptabilite.reporting.rapport-recettes.index',
+            compact(
+                'dossiers',
+                'imputations'
+            )
+        );
+    }
+
+    public function generateRapRecettPdf(Request $request)
+    {
+        // Valider les données du formulaire
+        $request->validate([
+            'dossier_id' => 'nullable|exists:dossiers,id',
+            'imputation_id' => 'nullable|exists:imputations,id',
+            'date_debut' => 'required|date',
+            'date_fin' => 'required|date|after_or_equal:date_debut',
+        ]);
+    
+        // Récupérer les filtres
+        $dossierId = $request->input('dossier_id');
+        $imputationId = $request->input('imputation_id');
+        $dateDebut = $request->input('date_debut');
+        $dateFin = $request->input('date_fin');
+    
+        // Construire la requête de filtrage
+        $query = RecetteCaisse::query()
+            ->whereBetween('date_recette', [$dateDebut, $dateFin]);
+    
+        // Appliquer les filtres supplémentaires
+        if ($dossierId) {
+            $query->where('dossier_id', $dossierId);
+        }
+        if ($imputationId) {
+            $query->whereHas('refeImputation', function ($q) use ($imputationId) {
+                $q->where('imputation_id', $imputationId);
+            });
+        }
+    
+        // Récupérer les recettes filtrées
+        $recettes = $query->get();
+    
+        // Calculer le total des dépenses
+        $totalRecettes = $recettes->sum('montant_recu');
+    
+        // Récupérer la date du jour
+        $dateDuJour = now();
+
+        // Données à passer à la vue PDF
+        $data = [
+            'recettes' => $recettes,
+            'totalRecettes' => $totalRecettes,
+            'dateDebut' => $dateDebut,
+            'dateFin' => $dateFin,
+            'dossier' => $dossierId ? $query->first()->dossier : null,
+            'imputation' => $imputationId ? $query->first()->refeImputation->imputation : null,
+            'dateDuJour' => $dateDuJour,
+        ];
+    
+        // Générer le PDF
+        $pdf = Pdf::loadView('daf.bur-comptabilite.reporting.rapport-recettes.rapRecettePdf', $data);
+    
+        // Télécharger ou afficher le PDF
+        return $pdf->stream('');
+    }
+
+    public function depenseReportPdf(Request $request)
+    {
+
+        // Récupérer les dates
+        $dateDebut = $request->input('date_debut');
+        $dateFin = $request->input('date_fin');
+
+        // Logique pour récupérer les données du rapport financier pour cette date
+        //$reportData = $this->getDailyReportData($date);
+
+        // Charger la vue dans le PDF
+        $pdf = Pdf::loadView('daf.bur-comptabilite.reporting.rapport-depenses.rapDepensePdf',
+            compact(
+                'dateDebut',
+                'dateFin'
+            )
+        );
+
+        // Configurer le format du papier et l'orientation
+        $pdf->setPaper('A4', 'portrait');
+
+        return $pdf->stream('');
+    }
+
 
     public function generatePdf(Request $request)
     {
@@ -47,7 +262,6 @@ class ReportingController extends Controller
 
         return $pdf->stream('');
     }
-
 
     public function generatePeriodicReport(Request $request)
     {

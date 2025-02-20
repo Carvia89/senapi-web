@@ -192,8 +192,8 @@
                     </ul>
                 </li>
                 <li class="pcoded-hasmenu {{ request()->routeIs('admin.rap.financier.form') ||
-                    request()->routeIs('admin.bon-de-dépense-complète.*') ||
-                    request()->routeIs('admin.bon-de-dépense-partielle.*') ? 'active' : '' }} pcoded-trigger">
+                    request()->routeIs('admin.rap.depense.form') ||
+                    request()->routeIs('admin.rap.recette.form') ? 'active' : '' }} pcoded-trigger">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
                         <span class="pcoded-mtext">Reporting</span>
@@ -207,15 +207,15 @@
                                 <span class="pcoded-mcaret"></span>
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('admin.bon-de-dépense-complète.*') ? 'active' : '' }}">
-                            <a href="#" class="waves-effect waves-dark">
+                        <li class="{{ request()->routeIs('admin.rap.depense.form') ? 'active' : '' }}">
+                            <a href="{{ route('admin.rap.depense.form') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                 <span class="pcoded-mtext">Rapport Dépenses</span>
                                 <span class="pcoded-mcaret"></span>
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('admin.bon-de-dépense-partielle.*') ? 'active' : '' }}">
-                            <a href="#" class="waves-effect waves-dark">
+                        <li class="{{ request()->routeIs('admin.rap.recette.form') ? 'active' : '' }}">
+                            <a href="{{ route('admin.rap.recette.form') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                 <span class="pcoded-mtext">Rapport Recettes</span>
                                 <span class="pcoded-mcaret"></span>
@@ -287,8 +287,8 @@
                     </ul>
                 </li>
                 <li class="pcoded-hasmenu {{ request()->routeIs('admin.rap.financier.form') ||
-                    request()->routeIs('admin.bon-de-dépense-complète.*') ||
-                    request()->routeIs('admin.bon-de-dépense-partielle.*') ? 'active' : '' }} pcoded-trigger">
+                    request()->routeIs('admin.rap.depense.form') ||
+                    request()->routeIs('admin.rap.recette.form') ? 'active' : '' }} pcoded-trigger">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
                         <span class="pcoded-mtext">Reporting</span>
@@ -302,15 +302,15 @@
                                 <span class="pcoded-mcaret"></span>
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('admin.bon-de-dépense-complète.*') ? 'active' : '' }}">
-                            <a href="#" class="waves-effect waves-dark">
+                        <li class="{{ request()->routeIs('admin.rap.depense.form') ? 'active' : '' }}">
+                            <a href="{{ route('admin.rap.depense.form') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                 <span class="pcoded-mtext">Rapport Dépenses</span>
                                 <span class="pcoded-mcaret"></span>
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('admin.bon-de-dépense-partielle.*') ? 'active' : '' }}">
-                            <a href="#" class="waves-effect waves-dark">
+                        <li class="{{ request()->routeIs('admin.rap.recette.form') ? 'active' : '' }}">
+                            <a href="{{ route('admin.rap.recette.form') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                 <span class="pcoded-mtext">Rapport Recettes</span>
                                 <span class="pcoded-mcaret"></span>

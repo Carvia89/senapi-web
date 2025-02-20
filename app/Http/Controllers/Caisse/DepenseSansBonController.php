@@ -81,8 +81,13 @@ class DepenseSansBonController extends Controller
      */
     public function create()
     {
-        $dossiers = Dossier::all();
-        $referImputs = ReferenceImputation::all();
+        $dossiers = Dossier::all()->sortBy(function ($reference) {
+            return strtolower($reference->designation);  //Afficher les dossiers en ordre alphabétique
+        });
+
+        $referImputs = ReferenceImputation::all()->sortBy(function ($reference) {
+            return strtolower($reference->designation); // Trier par désignation en ordre alphabétique
+        });
 
         return view('daf.bur-comptabilite.livret-caisse.depense-sans-bons.form',
             compact(

@@ -100,141 +100,91 @@
                             <div class="col-xl-5 fadeInRight animated" data-animation="fadeInRight" data-delay="1s" style="animation-delay: 1s;">
                                 <div class="ticket-form p-5">
                                     <h2 class="text-dark text-uppercase mb-4">IDENTIFIEZ-VOUS</h2>
-                                    <form method="POST" action="{{ route('page.accueil') }}">
-                                        @csrf
-                                        <div class="row g-4">
-                                            <div class="col-12">
-                                                <select name="direction_id" class="form-select border-0 py-2 @error('direction_id') is-invalid @enderror" id="direction_id" aria-label="Default select example">
-                                                    <option value="">Sélectionnez la direction</option>
-                                                    @foreach ($directions as $direction)
-                                                        <option value="{{ $direction->id }}">{{ $direction->designation }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('direction_id')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-12">
-                                                <select name="bureau_id" class="form-select border-0 py-2 @error('bureau_id') is-invalid @enderror" id="bureau_id" aria-label="Default select example">
-                                                    <option value="">Sélectionnez...</option>
-                                                    @foreach ($bureaux as $bureau)
-                                                        <option value="{{ $bureau->id }}">{{ $bureau->designation }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('bureau_id')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-12">
-                                                <input type="email" class="form-control border-0 py-2" id="email" name="email" placeholder="Votre adresse email" required>
-                                            </div>
-                                            <div class="col-12">
-                                                <input type="password" class="form-control border-0 py-2" id="password" name="password" placeholder="Votre Mot de Passe" required>
-                                            </div>
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-primary w-100 py-2 px-5">Valider</button>
-                                            </div>
-                                        </div>
-                                    </form>
+<form method="POST" action="{{ route('page.accueil') }}">
+    @csrf
+    <div class="row g-4">
+        <div class="col-12">
+            <select name="direction_id" class="form-select border-0 py-2 
+            @error('direction_id') is-invalid @enderror" 
+            id="direction_id" aria-label="Default select example">
+                <option value="">Sélectionnez la direction</option>
+                @foreach ($directions as $direction)
+                    <option value="{{ $direction->id }}">{{ $direction->designation }}</option>
+                @endforeach
+            </select>
+            @error('direction_id')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="col-12">
+            <select name="bureau_id" class="form-select border-0 py-2 
+            @error('bureau_id') is-invalid @enderror" 
+            id="bureau_id" aria-label="Default select example">
+                <option value="">Sélectionnez...</option>
+                @foreach ($bureaux as $bureau)
+                    <option value="{{ $bureau->id }}">{{ $bureau->designation }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-12">
+            <input type="email" class="form-control border-0 py-2" id="email" name="email" placeholder="Votre adresse email" required>
+        </div>
+        <div class="col-12">
+            <input type="password" class="form-control border-0 py-2" id="password" name="password" placeholder="Votre Mot de Passe" required>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100 py-2 px-5">Valider</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    function loadBureaus(directionId) {
+        const bureauSelect = document.getElementById('bureau_id');
+
+        // Réinitialiser le champ bureau_id
+        bureauSelect.innerHTML = '<option value="">Sélectionnez...</option>';
+
+        if (directionId) {
+            fetch(`/get-bureaus/${directionId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erreur lors de la récupération des bureaux');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Vérifier si des données ont été retournées
+                    if (data.length > 0) {
+                        // Ajouter les options des bureaux
+                        data.forEach(bureau => {
+                            const option = document.createElement('option');
+                            option.value = bureau.id;
+                            option.textContent = bureau.designation;
+                            bureauSelect.appendChild(option);
+                        });
+                    } else {
+                        // Aucun bureau trouvé
+                        const option = document.createElement('option');
+                        option.textContent = 'Aucun bureau disponible';
+                        bureauSelect.appendChild(option);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    const option = document.createElement('option');
+                    option.textContent = 'Erreur lors du chargement des bureaux';
+                    bureauSelect.appendChild(option);
+                });
+        }
+    }
+</script>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-    <!--
-            <div class="header-carousel-item">
-                <img src="{{asset('assets/img/carousel-2.jpg')}}" class="img-fluid w-100" alt="Image">
-                <div class="carousel-caption">
-                    <div class="container py-4">
-                        <div class="row g-5 align-items-center">
-                            <div class="col-xl-7 fadeInLeft animated" data-animation="fadeInLeft" data-delay="1s" style="animation-delay: 1s;">
-                                <div class="text-start">
-                                    <h4 class="text-primary text-uppercase fw-bold mb-4">Bienvenue au SENAPI-WEB</h4>
-                                    <h1 class="display-4 text-uppercase text-white mb-4">La plateforme digitale du Service</h1>
-                                    <p class="mb-4 fs-5">Cette plateforme mise sur pied par la DANTIC, est une solution informatique visant la digitalisation de l'administration du Service National des Approvisionnements et de l'Imprimerie.
-                                    </p>
-                                    <div class="d-flex flex-shrink-0">
-                                        <a class="btn btn-primary rounded-pill text-white py-3 px-5" href="#">Nos applications</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-5 fadeInRight animated" data-animation="fadeInRight" data-delay="1s" style="animation-delay: 1s;">
-                                <div class="ticket-form p-5">
-                                    <h2 class="text-dark text-uppercase mb-4">IDENTIFIEZ-VOUS</h2>
-                                    <form>
-                                        <div class="row g-4">
-                                            <div class="col-12">
-                                                <select name="direction_id" class="form-select border-0 py-2 @error('direction_id') is-invalid @enderror" id="direction_id" aria-label="Default select example">
-                                                    <option value="">Sélectionnez la direction</option>
-                                                    @foreach ($directions as $direction)
-                                                        <option value="{{ $direction->id }}">{{ $direction->designation }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('direction_id')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-12">
-                                                <select name="bureau_id" class="form-select border-0 py-2" id="bureau_id" aria-label="Default select example">
-                                                    <option value="">Sélectionnez votre Bureau</option>
-                                                </select>
-                                                @error('bureau_id')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-12">
-                                                <input type="email" class="form-control border-0 py-2" id="email" name="email" placeholder="Votre adresse email">
-                                            </div>
-                                            <div class="col-12">
-                                                <input type="password" class="form-control border-0 py-2" id="password" name="password" placeholder="Mot de Passe">
-                                            </div>
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-primary w-100 py-2 px-5">Valider</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <script>
-                                    document.getElementById('direction_id').addEventListener('change', function () {
-                                        const bureauSelect = document.getElementById('bureau_id');
-                                        bureauSelect.innerHTML = '<option value="">Sélectionnez votre Bureau</option>'; // Réinitialiser les bureaux
-
-                                        const directionId = this.value;
-
-                                        if (directionId) {
-                                            fetch(`/bureaux/${directionId}`)
-                                                .then(response => {
-                                                    if (!response.ok) {
-                                                        throw new Error('Network response was not ok');
-                                                    }
-                                                    return response.json();
-                                                })
-                                                .then(data => {
-                                                    if (data.length === 0) {
-                                                        const option = document.createElement('option');
-                                                        option.textContent = 'Aucun bureau disponible';
-                                                        bureauSelect.appendChild(option);
-                                                    } else {
-                                                        data.forEach(bureau => {
-                                                            const option = document.createElement('option');
-                                                            option.value = bureau.id;
-                                                            option.textContent = bureau.designation; // Assurez-vous que "nom" est le bon attribut
-                                                            bureauSelect.appendChild(option);
-                                                        });
-                                                    }
-                                                })
-                                                .catch(error => console.error('Erreur:', error));
-                                        }
-                                    });
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        -->
         </div>
         <!-- Carousel End -->
 

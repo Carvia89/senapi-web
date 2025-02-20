@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bureau;
 use App\Models\Direction;
+use App\Models\Division;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -19,6 +20,26 @@ class AccueilController extends Controller
         $directions = Direction::with('divisions.bureaux')->get(); // Charger les divisions et leurs bureaux
 
         return view('welcome', compact('directions', 'bureaux'));
+    }
+
+    public function getBureausByDirection($direction_id)
+    {
+        // Vérifier si la direction_id est valide
+        if (!$direction_id) {
+            return response()->json([]);
+        }
+
+        // Récupérer les divisions de la direction
+        $divisions = Division::where('direction_id', $direction_id)->get();
+
+        // Récupérer les bureaux des divisions
+        $bureaus = [];
+        foreach ($divisions as $division) {
+            $bureaus = array_merge($bureaus, $division->bureaux->toArray());
+        }
+
+        // Retourner les bureaux en JSON
+        return response()->json($bureaus);
     }
 
     public function showLoginForm($direction_id)

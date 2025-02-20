@@ -100,4 +100,5 @@ class BureauController extends Controller
         return to_route('admin.bureau.index')
                 ->with('success', 'Le Bureau a été supprimé avec succès !');
     }
+
 }
