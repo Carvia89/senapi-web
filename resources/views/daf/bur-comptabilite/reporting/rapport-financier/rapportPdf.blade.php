@@ -12,18 +12,19 @@
             margin: 0;
         }
         .watermark {
-            position: absolute;
+            position: fixed; /* Fixe l'image sur toutes les pages */
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -90%);
+            left: 45%;
+            transform: translate(-50%, -50%); /* Centre l'image */
             width: 90%;
             height: auto;
-            opacity: 0.1;
-            z-index: -1;
+            opacity: 0.1; /* Transparence du filigrane */
+            z-index: -1; /* Place l'image en arrière-plan */
+            pointer-events: none; /* Empêche l'image d'interférer avec les clics */
         }
         .text {
             text-align: center;
-            line-height: 0.2; /* Ajustez l'interligne ici */
+            line-height: 0.2; /* Ajustez l'interligne */
             font-size: 15px;
             font-weight: bold;
             font-family: Arial, sans-serif;
@@ -37,7 +38,8 @@
         .tableau-donnee th {
             border: 1px solid black;
             padding: 8px;
-            background-color: rgb(211, 207, 207);
+            background-color: skyblue; /* Couleur de fond personnalisée */
+            color: white; /* Couleur du texte pour le contraste */
             text-align: center;
             vertical-align: middle;
             font-family: Arial, sans-serif;
@@ -47,6 +49,7 @@
             padding: 8px;
             vertical-align: middle;
             font-family: Arial, sans-serif;
+            font-size: 14px;
         }
         .footer {
             line-height: 1.7; /* Ajustez l'interligne ici */

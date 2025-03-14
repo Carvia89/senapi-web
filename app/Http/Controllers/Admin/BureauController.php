@@ -101,4 +101,14 @@ class BureauController extends Controller
                 ->with('success', 'Le Bureau a été supprimé avec succès !');
     }
 
+    public function getBureauxByDirection($directionId)
+    {
+        // Récupérer les bureaux appartenant aux divisions de la direction spécifiée
+        $bureaux = \App\Models\Bureau::whereHas('division', function($query) use ($directionId) {
+            $query->where('direction_id', $directionId);
+        })->get(['id', 'designation']);
+
+        return response()->json($bureaux);
+    }
+
 }

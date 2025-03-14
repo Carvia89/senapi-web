@@ -35,10 +35,6 @@ class DashController extends Controller
 
     public function indexDappro()
     {
-        //$fournituresData = $this->getFournituresData();
-        //$consommableInformatiqueData = $this->getConsommableInformatiqueData();
-        //$carburantData = $this->getCarburantData();
-
         $entreestocks = InStock::orderBy('created_at', 'desc')->paginate(5);
 
         //Récupérer tout les items
@@ -68,16 +64,6 @@ class DashController extends Controller
         );
 
     }
-/*
-    public function show($bureau_id)
-    {
-        // Récupérer le bureau pour afficher les informations nécessaires
-        $bureau = Bureau::findOrFail($bureau_id);
-
-        // Retourner la vue du tableau de bord avec les informations du bureau
-        return view('dashboard.bureau', compact('bureau'));
-    }
-*/
 
     public function indexFourniture()
     {

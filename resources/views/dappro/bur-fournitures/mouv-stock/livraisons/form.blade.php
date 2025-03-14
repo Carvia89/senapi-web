@@ -49,7 +49,7 @@
                                             </div>
                                             <div class="col-md-6 col-sm-6">
                                                 <label for="qte_cmdee" class="form-label">Quantité Totale Commandée </label>
-                                                <input type="text" name="qte_cmdee" class="form-control form-control-round
+                                                <input type="number" name="qte_cmdee" class="form-control form-control-round
                                                 @error('qte_cmdee') is-invalid @enderror" id="qte_cmdee"
                                                 style="font-weight: bold; font-size: 1.2em; text-align: right;"
                                                 value="{{ old('qte_cmdee') ? number_format(old('qte_cmdee'), 0, ',', ' ') : '' }}" readonly>

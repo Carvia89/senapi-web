@@ -90,7 +90,7 @@
                                                 <tr>
                                                     <td>{{ \Carbon\Carbon::parse($recette->date_recette)->format('d/m/Y') }}</td>
                                                     <td>{{ $recette->libelle }}</td>
-                                                    <td>{{ number_format($recette->montant_recu, 2, ',', ' ') }}</td>
+                                                    <td class="no-wrap">{{ number_format($recette->montant_recu, 2, ',', ' ') }}</td>
                                                     <td>{{ $recette->refeImputation->designation ?? 'Aucun' }}</td>
                                                     <td>{{ $recette->dossier->designation ?? 'Aucun' }}</td>
                                                     <!-- Boutons d'actions conditionnels -->
@@ -144,6 +144,9 @@
         .whatsapp-link i {
             color: #25D366; /* Couleur verte de WhatsApp */
             font-size: 1.2em; /* Augmente la taille de l'icône */
+        }
+        .no-wrap {
+            white-space: nowrap; /* Empêche le retour à la ligne */
         }
     </style>
 </div>

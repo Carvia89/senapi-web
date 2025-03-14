@@ -17,9 +17,11 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5>Liste des états de besoins</h5>
-                                <a href="{{ route('admin.numérisation-etat-de-besoin.create') }}" class="btn btn-primary btn-round">
-                                    <i class="fas fa-plus"></i> Ajouter
-                                </a>
+                                @if(auth()->user()->role === 'User') <!-- Vérifiez si l'utilisateur a le rôle "User" -->
+                                    <a href="{{ route('admin.numérisation-etat-de-besoin.create') }}" class="btn btn-primary btn-round">
+                                        <i class="fas fa-plus"></i> Ajouter
+                                    </a>
+                                @endif
                             </div>
                             <div class="card-block">
                                 <form action="{{ route('admin.numérisation-etat-de-besoin.index') }}" method="GET">
@@ -92,10 +94,12 @@
                                                     </td>
                                                     <td>
                                                         <div class="d-flex justify-content-end mb-3">
-                                                            <a href="{{ route('admin.numérisation-etat-de-besoin.edit', $etat) }}"
-                                                                title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
+                                                            @if(auth()->user()->role === 'User')
+                                                                <a href="{{ route('admin.numérisation-etat-de-besoin.edit', $etat) }}"
+                                                                    title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+                                                            @endif
                                                             <a href="{{ route('admin.numérisation-etat-de-besoin.show', $etat) }}"
                                                                title="Télécharger" class="btn btn-primary btn-circle btn-sm me-4">
                                                                <i class="fas fa-download"></i>

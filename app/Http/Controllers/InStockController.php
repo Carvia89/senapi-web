@@ -36,7 +36,7 @@ class InStockController extends Controller
      */
     public function create()
     {
-        $articles = Article::all();
+        $articles = Article::all()->sortBy('designation');
         $unites = UnitArticle::all();
         $fournisseurs = Fournisseur::all();
 

@@ -17,25 +17,27 @@ class MotCleController extends Controller
      */
     public function index(Request $request)
     {
-        // Récupération des états de besoins avec filtrage
+        // Récupération des imputations
+        $imputations = Imputation::all();
+
+        // Initialisation de la requête de référence
         $query = ReferenceImputation::with('imputation')->orderBy('created_at', 'desc');
 
-        // Filtrage par bureau_id
+        // Filtrage par imputation_id
         if ($request->filled('imputation_id')) {
             $query->where('imputation_id', $request->imputation_id);
         }
 
-        // Pagination des résultats
-        $references = $query->paginate(25);
+        // Filtrage par ref_recherche
+        if ($request->filled('ref_recherche')) {
+            $query->where('designation', 'like', '%' . $request->ref_recherche . '%');
+        }
 
-        // Récupération des imputations
-        $imputations = ReferenceImputation::select('imputation_id')->distinct()->with('imputation')->get();
+        // Pagination des résultats filtrés
+        $references = $query->paginate(30);
 
         return view('daf.bur-comptabilite.reference-imputations.index',
-            compact(
-                'imputations',
-                'references'
-            )
+            compact('imputations', 'references')
         );
     }
 
@@ -138,5 +140,26 @@ class MotCleController extends Controller
         } catch (Exception $e) {
             return back()->withErrors(['designation' => 'Erreur lors de la suppression : ' . $e->getMessage()]);
         }
+    }
+
+    public function filterReferences(Request $request)
+    {
+        // Initialisation de la requête de référence
+        $query = ReferenceImputation::with('imputation');
+
+        // Filtrage par imputation_id
+        if ($request->filled('imputation_id')) {
+            $query->where('imputation_id', $request->imputation_id);
+        }
+
+        // Filtrage par ref_recherche
+        if ($request->filled('ref_recherche')) {
+            $query->where('designation', 'like', '%' . $request->ref_recherche . '%');
+        }
+
+        // Récupérer les résultats filtrés
+        $references = $query->get();
+
+        return response()->json($references);
     }
 }

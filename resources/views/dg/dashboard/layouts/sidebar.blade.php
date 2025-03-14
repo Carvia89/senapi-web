@@ -57,7 +57,9 @@
         </ul>
         <div class="pcoded-navigation-label">Etats de Sortie</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="pcoded-hasmenu">
+            <li class="pcoded-hasmenu {{ request()->routeIs('rap.financier.daf') ||
+                    request()->routeIs('admin.rap.depense.form') ||
+                    request()->routeIs('admin.rap.recette.form') ? 'active' : '' }} pcoded-trigger">
                 <a href="javascript:void(0)" class="waves-effect waves-dark">
                     <span class="pcoded-micon"><i class="ti-layout-grid2-alt"></i><b>BC</b></span>
                     <span class="pcoded-mtext">Reporting</span>
@@ -71,8 +73,8 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
-                    <li class=" ">
-                        <a href="#!" class="waves-effect waves-dark">
+                    <li class="{{ request()->routeIs('rap.financier.daf') ? 'active' : '' }}">
+                        <a href="{{ route('rap.financier.daf') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                             <span class="pcoded-mtext">DAF</span>
                             <span class="pcoded-mcaret"></span>

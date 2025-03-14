@@ -50,7 +50,7 @@
 
                             <div class="col-md-6 col-sm-6">
                                 <label for="article_id" class="form-label">Article *</label>
-                                <select id="article_id" class="form-select @error('article_id') is-invalid @enderror" name="article_id" onchange="updateStockDispo(this.value)">
+                                <select id="article_id" class="form-select @error('article_id') is-invalid @enderror" name="article_id">
                                 <option selected>Sélectionnez...</option>
                                 @foreach ($articles as $article)
                                     <option value="{{ $article->id }}" {{ old('article_id') == $article->id ? 'selected' : '' }}>{{ $article->designation }}</option>
@@ -69,7 +69,7 @@
                         <div class="row mt-3">
                             <div class="col-md-4 col-sm-4">
                                 <label for="quantiteLivree" class="form-label">Quantité Livrée *</label>
-                                <input type="float" name="quantiteLivree" class="form-control @error('quantiteLivree') is-invalid @enderror" id="quantiteLivree" value="{{ old('quantiteLivree') }}">
+                                <input type="number" name="quantiteLivree" class="form-control @error('quantiteLivree') is-invalid @enderror" id="quantiteLivree" value="{{ old('quantiteLivree') }}">
                                 @error('quantiteLivree')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -105,7 +105,8 @@
                         </button>
                         <div class="form-group text-end">
                             <label for="stock_disponible">Stock disponible </label>
-                            <input type="text" class="form-control" id="stock_disponible" readonly>
+                            <input type="number" class="form-control" id="stock_disponible"
+                                name="stock_disponible" style="text-align: right; font-weight: bold" readonly>
                         </div>
                     </div>
 
@@ -113,6 +114,31 @@
               </div>
             </div>
         </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+        $(document).ready(function() {
+            $('#article_id').change(function() {
+                var articleId = $(this).val();
+                if (articleId) {
+                    $.ajax({
+                        url: '/stock-disponible/' + articleId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#stock_disponible').val(data.stock_disponible);
+                        },
+                        error: function(xhr) {
+                            console.error(xhr);
+                            alert('Erreur lors de la récupération du stock disponible.');
+                        }
+                    });
+                } else {
+                    $('#stock_disponible').val('');
+                }
+            });
+        });
+        </script>
     </section>
 
 </main><!-- End #main -->
@@ -124,7 +150,7 @@
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
         <div class="copyright">
-          &copy; Copyright 2024, <strong><span>DANTIC-SENAPI</span></strong>. All Rights Reserved
+          &copy; Copyright 2025, <strong><span>DANTIC-SENAPI</span></strong>. All Rights Reserved
         </div>
     </footer><!-- End Footer -->
 @endsection

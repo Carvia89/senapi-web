@@ -74,7 +74,7 @@
                                         </div>
                                         <div class="col-8 p-l-0">
                                             <h5>{{ $bonPartiel }}</h5>
-                                            <p class="text-muted m-b-0">Bons Partielst</p>
+                                            <p class="text-muted m-b-0">Bons Partiels</p>
                                         </div>
                                     </div>
                                 </div>
@@ -126,7 +126,7 @@
                                 </div>
                                 <div class="col-9 cst-cont">
                                     <h5 style="text-align: right">{{ number_format($solde, 2, ',', ' ')}} CDF</h5>
-                                    <p class="m-b-0">Solde à la Caisse</p>
+                                    <p class="m-b-0">Solde à la Caisse au {{ \Carbon\Carbon::parse($maxDate)->format('d/m/Y') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -154,7 +154,7 @@
                             <h5>Bons de dépenses récemment élaborés</h5>
                             <div class="card-header-right">
                                 <ul class="list-unstyled card-option">
-                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                    <li><i class="fa fa-wrench open-card-option"></i></li>
                                     <li><i class="fa fa-window-maximize full-card"></i></li>
                                     <li><i class="fa fa-minus minimize-card"></i></li>
                                     <li><i class="fa fa-refresh reload-card"></i></li>
@@ -166,65 +166,30 @@
                             <div class="table-responsive">
                                 <table class="table table-hover m-b-0 without-header">
                                     <tbody>
+                                        @foreach($bonsDepenses as $bon)
                                         <tr>
                                             <td>
                                                 <div class="d-inline-block align-middle">
-                                                    <img src="{{asset('dappro_dash_assets/assets/images/user-profile_.jpg')}}" alt="user image" class="img-radius img-40 align-top m-r-15">
+                                                    <img src="{{ asset('dappro_dash_assets/assets/images/user-profile_.jpg') }}" alt="user image" class="img-radius img-40 align-top m-r-15">
                                                     <div class="d-inline-block">
-                                                        <h6>DAF00004</h6>
-                                                        <p class="text-muted m-b-0">Collation accordée aux Agents</p>
+                                                        <h6>{{ $bon->num_bon }}</h6>
+                                                        <p class="text-muted m-b-0">{{ implode(' ', array_slice(explode(' ', $bon->motif), 0, 7)) }}...</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="text-right">
-                                                <h6 class="f-w-700">83 500.00<i class="fas fa-level-down-alt text-c-red m-l-10"></i></h6>
+                                                <h6 class="f-w-700">{{ number_format($bon->montant_bon, 2, ',', ' ') }}
+                                                    @if($bon->created_at == $bon->updated_at) <!-- Vérification si l'enregistrement est nouveau -->
+                                                        <i class="fas fa-level-up-alt text-c-green m-l-10"></i> <!-- Icône pour enregistrement -->
+                                                    @else
+                                                        <i class="fas fa-level-down-alt text-c-red m-l-10"></i> <!-- Icône pour modification -->
+                                                    @endif
+                                                </h6>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-inline-block align-middle">
-                                                    <img src="{{asset('dappro_dash_assets/assets/images/user-profile_.jpg')}}" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                                    <div class="d-inline-block">
-                                                        <h6>DAF00003</h6>
-                                                        <p class="text-muted m-b-0">Achat carburant</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <h6 class="f-w-700">29 900.00<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-inline-block align-middle">
-                                                    <img src="{{asset('dappro_dash_assets/assets/images/user-profile_.jpg')}}" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                                    <div class="d-inline-block">
-                                                        <h6>DAF00002</h6>
-                                                        <p class="text-muted m-b-0">Frais ramassages </p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <h6 class="f-w-700">60 000.00<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-inline-block align-middle">
-                                                    <img src="{{asset('dappro_dash_assets/assets/images/user-profile_.jpg')}}" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                                    <div class="d-inline-block">
-                                                        <h6>DAF00001</h6>
-                                                        <p class="text-muted m-b-0">Frais de transport</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <h6 class="f-w-700">52 400.75<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
-                                            </td>
-                                        </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>
@@ -267,7 +232,7 @@
                                 <div class="card-block">
                                     <div class="text-left">
                                         <h4 style="text-align: right">{{ number_format($solde, 2, ',', ' ')}} CDF</h4>
-                                        <p class="m-0">Solde à la Caisse</p>
+                                        <p class="m-0">Solde à la Caisse au {{ \Carbon\Carbon::parse($maxDate)->format('d/m/Y') }}</p>
                                     </div>
                                     <span class="label bg-c-green value-badges"></span>
                                 </div>

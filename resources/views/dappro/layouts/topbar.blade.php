@@ -17,7 +17,7 @@
     </div><!-- End Logo -->
 
     <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#" id="search-form">
+        <form class="search-form d-flex align-items-center" method="#" action="#" id="search-form">
             <input type="text" name="query" placeholder="Search" title="Enter search keyword" id="search-input">
             <button type="submit" title="Search" id="search-button"><i class="bi bi-search"></i></button>
           </form>
@@ -51,8 +51,8 @@
             <li class="notification-item">
               <i class="bi bi-exclamation-circle text-warning"></i>
               <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
+                <h4>Notification</h4>
+                <p>Les notifications seront prises en charge incéssament.</p>
                 <p>30 min. ago</p>
               </div>
             </li>

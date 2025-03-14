@@ -18,7 +18,12 @@ class ReportController extends Controller
     public function index()
     {
 
-        $inventaires = Inventaire::with(['article', 'unity'])->get();
+        $inventaires = Inventaire::with(['article', 'unity'])
+            ->join('articles', 'inventaires.article_id', '=', 'articles.id') // Joindre la table des articles
+            ->orderBy('articles.designation') // Trier par le champ "designation" de la table des articles
+            ->select('inventaires.*') // Sélectionner uniquement les colonnes des inventaires
+            ->get();
+
         return view('dappro.gestions.reporting.index', compact('inventaires'));
 
     }
@@ -28,7 +33,7 @@ class ReportController extends Controller
      */
     public function create()
     {
-        $articles = Article::all();
+        $articles = Article::all()->sortBy('designation');
         $unites = UnitArticle::all();
         return view('dappro.gestions.reporting.form', compact('articles', 'unites'));
     }

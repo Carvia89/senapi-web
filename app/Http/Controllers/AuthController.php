@@ -161,6 +161,12 @@ class AuthController extends Controller
         $reportJournalier = $solde - ($recettesToday + $depensesSansBonsToday + $depensesBonsTotalToday);
         $depenseJournaliere = $depensesSansBonsToday + $depensesBonsTotalToday;
 
+        // Récupérer les 4 derniers bons de dépenses
+        $bonsDepenses = BonDepense::orderBy('created_at', 'desc')->take(4)->get();
+
+        // Récupérer la plus grande date
+        $maxDate = DepenseSansBon::max('date_depense');
+
         return view('daf.daf.dashboard.dashboardDAF',
             compact(
                 'nombreUtilisateurs',
@@ -174,7 +180,9 @@ class AuthController extends Controller
                 'montantReport',
                 'reportJournalier',
                 'recettesToday',
-                'depenseJournaliere'
+                'depenseJournaliere',
+                'bonsDepenses',
+                'maxDate'
             )
         );
     }
@@ -218,6 +226,12 @@ class AuthController extends Controller
         $reportJournalier = $solde - ($recettesToday + $depensesSansBonsToday + $depensesBonsTotalToday);
         $depenseJournaliere = $depensesSansBonsToday + $depensesBonsTotalToday;
 
+        // Récupérer les 4 derniers bons de dépenses
+        $bonsDepenses = BonDepense::orderBy('created_at', 'desc')->take(4)->get();
+
+        // Récupérer la plus grande date
+        $maxDate = DepenseSansBon::max('date_depense');
+
         return view('dg.dashboard.dafDashboard',
             compact(
                 'nombreUtilisateurs',
@@ -231,9 +245,16 @@ class AuthController extends Controller
                 'montantReport',
                 'reportJournalier',
                 'recettesToday',
-                'depenseJournaliere'
+                'depenseJournaliere',
+                'bonsDepenses',
+                'maxDate'
             )
         );
+    }
+
+    public function formReportDAF()
+    {
+        return view('dg.dashboard.dafReport');
     }
 
 }

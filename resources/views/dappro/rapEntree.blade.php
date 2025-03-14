@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>gestodive</title>
+  <title>senapiweb</title>
   <link rel="icon" href="favicon.png">
   <link rel="apple-touch-icon" href="{{ asset('dash_assets/assets/img/apple-touch-icon.png') }}">
   <style>
@@ -71,7 +71,7 @@
       <div>BUREAU MATIERE PREMIERE</div>
     </div>
         <div class="image-container">
-        <img src="snp_log.jpg" alt="Image">
+        <!-- <img src="snp_log.jpg" alt="Image"> -->
         </div>
   </div>
   <br><br>

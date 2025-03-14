@@ -15,66 +15,70 @@
                                 </div>
                             @endif
 
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5>Enregistrement du Report Annuel</h5>
-                                </div>
-                                <div class="card-block">
-                                    <form class="vstack gap-3" action="{{ route('admin.report-annuel.store') }}"
-                                        method="POST">
+                            @if(auth()->user()->role === 'User')
 
-                                        @csrf
-                                        @method('POST')
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5>Enregistrement du Report Annuel</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <form class="vstack gap-3" action="{{ route('admin.report-annuel.store') }}"
+                                            method="POST">
 
-                                        <div class="form-group row mt-3">
-                                            <div class="col-md-6 col-sm-6">
-                                                <label for="annee" class="form-label">* Année </label>
-                                                <input type="date" name="annee"
-                                                    class="form-control form-control-round
-                                                        @error('annee') is-invalid @enderror"
-                                                        id="annee" value="{{ old('annee') }}">
-                                                @error('annee')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
+                                            @csrf
+                                            @method('POST')
+
+                                            <div class="form-group row mt-3">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <label for="annee" class="form-label">* Année </label>
+                                                    <input type="date" name="annee"
+                                                        class="form-control form-control-round
+                                                            @error('annee') is-invalid @enderror"
+                                                            id="annee" value="{{ old('annee') }}">
+                                                    @error('annee')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <label for="montant_report" class="form-label">* Montant </label>
+                                                    <input type="text" name="montant_report"
+                                                        class="form-control form-control-round
+                                                            @error('montant_report') is-invalid @enderror"
+                                                            style="font-weight: bold; text-align: right"
+                                                            id="montant_report" value="{{ old('montant_report') }}">
+                                                    @error('montant_report')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                            <div class="col-md-6 col-sm-6">
-                                                <label for="montant_report" class="form-label">* Montant </label>
-                                                <input type="text" name="montant_report"
-                                                    class="form-control form-control-round
-                                                        @error('montant_report') is-invalid @enderror"
-                                                        style="font-weight: bold; text-align: right"
-                                                        id="montant_report" value="{{ old('montant_report') }}">
-                                                @error('montant_report')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
+                                            <div class="form-group row mt-3">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <label for="description" class="form-label">Description </label>
+                                                    <input type="text" name="description"
+                                                        class="form-control form-control-round
+                                                            @error('description') is-invalid @enderror"
+                                                        id="description" value="{{ old('description') }}">
+                                                    @error('description')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row mt-3">
-                                            <div class="col-md-12 col-sm-12">
-                                                <label for="description" class="form-label">Description </label>
-                                                <input type="text" name="description"
-                                                    class="form-control form-control-round
-                                                        @error('description') is-invalid @enderror"
-                                                    id="description" value="{{ old('description') }}">
-                                                @error('description')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <button type="submit" class="btn btn-primary btn-round">
+                                                    <i class="fas fa-save"></i> Enregistrer
+                                                </button>
                                             </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <button type="submit" class="btn btn-primary btn-round">
-                                                <i class="fas fa-save"></i> Enregistrer
-                                            </button>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
+
+                            @endif
                             <!-- Basic Form Inputs card end -->
                         </div>
 
@@ -92,7 +96,9 @@
                                                 <th>Année</th>
                                                 <th>Montant (CDF)</th>
                                                 <th>Description</th>
-                                                <th class="d-flex justify-content-end">Actions</th>
+                                                @if(auth()->user()->role === 'User')
+                                                    <th class="d-flex justify-content-end">Actions</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -103,18 +109,20 @@
                                                     <td>{{ $report->description ?? 'Aucun' }}</td>
                                                     <td>
                                                         <div class="d-flex justify-content-end mb-3">
-                                                            <a href="{{ route('admin.report-annuel.edit', $report) }}"
-                                                                title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <form action="{{ route('admin.report-annuel.destroy', $report) }}"
-                                                                method="post">
-                                                                @csrf
-                                                                @method("delete")
-                                                                <button class="btn btn-danger btn-circle btn-sm" title="Supprimer">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </form>
+                                                            @if(auth()->user()->role === 'User')
+                                                                <a href="{{ route('admin.report-annuel.edit', $report) }}"
+                                                                    title="Editer" class="btn btn-warning btn-circle btn-sm me-4">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <form action="{{ route('admin.report-annuel.destroy', $report) }}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    @method("delete")
+                                                                    <button class="btn btn-danger btn-circle btn-sm" title="Supprimer">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                            @endif
                                                         </div>
                                                     </td>
                                                 </tr>

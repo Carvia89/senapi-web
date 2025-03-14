@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <a href="{{ route('dashboard.direction2') }}">
+            <a href="#">
                 <img class="img-fluid" src="{{ asset('dappro_dash_assets/assets/images/Logo-p.png') }}" alt="Theme-Logo" />
             </a>
             <a class="mobile-options waves-effect waves-light">
@@ -59,12 +59,12 @@
                     </a>
                     <ul class="show-notification profile-notification">
                         <li class="waves-effect waves-light">
-                            <a href="#!">
+                            <a href="{{ route('admin.change.password') }}">
                                 <i class="ti-settings"></i> Paramètres
                             </a>
                         </li>
                         <li class="waves-effect waves-light">
-                            <a href="#!">
+                            <a href="{{ route('admin.profile') }}">
                                 <i class="ti-user"></i> Profile
                             </a>
                         </li>

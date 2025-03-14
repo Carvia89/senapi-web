@@ -1,4 +1,4 @@
-@extends('daf.layouts.template')
+@extends('dg.dashboard.layouts.template')
 
 @section('content')
     <div id="pcoded" class="pcoded">
@@ -13,7 +13,7 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5>Rapport Financier Journalier</h5>
+                                    <h5>Rapport Financier Journalier de la DAF</h5>
                                 </div>
                                 <div class="card-block">
                                     <form class="vstack gap-3" action="{{ route('admin.rap.financier.pdf') }}" method="GET">
@@ -45,7 +45,7 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5>Rapport Financier Périodique</h5>
+                                    <h5>Rapport Financier Périodique de la DAF</h5>
                                 </div>
                                 <div class="card-block">
                                     <form class="vstack gap-3" action="{{ route('admin.rap.periodique.pdf') }}" method="GET">

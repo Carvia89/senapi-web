@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ArticleRequest;
 use App\Models\Article;
 use App\Models\CatgArticle;
+use App\Models\GestionArticle;
+use App\Models\InStock;
+use App\Models\OutStock;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -106,5 +109,17 @@ class ArticleController extends Controller
         return to_route('admin.Article.index')
                 ->with('success', 'L\'Article a été supprimé avec succès !');
 
+    }
+
+    public function getStockDisponible($id)
+    {
+        // Calculer le stock disponible
+        $stockInitial = GestionArticle::where('designation_id', $id)->sum('stock_initial');
+        $quantiteEntree = InStock::where('article_id', $id)->sum('quantite');
+        $quantiteSortie = OutStock::where('article_id', $id)->sum('quantiteLivree');
+
+        $stockDisponible = $stockInitial + $quantiteEntree - $quantiteSortie;
+
+        return response()->json(['stock_disponible' => $stockDisponible]);
     }
 }

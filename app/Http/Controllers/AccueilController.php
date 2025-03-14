@@ -13,13 +13,10 @@ use Illuminate\Support\Facades\Log;
 
 class AccueilController extends Controller
 {
-    public function accueil()
+    public function accueil(Request $request)
     {
-
-        $bureaux = Bureau::all();
-        $directions = Direction::with('divisions.bureaux')->get(); // Charger les divisions et leurs bureaux
-
-        return view('welcome', compact('directions', 'bureaux'));
+        $directions = Direction::all();
+        return view('welcome', compact('directions'));
     }
 
     public function getBureausByDirection($direction_id)
@@ -103,31 +100,14 @@ class AccueilController extends Controller
             ->withInput();
     }
 
-    public function getBureaux($direction_id)
-    {
-        $bureaux = Bureau::whereHas('division', function($query) use ($direction_id) {
-            $query->where('direction_id', $direction_id);
-        })->get();
-
-        return response()->json($bureaux);
-    }
-
     public function loginUser(Request $request)
     {
-
         // Validation des données
         $request->validate([
             'direction_id' => 'required|exists:directions,id',
-            'bureau_id' => 'required|exists:bureaus,id',
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
-
-        // Vérifiez si le bureau appartient à la direction
-        $bureau = Bureau::with('division')->find($request->bureau_id);
-        if ($bureau->division->direction_id != $request->direction_id) {
-            return back()->withErrors(['bureau_id' => 'Ce bureau n\'appartient pas à la direction sélectionnée.']);
-        }
 
         // Authentification de l'utilisateur
         $user = User::where('email', $request->email)->first();
@@ -135,9 +115,17 @@ class AccueilController extends Controller
         if ($user && Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             // Authentification réussie
 
-            // Vérifiez que l'utilisateur appartient au bureau sélectionné
-            if ($user->bureau_id != $bureau->id) {
-                return back()->withErrors(['bureau_id' => 'Vous n\'appartenez pas à ce bureau.']);
+            // Récupérer le bureau de l'utilisateur
+            $bureau = Bureau::with('division')->find($user->bureau_id);
+
+            // Vérifiez si le bureau existe
+            if (!$bureau) {
+                return back()->withErrors(['email' => 'Bureau non trouvé.']);
+            }
+
+            // Vérifiez si le bureau appartient à la direction sélectionnée
+            if ($bureau->division->direction_id != $request->direction_id) {
+                return back()->withErrors(['direction_id' => 'Vous n\'appartenez pas à la direction sélectionnée.']);
             }
 
             // Redirection en fonction du bureau et du rôle de l'utilisateur
@@ -151,34 +139,30 @@ class AccueilController extends Controller
 
             if (in_array($user->bureau_id, $userBurFourniture) && $user->role == 'User') {
                 return redirect()->route('dashboard.bureau')->with('success', 'Bienvenue sur votre tableau de bord');
-
             } elseif (in_array($user->bureau_id, $userBurVente) && $user->role == 'User') {
                 return redirect()->route('dashboard.bureau.vente')->with('success', 'Bienvenue sur votre tableau de bord');
-
             } elseif (in_array($user->bureau_id, $userBurVente) && $user->role == 'Caissier') {
                 return redirect()->route('admin.caisse-vente-Bulletins.create');
-
             } elseif (in_array($user->bureau_id, $userBurDistr) && $user->role == 'User') {
                 return redirect()->route('admin.transfert-commande.create');
-
             } elseif (in_array($user->bureau_id, $userBurMP) && $user->role == 'User') {
                 return redirect()->route('dashboard.bureau.mp');
-
             } elseif (in_array($user->bureau_id, $userBurEliq) && $user->role == 'User') {
                 return redirect()->route('dashboard.bureau.eliq');
-
+            } elseif ($user->role == 'Admin' && $user->bureau->division->direction->id == 5) {  //Admin DAF
+                return redirect()->route('dashboard.direction5');
+            } elseif ($user->role == 'Admin' && $user->bureau->division->direction->id == 3) {  //Admin DAPPRO
+                return redirect()->route('dashboard.direction3');
             } elseif (in_array($user->bureau_id, $userBurBP) && $user->role == 'CB') {
                 return redirect()->route('admin.imputation.index');
-
             } elseif (in_array($user->bureau_id, $userBurCaisse) && $user->role == 'User') {
                 return redirect()->route('dashboard.bureau.caisse');
-
             } elseif ($user->bureau_id == 2 && $user->role == 'Admin') {
                 return redirect()->route('dashboard.admin')->with('success', 'Bienvenue Admin');
             }
 
-            // Redirection par défaut si aucune condition ne correspond
-            //return redirect()->route('dashboard')->with('success', 'Bienvenue sur votre tableau de bord');
+            // Si les informations d'identification ne sont pas valides
+            return redirect()->back()->withErrors(['error' => 'Accès refusé.']);
         }
 
         // Si l'authentification échoue

@@ -10,27 +10,29 @@
             flex-direction: column;
             align-items: center;
             margin: 0;
+            position: relative; /* Nécessaire pour le positionnement absolu des enfants */
         }
         .watermark {
-            position: absolute;
+            position: fixed; /* Fixe l'image sur toutes les pages */
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -90%);
+            left: 45%;
+            transform: translate(-50%, -50%); /* Centre l'image */
             width: 90%;
             height: auto;
-            opacity: 0.1;
-            z-index: -1;
+            opacity: 0.1; /* Transparence du filigrane */
+            z-index: -1; /* Place l'image en arrière-plan */
+            pointer-events: none; /* Empêche l'image d'interférer avec les clics */
         }
         .text {
             text-align: center;
-            line-height: 0.2; /* Ajustez l'interligne ici */
+            line-height: 0.2;
             font-size: 15px;
             font-weight: bold;
             font-family: Arial, sans-serif;
         }
         .entete {
             text-align: left;
-            line-height: 0.2; /* Ajustez l'interligne ici */
+            line-height: 0.2;
             font-size: 15px;
             font-weight: bold;
             font-family: Arial, sans-serif;
@@ -38,13 +40,14 @@
         .tableau-donnee {
             width: 100%;
             border-collapse: collapse;
-            margin: auto; /* Centre le tableau */
+            margin: auto;
             margin-top: 15px;
         }
         .tableau-donnee th {
             border: 1px solid black;
             padding: 8px;
-            background-color: rgb(211, 207, 207);
+            background-color: skyblue;
+            color: white;
             text-align: center;
             vertical-align: middle;
             font-family: Arial, sans-serif;
@@ -54,17 +57,20 @@
             padding: 8px;
             vertical-align: middle;
             font-family: Arial, sans-serif;
+            font-size: 14px;
         }
         .footer {
-            line-height: 1.2; /* Ajustez l'interligne ici */
+            line-height: 1.2;
             font-size: 15px;
             font-family: Arial, sans-serif;
         }
     </style>
 </head>
 <body>
+    <!-- Filigrane -->
     <img src="{{ public_path('assets/img/logo-snp.png') }}" alt="Watermark" class="watermark">
 
+    <!-- Contenu principal -->
     <div class="text">
         <p>REPUBLIQUE DEMOCRATIQUE DU CONGO</p>
         <p style="color: skyblue">MINISTERE DU BUDGET</p>
@@ -91,14 +97,13 @@
         </thead>
         <tbody>
             @php
-                $totalRecettes = $reportData['report']['montant_report']; // Initialiser avec le montant du report
-                $totalDepenses = 0; // Initialiser la somme des dépenses à 0
-                $previousSolde = $totalRecettes; // Utiliser le montant du report comme solde initial
+                $totalRecettes = $reportData['report']['montant_report'];
+                $totalDepenses = 0;
+                $previousSolde = $totalRecettes;
 
                 $imputations = $reportData['imputations'] ?? [];
                 $depensesParImputation = $reportData['depensesParImputation'] ?? [];
 
-                // Calculer la somme totale des dépenses
                 foreach ($depensesParImputation as $imputationData) {
                     $totalDepenses += $imputationData['depenses']->sum('total_depense');
                 }

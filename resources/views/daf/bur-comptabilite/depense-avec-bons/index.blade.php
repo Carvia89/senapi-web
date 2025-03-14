@@ -17,9 +17,11 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5>Journal des Dépenses</h5>
-                                <a href="{{ route('admin.dépenses-avec-bons.create') }}" class="btn btn-primary btn-round">
-                                    <i class="fas fa-plus"></i> Nouvelle Dépense
-                                </a>
+                                @if(auth()->user()->role !== 'Admin')
+                                    <a href="{{ route('admin.dépenses-avec-bons.create') }}" class="btn btn-primary btn-round">
+                                        <i class="fas fa-plus"></i> Nouvelle Dépense
+                                    </a>
+                                @endif
                             </div>
                             <div class="card-block">
                                 <form action="{{ route('admin.dépenses-avec-bons.index') }}" method="GET">

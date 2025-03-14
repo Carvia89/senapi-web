@@ -20,7 +20,7 @@
                         <h5 class="card-title">Fiche de stock</h5>
 
                         <!-- Horizontal Form -->
-                        <form class="vstack gap-3" action="{{ route('ficheStock') }}" method="GET">
+                        <form class="vstack gap-3" action="{{ route('ficheStkPdf') }}" method="GET">
 
                             <div class="row mt-3">
                                 <div class="col-md-4 col-sm-4">
@@ -104,7 +104,7 @@
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">
-        &copy; Copyright 2024, <strong><span>DANTIC-SENAPI</span></strong>. All Rights Reserved
+        &copy; Copyright 2025, <strong><span>DANTIC-SENAPI</span></strong>. All Rights Reserved
     </div>
 </footer><!-- End Footer -->
 @endsection

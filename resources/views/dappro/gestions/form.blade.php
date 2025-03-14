@@ -107,40 +107,40 @@
                 </form><!-- End Multi Columns Form -->
 
                 <script>
-$(document).ready(function() {
-    $('#designation_id').on('change', function() {
-        var numArt = $(this).val();
+                    $(document).ready(function() {
+                        $('#designation_id').on('change', function() {
+                            var numArt = $(this).val();
 
-        if (numArt) {
-            $.ajax({
-                url: '{{ route("getPrice") }}',
-                type: 'GET',
-                data: { numArt: numArt },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    if (response.error) {
-                        // Afficher un message d'erreur
-                        alert(response.error);
-                        $('#price').val('');
-                    } else {
-                        // Afficher le prix de l'article
-                        $('#price').val(response.prix);
-                    }
-                },
-                error: function(xhr) {
-                    // Gérer les erreurs de la requête
-                    console.log('Une erreur est survenue :', xhr);
-                    $('#price').val('');
-                }
-            });
-        } else {
-            // Vider le champ prix si aucun article n'est sélectionné
-            $('#price').val('');
-        }
-    });
-});
+                            if (numArt) {
+                                $.ajax({
+                                    url: '{{ route("getPrice") }}',
+                                    type: 'GET',
+                                    data: { numArt: numArt },
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    },
+                                    success: function(response) {
+                                        if (response.error) {
+                                            // Afficher un message d'erreur
+                                            alert(response.error);
+                                            $('#price').val('');
+                                        } else {
+                                            // Afficher le prix de l'article
+                                            $('#price').val(response.prix);
+                                        }
+                                    },
+                                    error: function(xhr) {
+                                        // Gérer les erreurs de la requête
+                                        console.log('Une erreur est survenue :', xhr);
+                                        $('#price').val('');
+                                    }
+                                });
+                            } else {
+                                // Vider le champ prix si aucun article n'est sélectionné
+                                $('#price').val('');
+                            }
+                        });
+                    });
                 </script>
 
               </div>
@@ -157,7 +157,7 @@ $(document).ready(function() {
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
         <div class="copyright">
-          &copy; Copyright 2024, <strong><span>DANTIC-SENAPI</span></strong>. All Rights Reserved
+          &copy; Copyright 2025, <strong><span>DANTIC-SENAPI</span></strong>. All Rights Reserved
         </div>
     </footer><!-- End Footer -->
 @endsection

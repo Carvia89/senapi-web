@@ -33,14 +33,11 @@ class OutStockController extends Controller
      */
     public function create()
     {
-        $bureaus = Bureau::all();
-        $articles = Article::with('gestionArticle', 'inStocks')->get();
-        return view('dappro.gestions.sorties.form',
-            compact(
-                'bureaus',
-                'articles'
-            )
-        );
+        // Tri des bureaux et articles par ordre alphabétique
+        $bureaus = Bureau::all()->sortBy('designation');
+        $articles = Article::all()->sortBy('designation');
+
+        return view('dappro.gestions.sorties.form', compact('bureaus', 'articles'));
     }
 
     /**
@@ -93,12 +90,7 @@ class OutStockController extends Controller
         } else {
             // Gérer le cas où $article->gestionArticle est null
             return redirect()->back()->with('error_msg', 'Stock non disponible');
-            /*
-            return [
-                'stockDisponible' => 0,
-                'errorMessage' => 'Le solde du stock est null.'
-            ];
-            */
+
         }
     }
 

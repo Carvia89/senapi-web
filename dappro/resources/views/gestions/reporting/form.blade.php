@@ -20,7 +20,7 @@
                         <h5 class="card-title">Fiche de stock</h5>
 
                         <!-- Horizontal Form -->
-                        <form class="vstack gap-3" action="{{ route('ficheStock') }}" method="GET">
+                        <form class="vstack gap-3" action="{{ route('ficheStockPDF') }}" method="GET">
 
                             <div class="row mt-3">
                                 <div class="col-md-4 col-sm-4">
@@ -73,7 +73,7 @@
                                 <div class="d-flex gap-3">
                                     <a href="{{ route('rapportSortie') }}" class="btn btn-secondary">
                                         <i class="bi bi-download">
-                                            Rapport sur les Sorties
+                                            Rapport sur les Sorties s
                                         </i>
                                     </a>
                                     <a href="{{ route('rapportEntree') }}" class="btn btn-secondary">

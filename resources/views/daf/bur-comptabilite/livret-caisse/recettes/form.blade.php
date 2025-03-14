@@ -7,6 +7,12 @@
                 <div class="page-body">
                     <div class="row">
                         <div class="col-sm-12">
+                        @if (Session('success'))
+                        <div class="alert alert-success d-flex align-items-center">
+                            <i class="fas fa-hand-thumbs-up-fill me-2"></i>
+                            <span>{{ session('success') }}</span>
+                        </div>
+                        @endif
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5>Enregistrements des Recettes</h5>
@@ -28,7 +34,7 @@
                                                 <input type="date" name="date_recette"
                                                     class="form-control form-control-round
                                                         @error('date_recette') is-invalid @enderror"
-                                                        id="date_recette" value="{{ old('date_recette') }}">
+                                                        id="date_recette" value="{{ session('date_recette', old('date_recette')) }}">
                                                 @error('date_recette')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}

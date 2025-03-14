@@ -85,7 +85,10 @@ class DepenseSansBonController extends Controller
             return strtolower($reference->designation);  //Afficher les dossiers en ordre alphabétique
         });
 
-        $referImputs = ReferenceImputation::all()->sortBy(function ($reference) {
+        // Récupération des référence_imputation sauf celles associées à des imputations dont le champ 'imputation' commence par '0-'
+        $referImputs = ReferenceImputation::whereDoesntHave('imputation', function ($query) {
+            $query->where('imputation', 'like', '0-%'); // Exclure les imputations qui commencent par '0-'
+        })->get()->sortBy(function ($reference) {
             return strtolower($reference->designation); // Trier par désignation en ordre alphabétique
         });
 
@@ -147,9 +150,16 @@ class DepenseSansBonController extends Controller
         // Récupération du bon de dépense par son ID
         $depense = DepenseSansBon::findOrFail($id);
 
-        // Récupération des options pour les sélecteurs
-        $dossiers = Dossier::all();
-        $referImputs = ReferenceImputation::all();
+        $dossiers = Dossier::all()->sortBy(function ($reference) {
+            return strtolower($reference->designation);  //Afficher les dossiers en ordre alphabétique
+        });
+
+        // Récupération des référence_imputation sauf celles associées à des imputations dont le champ 'imputation' commence par '0-'
+        $referImputs = ReferenceImputation::whereDoesntHave('imputation', function ($query) {
+            $query->where('imputation', 'like', '0-%'); // Exclure les imputations qui commencent par '0-'
+        })->get()->sortBy(function ($reference) {
+            return strtolower($reference->designation); // Trier par désignation en ordre alphabétique
+        });
 
         return view('daf.bur-comptabilite.livret-caisse.depense-sans-bons.edit', compact(
             'depense',

@@ -109,7 +109,7 @@
         <ul id="components-nav1" class="nav-content collapse {{ Request::routeIs('mouvement.gestion.*') || Request::routeIs('mouvement.EntreeStock.*') || Request::routeIs('mouvement.SortieStock.*') || Request::routeIs('mouvement.reporting.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
           <li>
             <a href="{{ route('mouvement.gestion.create') }}" class="{{ Request::routeIs('mouvement.gestion.*') ? 'active' : '' }}">
-              <i class="bi bi-circle"></i><span>Gestion</span>
+              <i class="bi bi-circle"></i><span>Stock de démarrage</span>
             </a>
           </li>
           <li>

@@ -16,22 +16,22 @@
                                 <div class="col-sm-6 b-r-default p-b-20 p-t-20">
                                     <div class="row align-items-center text-center">
                                         <div class="col-4 p-r-0">
-                                            <i class="fas fa-graduation-cap text-c-purple f-24"></i>
+                                            <i class="fas fa-bank text-c-purple f-24"></i>
                                         </div>
                                         <div class="col-8 p-l-0">
-                                            <h5>00</h5>
-                                            <p class="text-muted m-b-0">Niveaux</p>
+                                            <h5>{{ $nbreBanques }}</h5>
+                                            <p class="text-muted m-b-0">Banques</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 p-b-20 p-t-20">
                                     <div class="row align-items-center text-center">
                                         <div class="col-4 p-r-0">
-                                            <i class="fas fa-cogs text-c-green f-24"></i>
+                                            <i class="fas fa-users text-c-green f-24"></i>
                                         </div>
                                         <div class="col-8 p-l-0">
-                                            <h5>00</h5>
-                                            <p class="text-muted m-b-0">Options</p>
+                                            <h5>{{ $nbreBenef }}</h5>
+                                            <p class="text-muted m-b-0">Bénéficiaires</p>
                                         </div>
                                     </div>
                                 </div>
@@ -40,22 +40,22 @@
                                 <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
                                     <div class="row align-items-center text-center">
                                         <div class="col-4 p-r-0">
-                                            <i class="fas fa-users text-c-red f-24"></i>
+                                            <i class="fas fa-user text-c-red f-24"></i>
                                         </div>
                                         <div class="col-8 p-l-0">
-                                            <h5>00</h5>
-                                            <p class="text-muted m-b-0">Clients</p>
+                                            <h5>{{ $nombreUtilisateurs }}</h5>
+                                            <p class="text-muted m-b-0">Users</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 p-b-20 p-t-20">
                                     <div class="row align-items-center text-center">
                                         <div class="col-4 p-r-0">
-                                            <i class="fas fa-truck text-c-blue f-24"></i>
+                                            <i class="fas fa-folder text-c-blue f-24"></i>
                                         </div>
                                         <div class="col-8 p-l-0">
-                                            <h5>00</h5>
-                                            <p class="text-muted m-b-0">Fournisseurs</p>
+                                            <h5>{{ $nbreDoss}}</h5>
+                                            <p class="text-muted m-b-0">Dossiers</p>
                                         </div>
                                     </div>
                                 </div>
@@ -70,22 +70,22 @@
                                 <div class="col-sm-6 b-r-default p-b-20 p-t-20">
                                     <div class="row align-items-center text-center">
                                         <div class="col-4 p-r-0">
-                                            <i class="fas fa-cart-plus text-c-purple f-24"></i>
+                                            <i class="fas fa-download text-c-purple f-24"></i>
                                         </div>
                                         <div class="col-8 p-l-0">
-                                            <h5>00</h5>
-                                            <p class="text-muted m-b-0">Commandes</p>
+                                            <h5>{{ $nbreEBdownload }}</h5>
+                                            <p class="text-muted m-b-0">Total EB</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 p-b-20 p-t-20">
                                     <div class="row align-items-center text-center">
                                         <div class="col-4 p-r-0">
-                                            <i class="fas fa-sitemap text-c-green f-24"></i>
+                                            <i class="fas fa-file-alt text-c-green f-24"></i>
                                         </div>
                                         <div class="col-8 p-l-0">
-                                            <h5>600</h5>
-                                            <p class="text-muted m-b-0">Network</p>
+                                            <h5>{{ $EBtraités }}</h5>
+                                            <p class="text-muted m-b-0">EB liquidés</p>
                                         </div>
                                     </div>
                                 </div>
@@ -94,22 +94,22 @@
                                 <div class="col-sm-6 p-b-20 p-t-20 b-r-default">
                                     <div class="row align-items-center text-center">
                                         <div class="col-4 p-r-0">
-                                            <i class="fas fa-signal text-c-red f-24"></i>
+                                            <i class="fas fa-file-alt text-c-red f-24"></i>
                                         </div>
                                         <div class="col-8 p-l-0">
-                                            <h5>350</h5>
-                                            <p class="text-muted m-b-0">Signal</p>
+                                            <h5>{{ $nbreBonDepenses }}</h5>
+                                            <p class="text-muted m-b-0">Bon de Dépenses</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 p-b-20 p-t-20">
                                     <div class="row align-items-center text-center">
                                         <div class="col-4 p-r-0">
-                                            <i class="fas fa-wifi text-c-blue f-24"></i>
+                                            <i class="fas fa-file-alt text-c-blue f-24"></i>
                                         </div>
                                         <div class="col-8 p-l-0">
-                                            <h5>100%</h5>
-                                            <p class="text-muted m-b-0">Connections</p>
+                                            <h5>{{ $nbreBonPayés }}</h5>
+                                            <p class="text-muted m-b-0">Bons Payés</p>
                                         </div>
                                     </div>
                                 </div>
@@ -125,8 +125,8 @@
                                     <i class="fas fa-star mat-icon f-24"></i>
                                 </div>
                                 <div class="col-9 cst-cont">
-                                    <h5 style="text-align: right">4 000</h5>
-                                    <p class="m-b-0">Recettes Bulletins Scolaires (CDF)</p>
+                                    <h5 style="text-align: right">{{ number_format($sommeBonPayés, 2, ',', ' ') }} CDF</h5>
+                                    <p class="m-b-0">Montant global de bons payés</p>
                                 </div>
                             </div>
                         </div>
@@ -135,11 +135,11 @@
                         <div class="card-block">
                             <div class="row">
                                 <div class="col-3 text-center bg-c-blue">
-                                    <i class="fas fa-file-alt mat-icon f-24"></i>
+                                    <i class="fas fa-star mat-icon f-24"></i>
                                 </div>
                                 <div class="col-9 cst-cont">
-                                    <h5>00</h5>
-                                    <p class="m-b-0">Nbre Total Bulletins réçus</p>
+                                    <h5 style="text-align: right">{{ number_format($sommeBonàPayer, 2, ',', ' ') }} CDF</h5>
+                                    <p class="m-b-0">Montant global de bons en attente de paiement</p>
                                 </div>
                             </div>
                         </div>
@@ -151,10 +151,10 @@
                 <div class="col-xl-6 col-md-12">
                     <div class="card table-card">
                         <div class="card-header">
-                            <h5>Ventes récemment effectuées</h5>
+                            <h5>Bons de dépenses récemment élaborés</h5>
                             <div class="card-header-right">
                                 <ul class="list-unstyled card-option">
-                                    <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                    <li><i class="fa fa-wrench open-card-option"></i></li>
                                     <li><i class="fa fa-window-maximize full-card"></i></li>
                                     <li><i class="fa fa-minus minimize-card"></i></li>
                                     <li><i class="fa fa-refresh reload-card"></i></li>
@@ -166,65 +166,30 @@
                             <div class="table-responsive">
                                 <table class="table table-hover m-b-0 without-header">
                                     <tbody>
+                                        @foreach($bonsDepenses as $bon)
                                         <tr>
                                             <td>
                                                 <div class="d-inline-block align-middle">
-                                                    <img src="{{asset('dappro_dash_assets/assets/images/user-profile_.jpg')}}" alt="user image" class="img-radius img-40 align-top m-r-15">
+                                                    <img src="{{ asset('dappro_dash_assets/assets/images/user-profile_.jpg') }}" alt="user image" class="img-radius img-40 align-top m-r-15">
                                                     <div class="d-inline-block">
-                                                        <h6>Shirley Hoe</h6>
-                                                        <p class="text-muted m-b-0">Sales executive , NY</p>
+                                                        <h6>{{ $bon->num_bon }}</h6>
+                                                        <p class="text-muted m-b-0">{{ implode(' ', array_slice(explode(' ', $bon->motif), 0, 7)) }}...</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="text-right">
-                                                <h6 class="f-w-700">$78.001<i class="fas fa-level-down-alt text-c-red m-l-10"></i></h6>
+                                                <h6 class="f-w-700">{{ number_format($bon->montant_bon, 2, ',', ' ') }}
+                                                    @if($bon->created_at == $bon->updated_at) <!-- Vérification si l'enregistrement est nouveau -->
+                                                        <i class="fas fa-level-up-alt text-c-green m-l-10"></i> <!-- Icône pour enregistrement -->
+                                                    @else
+                                                        <i class="fas fa-level-down-alt text-c-red m-l-10"></i> <!-- Icône pour modification -->
+                                                    @endif
+                                                </h6>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-inline-block align-middle">
-                                                    <img src="{{asset('dappro_dash_assets/assets/images/user-profile_.jpg')}}" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                                    <div class="d-inline-block">
-                                                        <h6>James Alexander</h6>
-                                                        <p class="text-muted m-b-0">Sales executive , EL</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <h6 class="f-w-700">$89.051<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-inline-block align-middle">
-                                                    <img src="{{asset('dappro_dash_assets/assets/images/user-profile_.jpg')}}" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                                    <div class="d-inline-block">
-                                                        <h6>Shirley Hoe</h6>
-                                                        <p class="text-muted m-b-0">Sales executive , NY</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <h6 class="f-w-700">$89.051<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-inline-block align-middle">
-                                                    <img src="{{asset('dappro_dash_assets/assets/images/user-profile_.jpg')}}" alt="user image" class="img-radius img-40 align-top m-r-15">
-                                                    <div class="d-inline-block">
-                                                        <h6>Nick Xander</h6>
-                                                        <p class="text-muted m-b-0">Sales executive , EL</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <h6 class="f-w-700">$89.051<i class="fas fa-level-up-alt text-c-green m-l-10"></i></h6>
-                                            </td>
-                                        </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>
@@ -236,18 +201,18 @@
                         <div class="col-md-6">
                             <div class="card text-center order-visitor-card">
                                 <div class="card-block">
-                                    <h6 class="m-b-0">Stock Bulletins</h6>
+                                    <h6 class="m-b-0">Bons</h6>
                                     <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-up m-r-15 text-c-green"></i>00</h4>
-                                    <p class="m-b-0">Livrés gratuitement</p>
+                                    <p class="m-b-0">classés</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card text-center order-visitor-card">
                                 <div class="card-block">
-                                    <h6 class="m-b-0">Stock Bulletins</h6>
+                                    <h6 class="m-b-0">Bons</h6>
                                     <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-up m-r-15 text-c-green"></i>00</h4>
-                                    <p class="m-b-0">Livrés à crédit</p>
+                                    <p class="m-b-0">classés</p>
                                 </div>
                             </div>
                         </div>
@@ -255,10 +220,10 @@
                             <div class="card bg-c-red total-card">
                                 <div class="card-block">
                                     <div class="text-left">
-                                        <h4>489</h4>
-                                        <p class="m-0">Nbre Bulletins Vendus</p>
+                                        <h4 style="text-align: right">{{ number_format($sommeBonàPayer, 2, ',', ' ') }} CDF</h4>
+                                        <p class="m-0">Montant de bons en attente</p>
                                     </div>
-                                    <span class="label bg-c-red value-badges">15%</span>
+                                    <span class="label bg-c-red value-badges"></span>
                                 </div>
                             </div>
                         </div>
@@ -266,8 +231,8 @@
                             <div class="card bg-c-green total-card">
                                 <div class="card-block">
                                     <div class="text-left">
-                                        <h4 style="text-align: right">567 782</h4>
-                                        <p class="m-0">Stock Actuel Bulletins</p>
+                                        <h4 style="text-align: right">{{ number_format($sommeBonPayés, 2, ',', ' ') }} CDF</h4>
+                                        <p class="m-0">Montant de bons payés</p>
                                     </div>
                                     <span class="label bg-c-green value-badges"></span>
                                 </div>
@@ -276,18 +241,18 @@
                         <div class="col-md-6">
                             <div class="card text-center order-visitor-card">
                                 <div class="card-block">
-                                    <h6 class="m-b-0">Dépenses</h6>
+                                    <h6 class="m-b-0">Bons</h6>
                                     <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-up m-r-15 text-c-red"></i>00</h4>
-                                    <p class="m-b-0">Achat MP & Consommables</p>
+                                    <p class="m-b-0">non classés</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card text-center order-visitor-card">
                                 <div class="card-block">
-                                    <h6 class="m-b-0">Dépenses</h6>
+                                    <h6 class="m-b-0">Bons</h6>
                                     <h4 class="m-t-15 m-b-15"><i class="fa fa-arrow-up m-r-15 text-c-red"></i>5963</h4>
-                                    <p class="m-b-0">Fournitures de bureau</p>
+                                    <p class="m-b-0">non classés</p>
                                 </div>
                             </div>
                         </div>
@@ -296,45 +261,6 @@
                 </div>
 
                 <!--  sale analytics end -->
-
-                <!-- Project statustic start -->
-                <div class="col-xl-12">
-                    <div class="card proj-progress-card">
-                        <div class="card-block">
-                            <div class="row">
-                                <div class="col-xl-3 col-md-6">
-                                    <h6>Vente Préliminaire</h6>
-                                    <h5 class="m-b-30 f-w-700">532<span class="text-c-green m-l-10">+1.69%</span></h5>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-c-red" style="width:25%"></div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3 col-md-6">
-                                    <h6>Vente Elémentaire</h6>
-                                    <h5 class="m-b-30 f-w-700">4,569<span class="text-c-red m-l-10">-0.5%</span></h5>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-c-blue" style="width:65%"></div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3 col-md-6">
-                                    <h6>Vente Terminal</h6>
-                                    <h5 class="m-b-30 f-w-700">89%<span class="text-c-green m-l-10">+0.99%</span></h5>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-c-green" style="width:85%"></div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3 col-md-6">
-                                    <h6>Vente Humanités</h6>
-                                    <h5 class="m-b-30 f-w-700">365<span class="text-c-green m-l-10">+0.35%</span></h5>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-c-yellow" style="width:45%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project statustic end -->
             </div>
         </div>
         <!-- Page-body end -->

@@ -13,32 +13,30 @@ use App\Models\UnitArticle;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
+
 
 class PDFController extends Controller
 {
     public function rapGlobal()
     {
-        $inventaires = Inventaire::with(['article', 'unity'])->get();
+        $inventaires = Inventaire::with(['article', 'unity'])
+            ->join('articles', 'inventaires.article_id', '=', 'articles.id') // Joindre la table des articles
+            ->orderBy('articles.designation') // Trier par le champ "designation" de la table des articles
+            ->select('inventaires.*') // Sélectionner uniquement les colonnes des inventaires
+            ->get();
 
-        $pdf = Pdf::loadView('dappro.rapGlob', compact('inventaires'))->setPaper('a4', 'landscape');
+        $pdf = Pdf::loadView('dappro.rapGlob', compact('inventaires'))
+            ->setPaper('a4', 'landscape');
+
         return $pdf->stream();
-        /*
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadHTML('<h1> Hello World </h1>');
-        return $pdf->stream();
-*/
-
-        /*
-        $inventaires = $this->getInventaireData(); // Récupérez les données des inventaires à partir de votre script Laravel
-
-        $pdf = Pdf::loadView('pdf.rapport_global', compact('inventaires'));
-        return $pdf->download('rapport_global.pdf');
-        */
     }
 
     public function rapEntree()
     {
-        $entreestocks = InStock::with(['article', 'unity', 'fournisseurs'])->get();
+        $entreestocks = InStock::with(['article', 'unity', 'fournisseurs'])
+            ->orderBy('date_entree')
+            ->get();
 
         $pdf = Pdf::loadView('dappro.rapEntree', compact('entreestocks'))->setPaper('a4', 'landscape');
         return $pdf->stream();
@@ -46,9 +44,15 @@ class PDFController extends Controller
 
     public function rapSortie()
     {
-        $sortiestocks = OutStock::with(['bureau', 'article'])->get();
+        // Récupérer les sorties triées par date_sortie
+        $sortiestocks = OutStock::with(['bureau', 'article'])
+            ->orderBy('date_sortie') // Tri par date_sortie
+            ->get();
 
-        $pdf = Pdf::loadView('dappro.rapSortie', compact('sortiestocks'))->setPaper('a4', 'portrait');
+        // Charger la vue PDF avec les données triées
+        $pdf = Pdf::loadView('dappro.rapSortie', compact('sortiestocks'))
+            ->setPaper('a4', 'portrait');
+
         return $pdf->stream();
     }
 
@@ -65,64 +69,62 @@ class PDFController extends Controller
         return view('dappro.ficheStock', compact('data', 'article'));
     }
 
-    private function getFicheStockData($articleId, $dateDebut, $dateFin)
+    public function generatePdf(Request $request)
     {
-        $stockInitial = GestionArticle::where('designation_id', $articleId)->first()->stock_initial;
+        // Validation des champs requis
+        $validatedData = $request->validate([
+            'article_id' => 'required|exists:articles,id',
+            'date_debut' => 'required|date',
+            'date_fin' => 'required|date|after_or_equal:date_debut',
+        ]);
 
-        // Récupérer les entrées et sorties
-        $inStocks = InStock::where('article_id', $articleId)
-            ->whereBetween('date_entree', [$dateDebut, $dateFin])
+        $article_id = $validatedData['article_id'];
+        $date_debut = $validatedData['date_debut'];
+        $date_fin = $validatedData['date_fin'];
+
+        // Récupérer l'ID de l'article
+        $article = DB::table('articles')->where('id', $article_id)->first();
+
+        // Vérifier si l'article existe
+        if (!$article) {
+            abort(404, 'Article non trouvé');
+        }
+
+        // Récupérer le stock de début
+        $stockDebut = DB::table('gestion_articles')
+            ->where('designation_id', $article_id)
+            ->value('stock_initial');
+
+        // Récupérer les entrées
+        $entrees = DB::table('in_stocks')
+            ->where('article_id', $article_id)
+            ->whereBetween('date_entree', [$date_debut, $date_fin])
             ->orderBy('date_entree')
             ->get();
 
-        $outStocks = OutStock::where('article_id', $articleId)
-            ->whereBetween('date_sortie', [$dateDebut, $dateFin])
+        // Récupérer les sorties
+        $sorties = DB::table('out_stocks')
+            ->where('article_id', $article_id)
+            ->whereBetween('date_sortie', [$date_debut, $date_fin])
             ->orderBy('date_sortie')
             ->get();
 
-        $data = [];
-        $stockTotal = $stockInitial;
-        $previousSolde = $stockInitial;
+        // Passer les données à la vue PDF
+        $pdf = Pdf::loadView('dappro.ficheStkPdf',
+                    compact(
+                        'entrees',
+                        'stockDebut',
+                        'sorties',
+                        'date_debut',
+                        'date_fin',
+                        'article_id'
+                    )
+                );
 
-        // Fusionner les entrées et les sorties dans un seul tableau ordonné par date
-        $allTransactions = collect([$inStocks, $outStocks])
-            ->collapse()
-            ->sortBy(function ($transaction) {
-                return $transaction->date_entree ?? $transaction->date_sortie;
-            });
+        // Configurer le format du papier et l'orientation
+        $pdf->setPaper('A4', 'landscape');
 
-        foreach ($allTransactions as $transaction) {
-            if ($transaction instanceof InStock) {
-                $row = [
-                    'dateEntree' => $transaction->date_entree,
-                    'quantite' => $transaction->quantite,
-                    'StockInitial' => $stockTotal,
-                    'StockTotal' => $stockTotal + $transaction->quantite,
-                    'dateSortie' => null,
-                    'quantiteLivree' => 0,
-                    'Solde' => $stockTotal + $transaction->quantite,
-                ];
-
-                $data[] = $row;
-                $stockTotal += $transaction->quantite;
-            } elseif ($transaction instanceof OutStock) {
-                $row = [
-                    'dateEntree' => null,
-                    'quantite' => 0,
-                    'StockInitial' => $stockTotal,
-                    'StockTotal' => $stockTotal - $transaction->quantiteLivree,
-                    'dateSortie' => $transaction->date_sortie,
-                    'quantiteLivree' => $transaction->quantiteLivree,
-                    'Solde' => $previousSolde - $transaction->quantiteLivree,
-                ];
-
-                $data[] = $row;
-                $stockTotal -= $transaction->quantiteLivree;
-            }
-
-            $previousSolde = $row['Solde'];
-        }
-
-        return $data;
+        return $pdf->stream('');
     }
+
 }

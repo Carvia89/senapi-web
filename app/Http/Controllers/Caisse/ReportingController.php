@@ -388,17 +388,20 @@ class ReportingController extends Controller
 
         // Récupérer les recettes dans la période spécifiée
         $recettes = RecetteCaisse::select('reference_imputation_id', DB::raw('SUM(montant_recu) as total_recu'))
-            ->whereBetween('date_recette', [$dateDebut, $dateFin])
-            ->groupBy('reference_imputation_id')
-            ->with('refeImputation')
-            ->get()
-            ->unique('reference_imputation_id')
-            ->map(function ($recette) {
-                return [
-                    'designation' => $recette->refeImputation->designation,
-                    'total_recu' => $recette->total_recu,
-                ];
-            });
+        ->whereBetween('date_recette', [$dateDebut, $dateFin])
+        ->groupBy('reference_imputation_id')
+        ->with(['refeImputation' => function ($query) {
+            $query->orderBy('designation', 'asc'); // Tri par ordre alphabétique
+        }])
+        ->get()
+        ->unique('reference_imputation_id')
+        ->map(function ($recette) {
+            return [
+                'designation' => $recette->refeImputation->designation,
+                'total_recu' => $recette->total_recu,
+            ];
+        })
+        ->sortBy('designation'); // Tri supplémentaire pour s'assurer que les résultats sont bien ordonnés
 
         // Récupérer les dépenses avec bons
         $depensesBons = DepenseBon::select('reference_imputation_id', DB::raw('SUM(bon_depenses.montant_bon) as total_bon'))

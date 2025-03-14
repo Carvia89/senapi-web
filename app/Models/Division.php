@@ -21,6 +21,6 @@ class Division extends Model
 
     public function direction()
     {
-        return $this->belongsTo(Direction::class, 'direction_id');
+        return $this->belongsTo(Direction::class);
     }
 }

@@ -232,7 +232,7 @@
         )
             <div class="pcoded-navigation-label">Bureau du DAF</div>
             <ul class="pcoded-item pcoded-left-item">
-                <li class="active">
+                <li class="{{ request()->routeIs('dashboard.direction5') ? 'active' : '' }}">
                     <a href="{{ route('dashboard.direction5') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                         <span class="pcoded-mtext">Dashboard</span>

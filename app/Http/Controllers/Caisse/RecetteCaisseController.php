@@ -79,15 +79,19 @@ class RecetteCaisseController extends Controller
      */
     public function create()
     {
-        $dossiers = Dossier::all();
-        $referImputs = ReferenceImputation::all();
+        // Récupération des dossiers triés par désignation
+        $dossiers = Dossier::all()->sortBy(function ($dossier) {
+            return strtolower($dossier->designation); // Afficher les dossiers en ordre alphabétique
+        });
 
-        return view('daf.bur-comptabilite.livret-caisse.recettes.form',
-            compact(
-                'dossiers',
-                'referImputs'
-            )
-        );
+        // Récupération des référence_imputation associées à des imputations dont le champ 'imputation' commence par '0-'
+        $referImputs = ReferenceImputation::whereHas('imputation', function ($query) {
+            $query->where('imputation', 'like', '0-%'); // Filtrer les imputations qui commencent par '0-'
+        })->get()->sortBy(function ($reference) {
+            return strtolower($reference->designation); // Trier par désignation en ordre alphabétique
+        });
+
+        return view('daf.bur-comptabilite.livret-caisse.recettes.form', compact('dossiers', 'referImputs'));
     }
 
     /**
@@ -119,7 +123,12 @@ class RecetteCaisseController extends Controller
                 'user_id' => auth()->id(), // ID de l'utilisateur connecté
             ]);
 
-            return redirect()->route('admin.recettes-caisse.index')->with('success', 'Recette enregistrée avec succès.');
+            // Stocker les informations dans la session pour les réutiliser
+            session([
+                'date_recette' => $request->date_recette
+            ]);
+
+            return redirect()->route('admin.recettes-caisse.create')->with('success', 'Recette enregistrée avec succès.');
 
         } catch (Exception $e) {
             return back()->withErrors(['libelle' => 'Erreur lors de l\'enregistrement : ' . $e->getMessage()])->withInput();
@@ -134,9 +143,17 @@ class RecetteCaisseController extends Controller
         // Récupération du bon de dépense par son ID
         $recette = RecetteCaisse::findOrFail($id);
 
-        // Récupération des options pour les sélecteurs
-        $dossiers = Dossier::all();
-        $referImputs = ReferenceImputation::all();
+        // Récupération des dossiers triés par désignation
+        $dossiers = Dossier::all()->sortBy(function ($dossier) {
+            return strtolower($dossier->designation); // Afficher les dossiers en ordre alphabétique
+        });
+
+        // Récupération des référence_imputation associées à des imputations dont le champ 'imputation' commence par '0-'
+        $referImputs = ReferenceImputation::whereHas('imputation', function ($query) {
+            $query->where('imputation', 'like', '0-%'); // Filtrer les imputations qui commencent par '0-'
+        })->get()->sortBy(function ($reference) {
+            return strtolower($reference->designation); // Trier par désignation en ordre alphabétique
+        });
 
         return view('daf.bur-comptabilite.livret-caisse.recettes.edit', compact(
             'recette',

@@ -92,10 +92,10 @@
       <tr>
         <td>{{ $inventaire->article->designation }}</td>
         <td>{{ $inventaire->unity->unite }}</td>
-        <td>{{ number_format($inventaire->stock_initial, 2, ',', ' ') }}</td>
-        <td>{{ number_format($inventaire->stock_entree, 2, ',', ' ') }}</td>
-        <td>{{ number_format($inventaire->stock_sortie, 2, ',', ' ') }}</td>
-        <td>{{ number_format($inventaire->stock_actuel, 2, ',', ' ') }}</td>
+        <td>{{ number_format($inventaire->stock_initial, 0, ',', ' ') }}</td>
+        <td>{{ number_format($inventaire->stock_entree, 0, ',', ' ') }}</td>
+        <td>{{ number_format($inventaire->stock_sortie, 0, ',', ' ') }}</td>
+        <td style="font-weight: bold">{{ number_format($inventaire->stock_actuel, 0, ',', ' ') }}</td>
       </tr>
       @endforeach
     </tbody>

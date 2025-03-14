@@ -90,7 +90,7 @@
                                                 <tr>
                                                     <td>{{ \Carbon\Carbon::parse($depense->date_depense)->format('d/m/Y') }}</td>
                                                     <td>{{ $depense->libelle }}</td>
-                                                    <td>{{ number_format($depense->montant_depense, 2, ',', ' ') }}</td>
+                                                    <td class="no-wrap">{{ number_format($depense->montant_depense, 2, ',', ' ') }}</td>
                                                     <td>{{ $depense->referImput->designation ?? 'Aucun' }}</td>
                                                     <!-- <td>{{ $depense->dossier->designation ?? 'Aucun' }}</td> -->
                                                     <!-- Boutons d'actions conditionnels -->
@@ -144,6 +144,9 @@
         .whatsapp-link i {
             color: #25D366; /* Couleur verte de WhatsApp */
             font-size: 1.2em; /* Augmente la taille de l'icône */
+        }
+        .no-wrap {
+            white-space: nowrap; /* Empêche le retour à la ligne */
         }
     </style>
 </div>
